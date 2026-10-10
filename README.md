@@ -6,27 +6,27 @@ Design decisions (art direction, information architecture, motion rules, what wa
 
 ## Stack
 
-Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · Tailwind CSS 4 · shadcn/ui on Base UI · Motion · GSAP + ScrollTrigger · Lenis · Lucide · zod · SQLite through Node's built-in `node:sqlite` (no native dependency).
+Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · Tailwind CSS 4 · shadcn/ui on Base UI · Motion · GSAP + ScrollTrigger · Lenis · Lucide · zod · SQLite: Turso online (libSQL web client), Node's built-in `node:sqlite` locally.
 
 ## Run it
 
-Node 22.13 or later, and pnpm.
+Node 22.13 or later.
 
 ```bash
-pnpm install
+npm install
 cp .env.example .env.local     # then set ADMIN_PASSWORD and ADMIN_SESSION_SECRET
-pnpm dev                       # http://localhost:3000
+npm run dev                    # http://localhost:3000
 ```
 
 The database (`data/sera.db`) is created and seeded on first use with the website prices, the proposed app prices, the estimator rates and the three ventures.
 
 | Command | What it does |
 |---|---|
-| `pnpm dev` | development server |
-| `pnpm build` / `pnpm start` | production build and server |
-| `pnpm typecheck` | route types + TypeScript |
-| `pnpm test` | unit tests for the pricing maths (vitest) |
-| `pnpm qa` | browser QA against a running site (`QA_URL`, default `http://localhost:3100`); uses installed Edge (`QA_BROWSER=chrome` for Chrome). It submits one test enquiry and briefly changes one price, then restores it. |
+| `npm run dev` | development server |
+| `npm run build` / `npm start` | production build and server |
+| `npm run typecheck` | route types + TypeScript |
+| `npm test` | unit tests for the pricing maths (vitest) |
+| `npm run qa` | browser QA against a running site (`QA_URL`, default `http://localhost:3100`); uses installed Edge (`QA_BROWSER=chrome` for Chrome). It submits one test enquiry and briefly changes one price, then restores it. |
 
 ## Admin
 
@@ -42,7 +42,12 @@ To be emailed each enquiry, set `RESEND_API_KEY`, `LEADS_NOTIFY_EMAIL` and `LEAD
 
 ## Deploying
 
-Any Node host that keeps a disk: a VPS, Railway or Render with a volume, Fly.io with a volume, or Docker. Set `DATA_DIR` to the persistent path, plus `SITE_URL`, `ADMIN_PASSWORD` and `ADMIN_SESSION_SECRET`. Serverless hosts without a disk (e.g. Vercel) need the data layer in `src/lib/db.ts` moved to a hosted database first; it is the only file that touches storage.
+Live at **https://keseratech.com** (Netlify, free plan). Every push to `main` on GitHub (`amenkuda-cpu/keseratech-website`) is built on Netlify's servers and published automatically.
+
+- **Data**: a Turso database (free plan). Netlify's environment holds `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, `ADMIN_PASSWORD` and `ADMIN_SESSION_SECRET`; the local, never-committed `.env.production-secrets` keeps a copy.
+- **Domain**: DNS is at Cloudflare: `A keseratech.com → 75.2.60.5` and `CNAME www → keseratech.netlify.app`, both **DNS only** (grey cloud) so Netlify can issue and renew the https certificate.
+- **Build on Netlify, not on Windows**: Netlify's Next.js packaging fails on Windows (symlinks and paths), so don't use `netlify deploy --build` from this PC; push to GitHub instead.
+- Use **npm** (not pnpm) for this project; `package-lock.json` is the lockfile.
 
 ## Content that needs the owner
 

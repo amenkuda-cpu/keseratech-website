@@ -1,0 +1,277 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Kesera design tokens. Rationale lives in docs/DESIGN.md. */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Brand */
+  --color-void: #05060b;
+  --color-deep: #0a1020;
+  --color-deep-2: #0f1830;
+  --color-signal: #1a86fa;
+  --color-signal-soft: #5aa9ff;
+  --color-paper: #f1f0eb;
+  --color-paper-2: #e6e4dc;
+  --color-ink: #0a1020;
+  --color-hair: rgb(255 255 255 / 0.09);
+  --color-hair-strong: rgb(255 255 255 / 0.18);
+  --color-dim: rgb(255 255 255 / 0.66);
+  --color-faint: rgb(255 255 255 / 0.46);
+
+  /* Division accents: dots, hairlines and schematic highlights only */
+  --color-tech: #1a86fa;
+  --color-agri: #5fcb7e;
+  --color-energy: #c6ee4a;
+  --color-home: #d9a56e;
+  --color-assist: #7fb4ff;
+  --color-desk: #9c9bff;
+
+  --font-sans: var(--font-archivo);
+  --font-display: var(--font-archivo);
+  --font-mono: var(--font-plex-mono);
+  --font-heading: var(--font-archivo);
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 10px;
+  --radius-2xl: 14px;
+  --radius-3xl: 18px;
+  --radius-4xl: 22px;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* The site is dark by design; `.paper` scopes the light commercial chapter. */
+:root {
+  color-scheme: dark;
+  --radius: 6px;
+  --background: #05060b;
+  --foreground: #f4f6fb;
+  --card: #0a1020;
+  --card-foreground: #f4f6fb;
+  --popover: #0a1020;
+  --popover-foreground: #f4f6fb;
+  --primary: #1a86fa;
+  --primary-foreground: #ffffff;
+  --secondary: #121a2e;
+  --secondary-foreground: #f4f6fb;
+  --muted: #121a2e;
+  --muted-foreground: rgb(255 255 255 / 0.64);
+  --accent: #121a2e;
+  --accent-foreground: #f4f6fb;
+  --destructive: #ff6b5e;
+  --border: rgb(255 255 255 / 0.12);
+  --input: rgb(255 255 255 / 0.16);
+  --ring: #1a86fa;
+  --gutter: 16px;
+  --section: 96px;
+}
+
+@media (min-width: 768px) {
+  :root { --gutter: 32px; --section: 144px; }
+}
+@media (min-width: 1280px) {
+  :root { --gutter: 40px; --section: 176px; }
+}
+
+.paper {
+  color-scheme: light;
+  --background: #f1f0eb;
+  --foreground: #0a1020;
+  --card: #ffffff;
+  --card-foreground: #0a1020;
+  --popover: #ffffff;
+  --popover-foreground: #0a1020;
+  --secondary: #e6e4dc;
+  --secondary-foreground: #0a1020;
+  --muted: #e6e4dc;
+  --muted-foreground: rgb(10 16 32 / 0.66);
+  --accent: #e6e4dc;
+  --accent-foreground: #0a1020;
+  --border: rgb(10 16 32 / 0.14);
+  --input: rgb(10 16 32 / 0.22);
+  --primary: #0a63d1;
+  --ring: #0a63d1;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-variation-settings: "wdth" 100;
+  }
+  ::selection {
+    background: #1a86fa;
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+  /* Lenis */
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-stopped { overflow: hidden; }
+}
+
+@layer components {
+  .shell {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .section {
+    padding-block: var(--section);
+  }
+
+  /* Display type: Archivo expanded, echoing the extended wordmark */
+  .t-display-xl,
+  .t-display-l,
+  .t-display-m,
+  .t-title {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-weight: 640;
+    letter-spacing: -0.02em;
+  }
+  .t-display-xl {
+    font-size: clamp(2.9rem, 9.4vw, 9.75rem);
+    line-height: 0.86;
+    font-variation-settings: "wdth" 125;
+    font-weight: 660;
+    letter-spacing: -0.035em;
+  }
+  .t-display-l {
+    font-size: clamp(2.2rem, 6.2vw, 6.25rem);
+    line-height: 0.9;
+    font-variation-settings: "wdth" 122;
+    letter-spacing: -0.03em;
+  }
+  .t-display-m {
+    font-size: clamp(1.75rem, 4vw, 3.75rem);
+    line-height: 0.95;
+    font-variation-settings: "wdth" 118;
+  }
+  .t-title {
+    font-size: clamp(1.2rem, 1.9vw, 1.75rem);
+    line-height: 1.08;
+    font-variation-settings: "wdth" 112;
+    letter-spacing: -0.01em;
+  }
+  .t-lead {
+    font-size: clamp(1.08rem, 1.5vw, 1.3rem);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+  .t-body {
+    font-size: 1rem;
+    line-height: 1.65;
+    text-wrap: pretty;
+  }
+  .t-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.3;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* The signature horizon line from the logo artwork */
+  .horizon {
+    position: relative;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgb(26 134 250 / 0.55) 22%, #9fd4ff 50%, rgb(26 134 250 / 0.55) 78%, transparent);
+  }
+  .horizon::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(46%, 520px);
+    height: 18px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(closest-side, rgb(90 169 255 / 0.55), transparent);
+    filter: blur(6px);
+    pointer-events: none;
+  }
+
+  /* Hairline drafting grid used behind schematics */
+  .drafting {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .paper .drafting {
+    background-image:
+      linear-gradient(to right, rgb(10 16 32 / 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(10 16 32 / 0.06) 1px, transparent 1px);
+  }
+}
+
+/* Ecosystem data pulses and other pure-CSS motion */
+@keyframes pulse-travel {
+  to { stroke-dashoffset: -400; }
+}
+@keyframes flow {
+  to { stroke-dashoffset: -30; }
+}
+@keyframes drip {
+  to { stroke-dashoffset: -9; }
+}
+@keyframes charge {
+  0% { stroke-dashoffset: 92; }
+  85%, 100% { stroke-dashoffset: 4; }
+}
+@keyframes blink-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.pulse-line {
+  stroke-dasharray: 14 386;
+  animation: pulse-travel 4.2s linear infinite;
+}
+.status-live {
+  animation: blink-soft 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-line, .status-live { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

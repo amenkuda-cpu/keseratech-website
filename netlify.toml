@@ -1,0 +1,9 @@
+# Netlify builds and serves the site with its Next.js runtime (detected automatically).
+# Secrets (TURSO_*, ADMIN_*) are set in Netlify's environment settings, never in this file.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+  SITE_URL = "https://keseratech.com"

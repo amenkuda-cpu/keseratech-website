@@ -1,0 +1,66 @@
+{
+  "containers-abandoned": {
+    "width": 2000,
+    "height": 1313
+  },
+  "container-homes-havana": {
+    "width": 2000,
+    "height": 1339
+  },
+  "container-stall-benin": {
+    "width": 2000,
+    "height": 1500
+  },
+  "container-flats-le-havre": {
+    "width": 2000,
+    "height": 1328
+  },
+  "container-building-groningen": {
+    "width": 2000,
+    "height": 1200
+  },
+  "container-offices-dundee": {
+    "width": 2000,
+    "height": 1333
+  },
+  "container-cabin": {
+    "width": 1600,
+    "height": 1200
+  },
+  "drum-field": {
+    "width": 1024,
+    "height": 683
+  },
+  "drums-graveyard": {
+    "width": 2000,
+    "height": 1333
+  },
+  "drums-lube": {
+    "width": 2000,
+    "height": 1500
+  },
+  "barrel-chairs": {
+    "width": 1024,
+    "height": 768
+  },
+  "handwash-kenya": {
+    "width": 2000,
+    "height": 1500
+  },
+  "handwash-ethiopia": {
+    "width": 2000,
+    "height": 2667
+  },
+  "earthship-brighton": {
+    "width": 2000,
+    "height": 907
+  },
+  "earthship-wall": {
+    "width": 1920,
+    "height": 2560
+  },
+  "bottle-house-aceh": {
+    "width": 1504,
+    "height": 1000
+  }
+}

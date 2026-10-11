@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { LegalPage } from '@/components/site/legal-page';
 import { COMPANY } from '@/content/site';
 
-export const metadata: Metadata = { title: 'Terms of use' };
+export const metadata: Metadata = { title: 'Terms of use', alternates: { canonical: '/legal/terms' } };
 
 // Plain-language starting point. Have it reviewed by a lawyer before launch.
 export default function TermsPage() {

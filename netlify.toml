@@ -7,3 +7,10 @@
 [build.environment]
   NODE_VERSION = "22"
   SITE_URL = "https://keseratech.com"
+
+# One address for search engines: the free netlify.app address forwards to the real domain.
+[[redirects]]
+  from = "https://keseratech.netlify.app/*"
+  to = "https://keseratech.com/:splat"
+  status = 301
+  force = true

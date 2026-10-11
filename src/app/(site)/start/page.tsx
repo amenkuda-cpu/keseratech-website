@@ -4,8 +4,9 @@ import { getEstimator, getPlans } from '@/lib/db';
 import { COMPANY } from '@/content/site';
 
 export const metadata: Metadata = {
-  title: 'Start a project',
-  description: 'Tell Sera Tech what you’re building: choose the service, type and features, see an estimated price, and send it to us.',
+  title: 'Get a Website, App or Software Quote in Zimbabwe',
+  description: 'Tell Kesera Technologies what you need built: a website, mobile app, software or AI automation. See an estimated price in minutes and send your project to us.',
+  alternates: { canonical: '/start' },
 };
 
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);

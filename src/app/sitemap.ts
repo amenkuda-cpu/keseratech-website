@@ -15,5 +15,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...DIVISION_SLUGS.map((d) => `/${d}`),
     ...(await listProjects()).map((p) => `/projects/${p.slug}`),
   ];
-  return paths.map((p) => ({ url: `${base}${p}`, changeFrequency: 'weekly', priority: p === '' ? 1 : 0.7 }));
+  const lastModified = new Date();
+  return paths.map((p) => ({ url: `${base}${p}`, lastModified, changeFrequency: 'weekly', priority: p === '' ? 1 : p.startsWith('/legal') ? 0.3 : 0.7 }));
 }

@@ -67,7 +67,7 @@ export function Hero({ projectsInDevelopment }: { projectsInDevelopment: number 
           />
 
           <motion.p {...fade(0.55)} className="t-lead mt-8 max-w-[34rem] text-dim md:mt-10">
-            Kesera Technologies develops technology, intelligent systems and innovative solutions for the world ahead.
+            Kesera Technologies is a Zimbabwean technology company. We build websites, mobile apps and custom software, and develop AI, agricultural and energy technology for the world ahead.
           </motion.p>
 
           <motion.div {...fade(0.7)} className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">

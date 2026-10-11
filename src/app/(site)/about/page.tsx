@@ -7,7 +7,8 @@ import { MaskLines, Reveal } from '@/components/system/motion';
 import { ProcessPipeline } from '@/components/home/process-pipeline';
 
 export const metadata: Metadata = {
-  title: 'About',
+  title: { absolute: 'About Kesera Technologies | Zimbabwe Tech Company' },
+  alternates: { canonical: '/about' },
   description: 'Kesera Technologies Holdings is developing practical technology across software, AI, agriculture, energy and smart living.',
 };
 

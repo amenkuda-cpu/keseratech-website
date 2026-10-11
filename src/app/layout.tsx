@@ -11,7 +11,7 @@ const SITE_URL = process.env.SITE_URL ?? `https://${COMPANY.website}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: 'Kesera Technologies — Building what’s next', template: '%s — Kesera' },
+  title: { default: 'Kesera Technologies | Software, Websites, Apps & AI in Zimbabwe', template: '%s | Kesera' },
   description:
     'Kesera Technologies develops software, AI, agricultural and energy technology in Zimbabwe, builds sustainable homes and furniture from recycled and upcycled materials, and builds websites, apps and software for businesses.',
   applicationName: 'Kesera',

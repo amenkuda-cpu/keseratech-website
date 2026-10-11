@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { LegalPage } from '@/components/site/legal-page';
 import { COMPANY } from '@/content/site';
 
-export const metadata: Metadata = { title: 'Privacy notice' };
+export const metadata: Metadata = { title: 'Privacy notice', alternates: { canonical: '/legal/privacy' } };
 
 // Plain-language starting point. Have it reviewed against Zimbabwe's Cyber and Data Protection Act before launch.
 export default function PrivacyPage() {

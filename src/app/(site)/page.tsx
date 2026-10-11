@@ -9,7 +9,11 @@ import { FrontDeskFlow } from '@/components/home/front-desk-flow';
 import { ProcessPipeline } from '@/components/home/process-pipeline';
 import { Closing } from '@/components/home/closing';
 import { getPlans, listProjects } from '@/lib/db';
+import type { Metadata } from 'next';
 import { STATUS_STAGE } from '@/content/site';
+import { OrganizationJsonLd } from '@/components/site/structured-data';
+
+export const metadata: Metadata = { alternates: { canonical: '/' } };
 
 export default async function HomePage() {
   const ventures = (await listProjects()).filter((p) => p.kind === 'venture');
@@ -26,6 +30,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <OrganizationJsonLd />
       <Hero projectsInDevelopment={ventures.filter((p) => p.status === 'IN_DEVELOPMENT').length} />
       <Intro />
       <DivisionsIndex />

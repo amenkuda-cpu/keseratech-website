@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: PageProps<'/projects/[slug]'>
   const { slug } = await params;
   const p = await getProject(slug);
   if (!p) return {};
-  return { title: p.name, description: p.summary.slice(0, 160) };
+  return { title: { absolute: `${p.name} | Kesera Technologies` }, description: p.summary.slice(0, 160), alternates: { canonical: `/projects/${p.slug}` } };
 }
 
 export default async function ProjectPage({ params }: PageProps<'/projects/[slug]'>) {

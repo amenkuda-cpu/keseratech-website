@@ -9,7 +9,8 @@ import { ProjectVisual, SchematicFrame } from '@/components/visuals/project-visu
 import { FutureBoard } from '@/components/home/future-board';
 
 export const metadata: Metadata = {
-  title: 'Projects',
+  title: 'Projects: BikerDash, Smart Irrigation & EV Charging',
+  alternates: { canonical: '/projects' },
   description: 'Kesera Ventures (BikerDash, Smart Irrigation and Smart EV Charging) and the projects Sera Tech builds for clients.',
 };
 

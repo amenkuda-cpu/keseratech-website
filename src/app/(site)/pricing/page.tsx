@@ -7,8 +7,9 @@ import { getEstimator, getPlans } from '@/lib/db';
 import { Label } from '@/components/system/primitives';
 
 export const metadata: Metadata = {
-  title: 'Pricing',
-  description: 'Sera Tech prices: website packages from $100, app packages, and a live estimator for custom software.',
+  title: 'Website, App & Software Prices in Zimbabwe',
+  description: 'Clear prices for websites in Zimbabwe from $100, mobile app packages, and a live estimator for custom software. Built by Sera Tech, Kesera Technologies.',
+  alternates: { canonical: '/pricing' },
 };
 
 // The trust points from the brief. Keep them to commitments the business has made.

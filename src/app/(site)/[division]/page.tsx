@@ -28,10 +28,20 @@ export async function generateStaticParams() {
   return DIVISION_SLUGS.map((division) => ({ division }));
 }
 
+// What people search for, per division.
+const DIVISION_SEO_TITLES: Record<string, string> = {
+  'sera-tech': 'Website, App & Software Development in Zimbabwe',
+  agrisera: 'Smart Irrigation & Agricultural Technology in Zimbabwe',
+  'sera-energy': 'EV Charging & Energy Technology in Zimbabwe',
+  'sera-home': 'Container Homes & Upcycled Furniture in Zimbabwe',
+  'sera-assistants': 'AI Assistants & Business Automation in Zimbabwe',
+  'sera-front-desk': 'AI Receptionist for Calls & Bookings',
+};
+
 export async function generateMetadata({ params }: PageProps<'/[division]'>): Promise<Metadata> {
   const d = divisionBySlug((await params).division);
   if (!d) return {};
-  return { title: d.name, description: `${d.short} ${d.intro}`.slice(0, 160) };
+  return { title: { absolute: `${DIVISION_SEO_TITLES[d.slug]} | ${d.name}` }, description: `${d.short} ${d.intro}`.slice(0, 160), alternates: { canonical: `/${d.slug}` } };
 }
 
 export default async function DivisionPage({ params }: PageProps<'/[division]'>) {

@@ -46,3 +46,6 @@ next-env.d.ts
 
 # netlify local state and build output
 .netlify
+
+# downloaded originals for scripts/showcase-media.mjs
+/.cache

@@ -16,16 +16,10 @@ fs.mkdirSync(OUT, { recursive: true });
 
 // id: Mixkit clip id · src: original file · start/length: seconds to keep · lift: brighten dark footage
 export const CLIPS = [
-  { id: 'family-baking', mixkit: 101179, src: 'https://assets.mixkit.co/agcg58sbfw7ynrj6x7fwf77p3n3t', start: 0, length: 6.9 },
-  { id: 'fishermen', mixkit: 48365, src: 'https://assets.mixkit.co/videos/48365/48365-720.mp4', start: 1.5, length: 7.5 },
   { id: 'builder', mixkit: 23228, src: 'https://assets.mixkit.co/videos/23228/23228-720.mp4', start: 0.4, length: 6.8 },
-  { id: 'robotics-class', mixkit: 23121, src: 'https://assets.mixkit.co/videos/23121/23121-720.mp4', start: 3.5, length: 7.5 },
   { id: 'robot-arm', mixkit: 47258, src: 'https://assets.mixkit.co/videos/47258/47258-720.mp4', start: 7, length: 7 },
-  { id: 'father-son', mixkit: 4561, src: 'https://assets.mixkit.co/videos/4561/4561-1080.mp4', start: 8, length: 7 },
   { id: 'wind-engineer', mixkit: 24129, src: 'https://assets.mixkit.co/videos/24129/24129-720.mp4', start: 1, length: 7 },
-  { id: 'drone-technician', mixkit: 22957, src: 'https://assets.mixkit.co/videos/22957/22957-720.mp4', start: 14, length: 7, lift: true },
   { id: 'robot-planting', mixkit: 47260, src: 'https://assets.mixkit.co/videos/47260/47260-720.mp4', start: 6, length: 7 },
-  { id: 'recycling-family', mixkit: 101106, src: 'https://assets.mixkit.co/e21ocuz9wttrb2zdf1z7ujtamy0c', start: 0.5, length: 7 },
 ];
 
 const UA = { 'User-Agent': 'Mozilla/5.0 (KeseraSite)' };

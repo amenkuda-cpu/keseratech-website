@@ -1,6 +1,5 @@
 import { Hero } from '@/components/home/hero';
 import { Intro } from '@/components/home/intro';
-import { EcosystemSection } from '@/components/home/ecosystem-section';
 import { DivisionsIndex } from '@/components/home/divisions-index';
 import { VenturesShowcase } from '@/components/home/ventures-showcase';
 import { Commercial } from '@/components/home/commercial';
@@ -27,8 +26,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero />
-      <EcosystemSection projectsInDevelopment={ventures.filter((p) => p.status === 'IN_DEVELOPMENT').length} />
+      <Hero projectsInDevelopment={ventures.filter((p) => p.status === 'IN_DEVELOPMENT').length} />
       <Intro />
       <DivisionsIndex />
       <VenturesShowcase projects={featured} />

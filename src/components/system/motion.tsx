@@ -7,16 +7,42 @@ import { cn } from '@/lib/utils';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
+/**
+ * True once the element has reached the viewport (allowing for the bottom margin) or been
+ * scrolled past. A plain intersection check can miss elements during fast scrolls or jumps,
+ * which would leave them hidden for good; checking position on scroll as well never does.
+ */
+function useRevealed(ref: React.RefObject<Element | null>, bottomMargin = 0.1) {
+  const inView = useInView(ref, { once: true, margin: `0px 0px -${Math.round(bottomMargin * 100)}% 0px` as `${number}px ${number}px ${number}% ${number}px` });
+  const [passed, setPassed] = useState(false);
+  useEffect(() => {
+    if (inView || passed) return;
+    const check = () => {
+      const el = ref.current;
+      if (el && el.getBoundingClientRect().top < window.innerHeight * (1 - bottomMargin)) setPassed(true);
+    };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('resize', check);
+    return () => {
+      window.removeEventListener('scroll', check);
+      window.removeEventListener('resize', check);
+    };
+  }, [ref, inView, passed, bottomMargin]);
+  return inView || passed;
+}
+
 /** Fades and lifts content in once, when it scrolls into view. */
 export function Reveal({ children, delay = 0, className, as = 'div', y = 20 }: { children: ReactNode; delay?: number; className?: string; as?: ElementType; y?: number }) {
-  const reduce = useReducedMotion();
+  const ref = useRef<HTMLElement>(null);
+  const shown = useRevealed(ref, 0.12);
   const Comp = useMemo(() => motion.create(as), [as]);
   return (
     <Comp
+      ref={ref}
       className={className}
       initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '0px 0px -12% 0px' }}
+      animate={shown ? { opacity: 1, y: 0 } : undefined}
       transition={{ duration: 0.8, ease: EASE, delay }}
     >
       {children}
@@ -38,8 +64,7 @@ export function MaskLines({ id, lines, className, lineClassName, delay = 0, as: 
   immediate?: boolean;
 }) {
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: '0px 0px -10% 0px' });
-  const reduce = useReducedMotion();
+  const inView = useRevealed(ref, 0.1);
   const show = immediate || inView;
   return (
     <Tag ref={ref} id={id} className={className}>

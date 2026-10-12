@@ -9,6 +9,7 @@ import { Cta, Dot, Label, Lines, StatusTag } from '@/components/system/primitive
 import { Reveal } from '@/components/system/motion';
 import { ProjectVisual, SchematicFrame } from '@/components/visuals/project-visual';
 import { StageTracker } from '@/components/projects/stage-tracker';
+import { StoreButtons } from '@/components/projects/store-buttons';
 
 export async function generateStaticParams() {
   return (await listProjects()).map((p) => ({ slug: p.slug }));
@@ -48,7 +49,15 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[slug
           <Lines text={project.headline} />
         </h1>
         <div className="mt-10 grid gap-8 md:grid-cols-12">
-          <p className="t-lead text-dim md:col-span-7">{project.summary}</p>
+          <div className="md:col-span-7">
+            <p className="t-lead text-dim">{project.summary}</p>
+            <StoreButtons links={project.links} name={project.name} className="mt-8" />
+            {project.links?.website && (
+              <a href={project.links.website} target="_blank" rel="noreferrer" className="t-label mt-5 inline-flex items-center gap-2 py-2 text-white hover:text-signal-soft">
+                Visit {project.links.website.replace(/^https?:\/\//, '')} <ArrowRight className="size-3.5 -rotate-45" />
+              </a>
+            )}
+          </div>
           <div className="flex flex-col gap-3 md:col-span-4 md:col-start-9 md:items-end">
             {target.href !== `/projects/${project.slug}` && <Cta href={target.href} variant="ghost">{target.label}</Cta>}
             <Cta href="/start">Start a project</Cta>

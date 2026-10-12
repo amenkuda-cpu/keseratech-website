@@ -7,6 +7,7 @@ import { Cta, Dot, Label, StatusTag } from '@/components/system/primitives';
 import { MaskLines, Reveal } from '@/components/system/motion';
 import { ProjectVisual, SchematicFrame } from '@/components/visuals/project-visual';
 import { FutureBoard } from '@/components/home/future-board';
+import { StoreButtons } from '@/components/projects/store-buttons';
 
 export const metadata: Metadata = {
   title: 'Projects: BikerDash, Smart Irrigation & EV Charging',
@@ -60,6 +61,7 @@ export default async function ProjectsPage() {
                       </span>
                     </div>
                   </Link>
+                  <StoreButtons links={p.links} name={p.name} className="mt-4" />
                 </Reveal>
               </li>
             );

@@ -8,6 +8,7 @@ import { ArrowRight } from 'lucide-react';
 import type { Project } from '@/lib/db';
 import { divisionBySlug } from '@/content/site';
 import { exploreTarget } from '@/lib/project-links';
+import { StoreButtons } from '@/components/projects/store-buttons';
 import { Cta, Dot, Label, Lines, StatusTag } from '@/components/system/primitives';
 import { MaskLines, Reveal } from '@/components/system/motion';
 import { ProjectVisual, SchematicFrame } from '@/components/visuals/project-visual';
@@ -55,7 +56,9 @@ function Chapter({ project, index, onActive }: { project: Project; index: number
         ))}
       </ul>
 
-      <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+      <StoreButtons links={project.links} name={project.name} className="mt-10" />
+
+      <div className={project.links?.appStore || project.links?.googlePlay ? 'mt-6 flex flex-wrap items-center gap-x-8 gap-y-4' : 'mt-10 flex flex-wrap items-center gap-x-8 gap-y-4'}>
         <Cta href={target.href} variant="ghost">{target.label}</Cta>
         {target.href !== `/projects/${project.slug}` && (
           <Link href={`/projects/${project.slug}`} className="t-label inline-flex items-center gap-2 py-2 text-dim hover:text-white">

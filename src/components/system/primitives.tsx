@@ -38,6 +38,7 @@ const STATUS_TONE: Record<ProjectStatus, string> = {
   PILOT: '#5fcb7e',
   COMING_SOON: '#f4f6fb',
   ACTIVE: '#7ee2a8',
+  LIVE: '#5fcb7e',
 };
 
 export function StatusTag({ status, className }: { status: ProjectStatus; className?: string }) {

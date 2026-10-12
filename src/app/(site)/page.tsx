@@ -17,7 +17,7 @@ export const metadata: Metadata = { alternates: { canonical: '/' } };
 
 export default async function HomePage() {
   const ventures = (await listProjects()).filter((p) => p.kind === 'venture');
-  const featured = ventures.filter((p) => p.featured).slice(0, 4);
+  const featured = ventures.filter((p) => p.featured).slice(0, 5);
   const plans = await getPlans();
   const appPlans = plans.filter((p) => p.group === 'app');
 

@@ -2,7 +2,7 @@
 
 import { animate, motion, useInView, useMotionValue, useSpring } from 'motion/react';
 import { useReducedMotion } from '@/components/system/reduced-motion';
-import { useEffect, useMemo, useRef, useState, type ElementType, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ElementType, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -30,6 +30,39 @@ function useRevealed(ref: React.RefObject<Element | null>, bottomMargin = 0.1) {
     };
   }, [ref, inView, passed, bottomMargin]);
   return inView || passed;
+}
+
+/**
+ * Display headings are big; a single long word ("Intelligence") can be wider than its column and
+ * would be cut off by the reveal mask. This shrinks the heading just enough to fit, re-checking on
+ * resize and once web fonts have loaded. Headings that already fit are left untouched.
+ */
+function useFitLines(ref: React.RefObject<HTMLElement | null>) {
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let frame = 0;
+    const fit = () => {
+      el.style.fontSize = '';
+      const masks = [...el.querySelectorAll<HTMLElement>(':scope > span')];
+      const ratio = Math.max(1, ...masks.map((m) => m.scrollWidth / Math.max(1, m.clientWidth)));
+      if (ratio > 1.001) el.style.fontSize = `${parseFloat(getComputedStyle(el).fontSize) / ratio * 0.98}px`;
+    };
+    const schedule = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(fit);
+    };
+    fit();
+    document.fonts?.ready.then(schedule).catch(() => {});
+    const ro = new ResizeObserver(schedule);
+    ro.observe(el.parentElement ?? el);
+    window.addEventListener('resize', schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      ro.disconnect();
+      window.removeEventListener('resize', schedule);
+    };
+  }, [ref]);
 }
 
 /** Fades and lifts content in once, when it scrolls into view. */
@@ -66,6 +99,7 @@ export function MaskLines({ id, lines, className, lineClassName, delay = 0, as: 
   const ref = useRef<HTMLElement>(null);
   const inView = useRevealed(ref, 0.1);
   const show = immediate || inView;
+  useFitLines(ref);
   return (
     <Tag ref={ref} id={id} className={className}>
       {lines.map((line, i) => (

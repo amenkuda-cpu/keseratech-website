@@ -165,7 +165,15 @@ export const projectSchema = z.object({
   summary: z.string().max(600),
   capabilities: z.array(z.string().max(120)).max(12),
   sections: z.array(z.object({ title: z.string().max(80), text: z.string().max(1500) })).max(8),
-  visual: z.enum(['delivery', 'irrigation', 'ev', 'upcycle', 'none']),
+  visual: z.enum(['delivery', 'irrigation', 'ev', 'upcycle', 'marketplace', 'none']),
+  /** Where people can get it (finished products). Optional so older saved projects stay valid. */
+  links: z
+    .object({
+      website: z.string().url().nullable().optional(),
+      appStore: z.string().url().nullable().optional(),
+      googlePlay: z.string().url().nullable().optional(),
+    })
+    .optional(),
   /** Client projects only */
   client: z.string().max(80).nullable(),
   featured: z.boolean(),

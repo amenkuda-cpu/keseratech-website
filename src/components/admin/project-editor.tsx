@@ -56,16 +56,22 @@ export function ProjectEditor({ initial, isNew }: { initial: Project; isNew: boo
             <option value="irrigation">Irrigation field</option>
             <option value="ev">EV charging network</option>
             <option value="upcycle">Waste to homes and furniture</option>
+            <option value="marketplace">Jobs marketplace</option>
           </select>
         </div>
         <NumberField label="Order" value={p.sort} step={1} onChange={(v) => set({ sort: Math.round(v) })} />
         <div className="flex flex-wrap gap-x-6 md:col-span-2">
           <Toggle label="Published" checked={p.published} onChange={(v) => set({ published: v })} />
-          <Toggle label="Feature on the home page (max 4 shown)" checked={p.featured} onChange={(v) => set({ featured: v })} />
+          <Toggle label="Feature on the home page (max 5 shown)" checked={p.featured} onChange={(v) => set({ featured: v })} />
         </div>
       </section>
 
       <section className="grid gap-4 rounded-[6px] border border-hair p-4">
+        <div className="grid gap-4 md:grid-cols-3">
+          <TextField label="Website (optional)" value={p.links?.website ?? ''} onChange={(v) => set({ links: { ...p.links, website: v.trim() || null } })} placeholder="https://" />
+          <TextField label="App Store link (optional)" value={p.links?.appStore ?? ''} onChange={(v) => set({ links: { ...p.links, appStore: v.trim() || null } })} placeholder="https://apps.apple.com/…" />
+          <TextField label="Google Play link (optional)" value={p.links?.googlePlay ?? ''} onChange={(v) => set({ links: { ...p.links, googlePlay: v.trim() || null } })} placeholder="https://play.google.com/…" />
+        </div>
         <TextField label="Tagline" value={p.tagline} onChange={(v) => set({ tagline: v })} hint="Short line, e.g. “Delivery + parcels + errands”" />
         <AreaField label="Headline (each line on its own line)" rows={3} value={p.headline} onChange={(v) => set({ headline: v })} />
         <AreaField label="Summary" rows={4} value={p.summary} onChange={(v) => set({ summary: v })} hint="Describe what is being built and where it stands. No launch dates, user numbers or results until they are real." />

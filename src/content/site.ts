@@ -17,7 +17,7 @@ export const VENTURE_NAMES = {
   delivery: 'BikerDash',
 } as const;
 
-export const STATUSES = ['CONCEPT', 'RESEARCH', 'PROTOTYPE', 'IN_DEVELOPMENT', 'PILOT', 'COMING_SOON', 'ACTIVE'] as const;
+export const STATUSES = ['CONCEPT', 'RESEARCH', 'PROTOTYPE', 'IN_DEVELOPMENT', 'PILOT', 'COMING_SOON', 'ACTIVE', 'LIVE'] as const;
 export type ProjectStatus = (typeof STATUSES)[number];
 
 export const STATUS_LABEL: Record<ProjectStatus, string> = {
@@ -28,6 +28,7 @@ export const STATUS_LABEL: Record<ProjectStatus, string> = {
   PILOT: 'Pilot',
   COMING_SOON: 'Coming soon',
   ACTIVE: 'Active',
+  LIVE: 'Live',
 };
 
 export const DIVISION_SLUGS = ['sera-tech', 'agrisera', 'sera-energy', 'sera-home', 'sera-assistants', 'sera-front-desk'] as const;
@@ -54,7 +55,7 @@ export const DIVISIONS: Division[] = [
     short: 'Websites, apps and custom software: the commercial technology studio of Kesera.',
     headline: 'Software built around how you work.',
     intro:
-      'Sera Tech designs and builds websites, mobile apps, web applications and business systems. It is also where Kesera builds its own platforms, starting with BikerDash.',
+      'Sera Tech designs and builds websites, mobile apps, web applications and business systems. It is also where Kesera builds its own platforms: PocketJobs, now live on the App Store and Google Play, and BikerDash.',
     focus: ['Website development', 'Mobile apps', 'Web applications', 'Custom software', 'Business systems', 'Automation', 'APIs and integrations', 'Databases', 'Digital platforms'],
   },
   {
@@ -181,4 +182,5 @@ export const STATUS_STAGE: Record<ProjectStatus, PipelineStage> = {
   PILOT: 'test',
   COMING_SOON: 'deploy',
   ACTIVE: 'deploy',
+  LIVE: 'scale',
 };

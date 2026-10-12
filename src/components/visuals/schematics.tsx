@@ -444,3 +444,74 @@ export function UpcycleSchematic({ className, playing = true, title = true }: Pr
     </svg>
   );
 }
+
+// ---------------------------------------------------------------------------
+
+const PROVIDERS = [
+  { x: 470, y: 150, trade: 'Painter', offer: '$110', rating: '4.9' },
+  { x: 610, y: 250, trade: 'Painter', offer: '$120', rating: '4.7' },
+  { x: 520, y: 380, trade: 'Handyman', offer: '$105', rating: '4.8' },
+];
+
+export function MarketplaceSchematic({ className, playing = true, title = true }: Props) {
+  // 0 job posted · 1–3 offers arrive · 4 hired · 5 on the way
+  const { i, still } = useCycle(6, 1700, playing);
+  const step = still ? 5 : i;
+  const blue = 'var(--color-signal)';
+  const chosen = 0;
+  return (
+    <svg viewBox="0 0 800 600" className={cn('h-auto w-full', className)} role="img" aria-label="Concept diagram of how PocketJobs works: a customer posts a job, verified providers nearby send offers, the customer hires one, and follows them on the way to the job.">
+      {title && <Caption division="Sera Tech" name="PocketJobs" kind="How a job gets done" />}
+
+      {/* neighbourhood rings */}
+      {[110, 210, 300].map((r) => (
+        <circle key={r} cx="230" cy="300" r={r} fill="none" stroke="white" strokeOpacity={r === 300 ? 0.08 : 0.12} strokeDasharray={r === 300 ? '3 6' : undefined} />
+      ))}
+      <text x="230" y="590" textAnchor="middle" className={cn(LABEL, 'fill-white/30')}>Verified providers nearby</text>
+
+      {/* the job */}
+      <g transform="translate(110 245)">
+        <rect width="240" height="112" rx="8" fill="#0a1020" stroke={blue} strokeOpacity="0.8" />
+        <text x="16" y="26" className={cn(LABEL, 'fill-white/45')}>New job · Avondale</text>
+        <text x="16" y="54" className="fill-white text-[17px] font-semibold">Paint two bedrooms</text>
+        <text x="16" y="78" className={cn(LABEL, 'fill-white/55')}>This Saturday · budget $120</text>
+        <rect x="16" y="88" width={step >= 4 ? 208 : 0} height="3" rx="1.5" fill={blue} style={{ transition: 'width 700ms ease' }} />
+      </g>
+
+      {/* providers and offers */}
+      {PROVIDERS.map((pv, k) => {
+        const shown = step >= k + 1;
+        const hired = step >= 4 && k === chosen;
+        const dimmed = step >= 4 && k !== chosen;
+        return (
+          <g key={k} style={{ opacity: shown ? (dimmed ? 0.3 : 1) : 0.12, transition: 'opacity 500ms ease' }}>
+            <path d={`M350 ${300} C 410 ${300}, ${pv.x - 60} ${pv.y + 26}, ${pv.x} ${pv.y + 26}`} fill="none" stroke={hired ? blue : 'white'} strokeOpacity={hired ? 0.9 : 0.25} strokeDasharray={hired ? undefined : '3 5'} />
+            <g transform={`translate(${pv.x} ${pv.y})`}>
+              <rect width="200" height="52" rx="8" fill="#0a1020" stroke={hired ? blue : 'white'} strokeOpacity={hired ? 1 : 0.2} />
+              <circle cx="24" cy="26" r="12" fill="none" stroke={blue} strokeOpacity="0.7" />
+              <path d="M18 27 l4 4 l8 -9" fill="none" stroke={blue} strokeWidth="1.6" />
+              <text x="46" y="22" className={cn(LABEL, 'fill-white/80')}>{pv.trade} · ★ {pv.rating}</text>
+              <text x="46" y="40" className={cn(LABEL, 'fill-white/45')}>{hired ? 'Hired' : 'Offer'}</text>
+              <text x="186" y="40" textAnchor="end" className="fill-white text-[15px] font-semibold">{pv.offer}</text>
+            </g>
+          </g>
+        );
+      })}
+
+      {/* on the way */}
+      <g style={{ opacity: step >= 5 ? 1 : 0, transition: 'opacity 500ms ease' }}>
+        <path id="pj-route" d="M470 176 C 400 120, 300 170, 240 245" fill="none" stroke={blue} strokeWidth="2" strokeDasharray="5 6" className={still ? undefined : 'animate-[flow_1.2s_linear_infinite]'} />
+        <circle cx="300" cy="182" r="6" fill={blue} />
+      </g>
+
+      {/* readout */}
+      <g transform="translate(24 520)">
+        <rect width="280" height="30" rx="3" fill="#0a1020" stroke="white" strokeOpacity="0.14" />
+        <circle cx="16" cy="15" r="3.5" fill={blue} className={still ? undefined : 'status-live'} />
+        <text x="30" y="19" className={cn(LABEL, 'fill-white/75')}>
+          {step === 0 ? 'Job posted · free' : step < 4 ? `Offers received · ${step} of 3` : step === 4 ? 'Provider hired · chat opened' : 'On the way · pay cash on completion'}
+        </text>
+      </g>
+    </svg>
+  );
+}

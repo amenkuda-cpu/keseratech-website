@@ -2,7 +2,7 @@
 
 import type { Project } from '@/lib/db';
 import { cn } from '@/lib/utils';
-import { DeliverySchematic, EvSchematic, HomeSchematic, IrrigationSchematic, UpcycleSchematic } from './schematics';
+import { DeliverySchematic, EvSchematic, HomeSchematic, IrrigationSchematic, MarketplaceSchematic, UpcycleSchematic } from './schematics';
 
 /** A schematic inside a drafting frame with registration marks. */
 export function SchematicFrame({ children, className, note }: { children: React.ReactNode; className?: string; note?: string }) {
@@ -22,6 +22,7 @@ export function ProjectVisual({ visual, playing = true, className }: { visual: P
   if (visual === 'irrigation') return <IrrigationSchematic playing={playing} className={className} />;
   if (visual === 'delivery') return <DeliverySchematic playing={playing} className={className} />;
   if (visual === 'ev') return <EvSchematic playing={playing} className={className} />;
+  if (visual === 'marketplace') return <MarketplaceSchematic playing={playing} className={className} />;
   if (visual === 'upcycle') return <UpcycleSchematic playing={playing} className={className} />;
   return null;
 }

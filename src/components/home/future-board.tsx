@@ -12,7 +12,7 @@ const LANES: { id: string; title: string; statuses: ProjectStatus[]; empty: stri
   { id: 'development', title: 'In development', statuses: ['PROTOTYPE', 'IN_DEVELOPMENT'], empty: 'Nothing in development right now.' },
   { id: 'pilot', title: 'Piloting', statuses: ['PILOT'], empty: 'No pilots yet. The first will be announced here.' },
   { id: 'soon', title: 'Coming soon', statuses: ['COMING_SOON'], empty: 'Launch dates are announced only when they are confirmed.' },
-  { id: 'active', title: 'Active', statuses: ['ACTIVE'], empty: 'Nothing operating yet.' },
+  { id: 'active', title: 'Live & active', statuses: ['LIVE', 'ACTIVE'], empty: 'Nothing operating yet.' },
 ];
 
 export function FutureBoard({ projects, index = '04' }: { projects: Project[]; index?: string }) {

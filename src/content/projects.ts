@@ -6,6 +6,50 @@ import { VENTURE_NAMES } from './site';
 
 export const SEED_PROJECTS: Project[] = [
   {
+    slug: 'pocketjobs',
+    name: 'PocketJobs',
+    kind: 'venture',
+    division: 'sera-tech',
+    status: 'LIVE',
+    tagline: 'Hire trusted local help, right from your pocket',
+    headline: 'Trusted hands.\nRight in your pocket.',
+    summary:
+      'PocketJobs connects people across Zimbabwe with verified local service providers: cleaners, plumbers, electricians, movers, tutors and more. Post a job in a minute, get offers from verified pros nearby, chat without giving out your number, track your provider on the way, and pay in cash when the job is done. Free on iPhone and Android.',
+    capabilities: [
+      'Post a job free in about a minute',
+      'Offers from verified, reviewed providers nearby',
+      'Chat and share photos without sharing your number',
+      'Track your provider on the way to the job',
+      'Pay the provider in cash on completion, no platform fee on the job',
+      'Instant alerts for new jobs and offers',
+      'Nine categories, from home repairs to tutoring and events',
+    ],
+    sections: [
+      {
+        title: 'The problem',
+        text: 'Finding a reliable plumber, cleaner or electrician usually means asking around and hoping. Skilled people who do good work struggle to be found beyond their own neighbourhood.',
+      },
+      {
+        title: 'What we built',
+        text: 'A marketplace app for both sides. People who need something done post a job and choose from offers by verified providers nearby; providers get alerts for work around them, make offers and build a reputation through reviews. Chat, photos and live tracking happen inside the app, and payment is cash on completion.',
+      },
+      {
+        title: 'Where it is now',
+        text: 'PocketJobs is finished and live: download it free on the App Store and Google Play, or visit pocketjobs.co.',
+      },
+    ],
+    visual: 'marketplace',
+    links: {
+      website: 'https://pocketjobs.co',
+      appStore: 'https://apps.apple.com/us/app/pocketjobs-co/id6791999235',
+      googlePlay: 'https://play.google.com/store/apps/details?id=co.pocketjobs.app',
+    },
+    client: null,
+    featured: true,
+    published: true,
+    sort: 0,
+  },
+  {
     slug: 'bikerdash',
     name: VENTURE_NAMES.delivery,
     kind: 'venture',

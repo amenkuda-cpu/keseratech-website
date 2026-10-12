@@ -21,6 +21,7 @@ const COLUMNS = [
   {
     title: 'Projects',
     links: [
+      { href: '/projects/pocketjobs', label: 'PocketJobs' },
       { href: '/projects/bikerdash', label: VENTURE_NAMES.delivery },
       { href: '/projects/smart-irrigation', label: 'Smart Irrigation' },
       { href: '/projects/smart-ev-charging', label: 'Smart EV Charging' },

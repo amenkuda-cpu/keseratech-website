@@ -59,7 +59,7 @@ export default async function DivisionPage({ params }: PageProps<'/[division]'>)
       {/* Hero */}
       <section className="relative overflow-hidden" aria-labelledby="division-title">
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10" style={{ background: `radial-gradient(50% 60% at 85% 20%, color-mix(in srgb, ${division.accent} 12%, transparent), transparent 70%)` }} />
-        <div aria-hidden className="drafting absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_80%_30%,black,transparent_70%)]" />
+        <div aria-hidden className="drafting absolute inset-0 -z-10 opacity-50" />
         <div className="shell grid gap-12 pb-20 pt-[calc(68px+3.5rem)] md:pb-28 md:pt-[calc(68px+6rem)] lg:grid-cols-12">
           <div className="lg:col-span-8">
             <p className="t-label flex items-center gap-3 text-dim">

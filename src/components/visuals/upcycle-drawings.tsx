@@ -49,7 +49,7 @@ export function ContainerDrawing({ stage, still }: { stage: number; still: boole
           [250, 196, 90, 58],
           [400, 186, 56, 106],
         ].map(([x, y, w, h], i) => (
-          <rect key={i} x={x} y={y} width={w} height={h} fill="none" stroke="white" strokeWidth="1.6" strokeDasharray="6 5" className={still ? undefined : 'animate-[flow_1.6s_linear_infinite]'} />
+          <rect key={i} x={x} y={y} width={w} height={h} fill="none" stroke="white" strokeWidth="1.6" strokeDasharray="6 5" className={still ? undefined : 'animate-[flow_1.6s_steps(14)_infinite]'} />
         ))}
         {!still && (
           <g className="animate-[blink-soft_0.6s_ease-in-out_infinite]">
@@ -118,7 +118,7 @@ export function DrumDrawing({ stage, still }: { stage: number; still: boolean })
         </Layer>
         <Layer show={stage === 1}>
           {/* seat cut-out and the line that halves a drum for a table */}
-          <path d="M248 210 Q300 236 352 210 L352 268 L248 268 Z" fill="none" stroke="white" strokeWidth="1.6" strokeDasharray="6 5" className={still ? undefined : 'animate-[flow_1.6s_linear_infinite]'} />
+          <path d="M248 210 Q300 236 352 210 L352 268 L248 268 Z" fill="none" stroke="white" strokeWidth="1.6" strokeDasharray="6 5" className={still ? undefined : 'animate-[flow_1.6s_steps(14)_infinite]'} />
           <line x1="236" y1="268" x2="364" y2="268" stroke={COPPER} strokeWidth="1.6" strokeDasharray="4 4" />
           <text x="378" y="214" className={cn(LABEL, 'fill-white/55')}>Seat</text>
           <text x="378" y="272" className={cn(LABEL, 'fill-white/55')}>Cut line</text>

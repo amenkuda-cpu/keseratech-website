@@ -35,7 +35,7 @@ export function SiteHeader() {
     <header
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500',
-        solid ? 'border-b border-hair bg-void/95 backdrop-blur-xl' : 'border-b border-transparent',
+        solid ? 'border-b border-hair bg-void/95 backdrop-blur-sm' : 'border-b border-transparent',
       )}
     >
       <div className="shell flex h-[68px] items-center justify-between gap-6">

@@ -138,10 +138,11 @@
     outline: 2px solid var(--ring);
     outline-offset: 3px;
   }
-  /* Lenis */
-  html.lenis, html.lenis body { height: auto; }
-  .lenis.lenis-smooth { scroll-behavior: auto !important; }
-  .lenis.lenis-stopped { overflow: hidden; }
+  /* In-page links land below the fixed header, and glide there unless motion is reduced */
+  html { scroll-padding-top: 76px; }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
 }
 
 @layer components {
@@ -228,15 +229,11 @@
 
   /* Hairline drafting grid used behind schematics */
   .drafting {
-    background-image:
-      linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M48 0H0V48' fill='none' stroke='%23ffffff' stroke-opacity='0.045'/%3E%3C/svg%3E");
     background-size: 48px 48px;
   }
   .paper .drafting {
-    background-image:
-      linear-gradient(to right, rgb(10 16 32 / 0.06) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(10 16 32 / 0.06) 1px, transparent 1px);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M48 0H0V48' fill='none' stroke='%230a1020' stroke-opacity='0.06'/%3E%3C/svg%3E");
   }
 }
 
@@ -254,13 +251,24 @@
   0% { stroke-dashoffset: 92; }
   85%, 100% { stroke-dashoffset: 4; }
 }
+@keyframes mask-rise {
+  from { transform: translateY(105%); }
+  to { transform: translateY(0); }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
 @keyframes blink-soft {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.35; }
 }
+:where([data-paused]) *, :where([data-paused]) {
+  animation-play-state: paused !important;
+}
 .pulse-line {
   stroke-dasharray: 14 386;
-  animation: pulse-travel 4.2s linear infinite;
+  animation: pulse-travel 4.2s steps(48) infinite;
 }
 .status-live {
   animation: blink-soft 2.4s ease-in-out infinite;
@@ -270,6 +278,7 @@
   .pulse-line, .status-live { animation: none; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;

@@ -100,12 +100,27 @@ export function MaskLines({ id, lines, className, lineClassName, delay = 0, as: 
   const inView = useRevealed(ref, 0.1);
   const show = immediate || inView;
   useFitLines(ref);
+  if (immediate) {
+    // Above the fold: animate in CSS so the headline paints with the HTML instead of waiting for
+    // JavaScript (it is usually the page's largest element, so this decides how fast it feels).
+    return (
+      <Tag ref={ref} id={id} className={className}>
+        {lines.map((line, i) => (
+          <span key={i} className="block overflow-hidden pb-[0.06em] -mb-[0.06em]">
+            <span className={cn('block animate-[mask-rise_1s_cubic-bezier(0.16,1,0.3,1)_both]', lineClassName)} style={{ animationDelay: `${delay + i * 0.09}s` }}>
+              {line}
+            </span>
+          </span>
+        ))}
+      </Tag>
+    );
+  }
   return (
     <Tag ref={ref} id={id} className={className}>
       {lines.map((line, i) => (
         <span key={i} className="block overflow-hidden pb-[0.06em] -mb-[0.06em]">
           <motion.span
-            className={cn('block will-change-transform', lineClassName)}
+            className={cn('block', lineClassName)}
             initial={{ y: '105%' }}
             animate={show ? { y: '0%' } : undefined}
             transition={{ duration: 1, ease: EASE, delay: delay + i * 0.09 }}

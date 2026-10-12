@@ -18,7 +18,20 @@ export function HeroVideo({ className }: { className?: string }) {
   const root = useRef<HTMLDivElement>(null);
   const videos = useRef<(HTMLVideoElement | null)[]>([]);
   const switching = useRef(false);
-  const playing = !reduce && visible;
+  // Start video only after the page has loaded, so it never competes with the page itself.
+  const [pageLoaded, setPageLoaded] = useState(false);
+  // Fetch the next clip only once the current one is actually playing.
+  const [warmNext, setWarmNext] = useState(false);
+  /** Clips that have been given their file; they keep it so loops never re-download. */
+  const loaded = useRef(new Set<number>());
+  const playing = !reduce && visible && pageLoaded;
+
+  useEffect(() => {
+    const go = () => setPageLoaded(true);
+    if (document.readyState === 'complete') go();
+    else window.addEventListener('load', go, { once: true });
+    return () => window.removeEventListener('load', go);
+  }, []);
 
   useEffect(() => {
     const el = root.current;
@@ -74,18 +87,22 @@ export function HeroVideo({ className }: { className?: string }) {
     <div ref={root} aria-hidden className={cn('absolute inset-0 overflow-hidden bg-void', className)}>
       {SHOWCASE.map((s, i) => {
         const { video, poster } = showcaseSrc(s.id);
-        const near = i === active || i === (active + 1) % SHOWCASE.length;
+        const isNext = i === (active + 1) % SHOWCASE.length;
+        const load = pageLoaded && !reduce && (i === active || (isNext && warmNext));
+        if (load) loaded.current.add(i);
+        const hasSrc = loaded.current.has(i);
         return (
           <video
             key={s.id}
             ref={(el) => {
               videos.current[i] = el;
             }}
-            src={video}
+            src={hasSrc ? video : undefined}
             poster={i === 0 ? poster : undefined}
             muted
             playsInline
-            preload={near ? 'auto' : 'none'}
+            preload={hasSrc ? 'auto' : 'none'}
+            onPlaying={() => i === active && setWarmNext(true)}
             tabIndex={-1}
             className="absolute inset-0 size-full object-cover transition-opacity ease-in-out"
             style={{ opacity: i === active ? 1 : 0, transitionDuration: `${FADE_S}s` }}

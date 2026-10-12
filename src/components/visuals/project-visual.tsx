@@ -1,5 +1,7 @@
 'use client';
 
+import { useRef } from 'react';
+import { useInView } from 'motion/react';
 import type { Project } from '@/lib/db';
 import { cn } from '@/lib/utils';
 import { DeliverySchematic, EvSchematic, HomeSchematic, IrrigationSchematic, MarketplaceSchematic, UpcycleSchematic } from './schematics';
@@ -17,12 +19,20 @@ export function SchematicFrame({ children, className, note }: { children: React.
   );
 }
 
+/** Runs a diagram only while it is on screen: its timers and CSS animations pause when scrolled away. */
 export function ProjectVisual({ visual, playing = true, className }: { visual: Project['visual'] | 'home'; playing?: boolean; className?: string }) {
-  if (visual === 'home') return <HomeSchematic playing={playing} className={className} />;
-  if (visual === 'irrigation') return <IrrigationSchematic playing={playing} className={className} />;
-  if (visual === 'delivery') return <DeliverySchematic playing={playing} className={className} />;
-  if (visual === 'ev') return <EvSchematic playing={playing} className={className} />;
-  if (visual === 'marketplace') return <MarketplaceSchematic playing={playing} className={className} />;
-  if (visual === 'upcycle') return <UpcycleSchematic playing={playing} className={className} />;
-  return null;
+  const ref = useRef<HTMLDivElement>(null);
+  const onScreen = useInView(ref, { margin: '100px 0px' });
+  const run = playing && onScreen;
+  const props = { playing: run, className };
+  return (
+    <div ref={ref} data-paused={run ? undefined : ''}>
+      {visual === 'home' && <HomeSchematic {...props} />}
+      {visual === 'irrigation' && <IrrigationSchematic {...props} />}
+      {visual === 'delivery' && <DeliverySchematic {...props} />}
+      {visual === 'ev' && <EvSchematic {...props} />}
+      {visual === 'marketplace' && <MarketplaceSchematic {...props} />}
+      {visual === 'upcycle' && <UpcycleSchematic {...props} />}
+    </div>
+  );
 }

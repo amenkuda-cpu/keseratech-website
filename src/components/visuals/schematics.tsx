@@ -90,7 +90,7 @@ export function IrrigationSchematic({ className, playing = true, title = true }:
                 strokeOpacity={on ? 0.55 : 0.1}
                 strokeDasharray={on ? '2 7' : undefined}
                 fill="none"
-                className={on && !still ? 'animate-[drip_1.2s_linear_infinite]' : undefined}
+                className={on && !still ? 'animate-[drip_1.2s_steps(14)_infinite]' : undefined}
               />
             ))}
             {/* branch to zone (left zones from the header, right zones continue across) */}
@@ -102,7 +102,7 @@ export function IrrigationSchematic({ className, playing = true, title = true }:
               fill="none"
               className="transition-all duration-700"
             />
-            {on && !still && <path d={zi % 2 === 0 ? `M230 ${by} H${branchX + 10}` : `M230 ${by} H${z.x + 10}`} stroke="#d6ffe2" strokeWidth="2" strokeDasharray="6 24" fill="none" className="animate-[flow_0.9s_linear_infinite]" />}
+            {on && !still && <path d={zi % 2 === 0 ? `M230 ${by} H${branchX + 10}` : `M230 ${by} H${z.x + 10}`} stroke="#d6ffe2" strokeWidth="2" strokeDasharray="6 24" fill="none" className="animate-[flow_0.9s_steps(14)_infinite]" />}
             {/* valve */}
             <g transform={`translate(${zi % 2 === 0 ? branchX - 8 : z.x - 8} ${by})`}>
               <path d="M-7 -6 L7 6 L7 -6 L-7 6 Z" fill="#05060b" stroke={on ? agri : 'white'} strokeOpacity={on ? 1 : 0.4} />
@@ -288,7 +288,7 @@ export function EvSchematic({ className, playing = true, title = true }: Props) 
           <rect x={src.x - 34} y="150" width="68" height="40" rx="3" fill="none" stroke="white" strokeOpacity="0.22" />
           <text x={src.x} y="175" textAnchor="middle" className={cn(LABEL, 'fill-white/70')}>{src.label}</text>
           <path d={`M${src.x} 190 V236 H608`} stroke={lime} strokeOpacity="0.5" fill="none" />
-          {!still && <path d={`M${src.x} 190 V236 H608`} stroke={lime} strokeWidth="2" strokeDasharray="5 22" fill="none" className="animate-[flow_1.1s_linear_infinite]" />}
+          {!still && <path d={`M${src.x} 190 V236 H608`} stroke={lime} strokeWidth="2" strokeDasharray="5 22" fill="none" className="animate-[flow_1.1s_steps(14)_infinite]" />}
         </g>
       ))}
       <path d="M608 236 V272" stroke={lime} strokeWidth="2" />
@@ -313,7 +313,7 @@ export function EvSchematic({ className, playing = true, title = true }: Props) 
                 strokeWidth="3"
                 fill="none"
                 strokeLinecap="round"
-                className={still || !playing ? undefined : 'animate-[charge_9s_ease-in-out_infinite]'}
+                className={still || !playing ? undefined : 'animate-[charge_9s_steps(40)_infinite]'}
                 style={{ animationDelay: b.x === 470 ? '0s' : '-4s' }}
               />
             )}
@@ -378,7 +378,7 @@ export function HomeSchematic({ className, playing = true, title = true }: Props
       <rect x="700" y="300" width="56" height="90" rx="4" fill="none" stroke="white" strokeOpacity="0.3" />
       <rect x="708" y={318 + (scene.name === 'Evening' ? 22 : 0)} width="40" height={scene.name === 'Evening' ? 52 : 74} fill={copper} fillOpacity="0.5" className="transition-all duration-700" />
       <text x="728" y="410" textAnchor="middle" className={cn(LABEL, 'fill-white/45')}>Battery</text>
-      <path d="M560 160 C 700 180, 728 240, 728 300" fill="none" stroke={copper} strokeOpacity="0.5" strokeDasharray="3 6" className={still ? undefined : 'animate-[flow_1.4s_linear_infinite]'} />
+      <path d="M560 160 C 700 180, 728 240, 728 300" fill="none" stroke={copper} strokeOpacity="0.5" strokeDasharray="3 6" className={still ? undefined : 'animate-[flow_1.4s_steps(14)_infinite]'} />
 
       <g transform="translate(400 260)">
         <rect x="-44" y="-18" width="88" height="36" rx="18" fill="#0a1020" stroke={copper} />
@@ -500,7 +500,7 @@ export function MarketplaceSchematic({ className, playing = true, title = true }
 
       {/* on the way */}
       <g style={{ opacity: step >= 5 ? 1 : 0, transition: 'opacity 500ms ease' }}>
-        <path id="pj-route" d="M470 176 C 400 120, 300 170, 240 245" fill="none" stroke={blue} strokeWidth="2" strokeDasharray="5 6" className={still ? undefined : 'animate-[flow_1.2s_linear_infinite]'} />
+        <path id="pj-route" d="M470 176 C 400 120, 300 170, 240 245" fill="none" stroke={blue} strokeWidth="2" strokeDasharray="5 6" className={still ? undefined : 'animate-[flow_1.2s_steps(14)_infinite]'} />
         <circle cx="300" cy="182" r="6" fill={blue} />
       </g>
 

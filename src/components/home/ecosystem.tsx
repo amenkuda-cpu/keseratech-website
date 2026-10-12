@@ -60,6 +60,7 @@ export function Ecosystem({ className }: { className?: string }) {
   return (
     <div
       ref={ref}
+      data-paused={inView ? undefined : ''}
       className={cn('relative', className)}
       onPointerMove={(e) => {
         if (e.pointerType !== 'mouse' || reduce) return;
@@ -78,13 +79,6 @@ export function Ecosystem({ className }: { className?: string }) {
             <stop offset="0" stopColor="#1a86fa" stopOpacity="0.32" />
             <stop offset="1" stopColor="#1a86fa" stopOpacity="0" />
           </radialGradient>
-          <filter id="eco-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="2.5" result="b" />
-            <feMerge>
-              <feMergeNode in="b" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
         </defs>
 
         {/* Dial: rings, ticks and bearings */}
@@ -108,7 +102,7 @@ export function Ecosystem({ className }: { className?: string }) {
           })}
           <circle r={R} fill="none" stroke="white" strokeOpacity="0.14" />
           <circle r="196" fill="none" stroke="white" strokeOpacity="0.06" strokeDasharray="2 6" />
-          <circle r="118" fill="none" stroke="#1a86fa" strokeOpacity="0.28" strokeDasharray="1 5" className="origin-center motion-safe:animate-[spin_120s_linear_infinite]" />
+          <circle r="118" fill="none" stroke="#1a86fa" strokeOpacity="0.28" strokeDasharray="1 5" />
           <line x1="-356" y1="0" x2="356" y2="0" stroke="white" strokeOpacity="0.04" />
           <line x1="0" y1="-356" x2="0" y2="356" stroke="white" strokeOpacity="0.04" />
         </motion.g>
@@ -125,7 +119,7 @@ export function Ecosystem({ className }: { className?: string }) {
             return (
               <g key={`l-${n.slug}`} aria-hidden>
                 <path d={d} stroke={on ? n.accent : 'white'} strokeOpacity={on ? 0.9 : 0.16} strokeWidth={on ? 1.4 : 1} className="transition-[stroke,stroke-opacity] duration-500" />
-                <path d={d} stroke={n.accent} strokeWidth="2.6" strokeLinecap="round" className="pulse-line" filter="url(#eco-glow)" style={{ animationDelay: `${-n.i * 0.8}s`, opacity: on ? 1 : 0.55 }} />
+                <path d={d} stroke={n.accent} strokeWidth="2.6" strokeLinecap="round" className="pulse-line" style={{ animationDelay: `${-n.i * 0.8}s`, opacity: on ? 1 : 0.55 }} />
               </g>
             );
           })}

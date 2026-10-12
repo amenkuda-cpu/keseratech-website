@@ -84,7 +84,7 @@ export function UpcycleFlow({ initialTrack = 'container' }: { initialTrack?: Tra
   };
 
   return (
-    <div ref={ref}>
+    <div ref={ref} data-paused={inView ? undefined : ''}>
       <div role="tablist" aria-label="Material" className="relative -mx-[var(--gutter)] flex gap-2 overflow-x-auto px-[var(--gutter)] pb-1 [scrollbar-width:none] md:mx-0 md:px-0">
         {TRACKS.map((t) => (
           <button

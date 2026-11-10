@@ -1,0 +1,9 @@
+# Never upload secrets, the local database or local build output to Vercel.
+.env*
+!.env.example
+/data
+/.cache
+/.next
+/.netlify
+node_modules
+PORTFOLIO_PROGRESS.md

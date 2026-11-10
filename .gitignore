@@ -49,3 +49,6 @@ next-env.d.ts
 
 # downloaded originals for scripts/showcase-media.mjs
 /.cache
+
+.vercel
+.env*

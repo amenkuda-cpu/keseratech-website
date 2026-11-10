@@ -1,0 +1,198 @@
+[
+  {
+    "id": "developer-nairobi",
+    "kind": "photo",
+    "pexelsId": 19805876,
+    "source": "https://www.pexels.com/photo/man-working-on-computer-in-an-office-19805876/",
+    "credit": "Naboth Otieno",
+    "creditUrl": "https://www.pexels.com/@naboth-otieno-83498565/",
+    "alt": "A software developer writing code across a desktop monitor and a laptop at his desk",
+    "focus": "60% 50%"
+  },
+  {
+    "id": "farmer-irrigating",
+    "kind": "photo",
+    "pexelsId": 20313652,
+    "source": "https://www.pexels.com/photo/a-farmer-is-spraying-cabbage-plants-in-a-field-20313652/",
+    "credit": "Adil Ahnaf",
+    "creditUrl": "https://www.pexels.com/@mdadilahnaf/",
+    "alt": "A farmer watering rows of cabbages in a wide green field at sunrise",
+    "focus": "50% 40%"
+  },
+  {
+    "id": "farmer-inspecting",
+    "kind": "photo",
+    "pexelsId": 34411687,
+    "source": "https://www.pexels.com/photo/african-farmer-inspecting-crops-in-field-34411687/",
+    "credit": "mk_photoz",
+    "creditUrl": "https://www.pexels.com/@mk_photoz-2149411980/",
+    "alt": "A farmer crouching in a sandy field to check young crop seedlings",
+    "focus": "50% 40%"
+  },
+  {
+    "id": "ev-plug",
+    "kind": "photo",
+    "pexelsId": 9799743,
+    "source": "https://www.pexels.com/photo/charging-of-a-vehicle-i-9799743/",
+    "credit": "Kindel Media",
+    "creditUrl": "https://www.pexels.com/@kindelmedia/",
+    "alt": "A charging cable plugged into an electric car, the port lit green while it charges",
+    "focus": "45% 50%"
+  },
+  {
+    "id": "ev-chargers",
+    "kind": "photo",
+    "pexelsId": 37576187,
+    "source": "https://www.pexels.com/photo/electric-car-charging-at-station-with-multiple-chargers-37576187/",
+    "credit": "Giant Asparagus",
+    "creditUrl": "https://www.pexels.com/@giantasparagus/",
+    "alt": "An electric car charging beside a row of charging posts in an outdoor car park",
+    "focus": "40% 55%"
+  },
+  {
+    "id": "delivery-nairobi",
+    "kind": "photo",
+    "pexelsId": 30661401,
+    "source": "https://www.pexels.com/photo/motorcycle-delivery-in-nairobi-street-scene-30661401/",
+    "credit": "MC G'Zay",
+    "creditUrl": "https://www.pexels.com/@mcgzay/",
+    "alt": "Two riders in hi-vis vests carrying a delivery box on a motorcycle through a busy Nairobi street",
+    "focus": "55% 55%"
+  },
+  {
+    "id": "delivery-rider",
+    "kind": "photo",
+    "pexelsId": 12203654,
+    "source": "https://www.pexels.com/photo/a-delivery-man-riding-a-motorcycle-on-road-12203654/",
+    "credit": "Ali Alcántara",
+    "creditUrl": "https://www.pexels.com/@alialcantara/",
+    "alt": "A delivery rider with an orange delivery bag on his back riding a motorcycle down a tree-lined road",
+    "focus": "50% 60%"
+  },
+  {
+    "id": "owner-phone",
+    "kind": "photo",
+    "pexelsId": 7163401,
+    "source": "https://www.pexels.com/photo/man-smiling-while-holding-a-smartphone-7163401/",
+    "credit": "Antoni Shkraba",
+    "creditUrl": "https://www.pexels.com/@shkrabaanthony/",
+    "alt": "A smiling businessman replying to a message on his smartphone in a bright office",
+    "focus": "50% 35%"
+  },
+  {
+    "id": "call-agent",
+    "kind": "photo",
+    "pexelsId": 8867630,
+    "source": "https://www.pexels.com/photo/a-smiling-call-center-agent-8867630/",
+    "credit": "Yan Krukau",
+    "creditUrl": "https://www.pexels.com/@yankrukov/",
+    "alt": "A smiling receptionist wearing a headset, adjusting her microphone as she takes a call",
+    "focus": "40% 45%"
+  },
+  {
+    "id": "solar-technicians",
+    "kind": "photo",
+    "pexelsId": 8853536,
+    "source": "https://www.pexels.com/photo/solar-technicians-installing-solar-panels-8853536/",
+    "credit": "Los Muertos Crew",
+    "creditUrl": "https://www.pexels.com/@cristian-rojas/",
+    "alt": "Two technicians in hard hats and hi-vis vests fitting solar panels on a rooftop",
+    "focus": "45% 45%"
+  },
+  {
+    "id": "team-workshop",
+    "kind": "photo",
+    "pexelsId": 19895721,
+    "source": "https://www.pexels.com/photo/people-sitting-at-desk-in-workshop-and-talking-19895721/",
+    "credit": "ThisIsEngineering",
+    "creditUrl": "https://www.pexels.com/@thisisengineering/",
+    "alt": "An engineering team talking through a project around a workbench with laptops in a workshop",
+    "focus": "55% 50%"
+  },
+  {
+    "id": "welding-workshop",
+    "kind": "photo",
+    "pexelsId": 5846247,
+    "source": "https://www.pexels.com/photo/a-person-welding-at-a-workshop-5846247/",
+    "credit": "Tima Miroshnichenko",
+    "creditUrl": "https://www.pexels.com/@tima-miroshnichenko/",
+    "alt": "A welder in a mask joining steel at a workbench, sparks flying in a metal workshop",
+    "focus": "55% 50%"
+  },
+  {
+    "id": "metal-cutting",
+    "kind": "photo",
+    "pexelsId": 2480481,
+    "source": "https://www.pexels.com/photo/man-welding-on-gray-metal-sheet-2480481/",
+    "credit": "Danial Abdullah",
+    "creditUrl": "https://www.pexels.com/@mdanialasyraf/",
+    "alt": "A metalworker in a hard hat and leather gloves cutting a steel sheet as sparks spray across the workshop",
+    "focus": "50% 40%"
+  },
+  {
+    "id": "timber-workshop",
+    "kind": "photo",
+    "pexelsId": 3760930,
+    "source": "https://www.pexels.com/photo/african-man-cutting-board-in-workshop-3760930/",
+    "credit": "Tope J. Asokere",
+    "creditUrl": "https://www.pexels.com/@topeasokere/",
+    "alt": "A craftsman concentrating as he cuts a timber board in his workshop",
+    "focus": "50% 30%"
+  },
+  {
+    "id": "tradesperson",
+    "kind": "photo",
+    "pexelsId": 15200454,
+    "source": "https://www.pexels.com/photo/portrait-of-construction-worker-15200454/",
+    "credit": "Joseph Okon",
+    "creditUrl": "https://www.pexels.com/@joseph-okon-427061394/",
+    "alt": "A smiling tradesman in an orange hi-vis work suit, safety glasses and a hard hat",
+    "focus": "50% 25%"
+  },
+  {
+    "id": "container-home",
+    "kind": "photo",
+    "pexelsId": 783942,
+    "source": "https://www.pexels.com/photo/gray-containerized-housing-unit-783942/",
+    "credit": "Lucas de Lara",
+    "creditUrl": "https://www.pexels.com/@lucas-de-lara-256141/",
+    "alt": "A two-storey home built from stacked shipping containers, with large windows cut into the steel walls",
+    "focus": "50% 50%"
+  },
+  {
+    "id": "irrigation-sprinklers",
+    "kind": "video",
+    "pexelsId": 8166769,
+    "file": "https://videos.pexels.com/video-files/8166769/8166769-hd_1920_1080_30fps.mp4",
+    "start": 1,
+    "length": 8,
+    "source": "https://www.pexels.com/video/watering-a-farm-8166769/",
+    "credit": "Amar Preciado",
+    "creditUrl": "https://www.pexels.com/@amar/",
+    "alt": "Aerial view of a line of sprinklers watering a freshly planted field"
+  },
+  {
+    "id": "ev-charging",
+    "kind": "video",
+    "pexelsId": 4817951,
+    "file": "https://videos.pexels.com/video-files/4817951/4817951-hd_1920_1080_30fps.mp4",
+    "start": 5,
+    "length": 8,
+    "source": "https://www.pexels.com/video/charging-an-electric-car-4817951/",
+    "credit": "Gustavo Fring",
+    "creditUrl": "https://www.pexels.com/@gustavo-fring/",
+    "alt": "A driver opens the charging port of an electric car and plugs in the charger"
+  },
+  {
+    "id": "front-desk-call",
+    "kind": "video",
+    "pexelsId": 3986119,
+    "file": "https://videos.pexels.com/video-files/3986119/3986119-hd_1920_1080_25fps.mp4",
+    "start": 1,
+    "length": 8,
+    "source": "https://www.pexels.com/video/smiling-woman-working-at-a-call-center-3986119/",
+    "credit": "Mike Sangma",
+    "creditUrl": "https://www.pexels.com/@mike-sangma-1611592/",
+    "alt": "A smiling receptionist wearing a headset talks with a caller"
+  }
+]

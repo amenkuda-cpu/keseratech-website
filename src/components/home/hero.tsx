@@ -2,7 +2,6 @@
 
 import { Cta } from '@/components/system/primitives';
 import { Magnetic, MaskLines } from '@/components/system/motion';
-import { Ecosystem } from './ecosystem';
 import { HeroVideo } from './hero-video';
 
 export function Hero({ projectsInDevelopment }: { projectsInDevelopment: number }) {
@@ -14,15 +13,15 @@ export function Hero({ projectsInDevelopment }: { projectsInDevelopment: number 
 
   return (
     <section aria-label="Introduction" className="relative isolate overflow-hidden pt-[68px]">
-      {/* Background video, darkened so the headline and the dial stay readable */}
+      {/* Background video, darkened so the headline stays readable */}
       <HeroVideo className="-z-20" />
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgb(5_6_11/0.88)_0%,rgb(5_6_11/0.62)_45%,rgb(5_6_11/0.72)_100%)]" />
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(5_6_11/0.55)_0%,transparent_25%,transparent_70%,rgb(5_6_11/0.95)_100%)]" />
       {/* Drafting grid */}
       <div aria-hidden className="drafting absolute inset-0 -z-10 opacity-40" />
 
-      <div className="shell grid min-h-[calc(100svh-68px)] grid-cols-1 items-center gap-y-12 pb-10 pt-10 md:pt-14 lg:grid-cols-12 lg:gap-x-10 lg:pb-16">
-        <div className="lg:col-span-6 xl:col-span-6">
+      <div className="shell grid min-h-[calc(100svh-68px)] grid-cols-1 items-center pb-10 pt-10 md:pt-14 lg:grid-cols-12 lg:gap-x-10 lg:pb-16">
+        <div className="lg:col-span-8 xl:col-span-7">
           <p style={fade(0.05).style} className={`t-label flex items-center gap-3 text-dim ${fade(0).className}`}>
             <span className="size-1.5 rounded-full bg-signal" aria-hidden />
             Kesera Technologies Holdings
@@ -56,13 +55,6 @@ export function Hero({ projectsInDevelopment }: { projectsInDevelopment: number 
               Start a project
             </Cta>
           </div>
-        </div>
-
-        <div
-          className="mx-auto w-full max-w-[560px] animate-[fade-up_1.4s_cubic-bezier(0.16,1,0.3,1)_both] lg:col-span-6 lg:max-w-[600px]"
-          style={{ animationDelay: '0.25s' }}
-        >
-          <Ecosystem />
         </div>
       </div>
 

@@ -5,7 +5,7 @@ import { listProjects } from '@/lib/db';
 import { divisionBySlug } from '@/content/site';
 import { Cta, Dot, Label, StatusTag } from '@/components/system/primitives';
 import { MaskLines, Reveal } from '@/components/system/motion';
-import { ProjectVisual, SchematicFrame } from '@/components/visuals/project-visual';
+import { ProjectVisual } from '@/components/visuals/project-visual';
 import { FutureBoard } from '@/components/home/future-board';
 import { StoreButtons } from '@/components/projects/store-buttons';
 
@@ -39,10 +39,14 @@ export default async function ProjectsPage() {
               <li key={p.slug} className="w-[86vw] shrink-0 snap-center md:w-auto">
                 <Reveal>
                   <Link href={`/projects/${p.slug}`} className="group/v grid overflow-hidden rounded-[8px] border border-hair bg-deep/40 transition-colors duration-500 hover:border-white/25 md:grid-cols-12">
-                    <div className="border-b border-hair md:col-span-7 md:border-b-0 md:border-r">
-                      <SchematicFrame className="rounded-none border-0">
-                        <ProjectVisual visual={p.visual} />
-                      </SchematicFrame>
+                    <div className="relative border-b border-hair md:col-span-7 md:min-h-[22rem] md:border-b-0 md:border-r">
+                      <ProjectVisual
+                        visual={p.visual}
+                        rounded={false}
+                        aspect="auto"
+                        className="aspect-[16/10] md:absolute md:inset-0 md:aspect-auto"
+                        sizes="(min-width: 768px) 55vw, 86vw"
+                      />
                     </div>
                     <div className="flex flex-col p-6 md:col-span-5 md:p-10">
                       <div className="flex flex-wrap items-center gap-3">

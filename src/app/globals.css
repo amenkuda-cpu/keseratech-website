@@ -227,7 +227,7 @@
     pointer-events: none;
   }
 
-  /* Hairline drafting grid used behind schematics */
+  /* Hairline drafting grid, a faint background texture behind page heroes */
   .drafting {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M48 0H0V48' fill='none' stroke='%23ffffff' stroke-opacity='0.045'/%3E%3C/svg%3E");
     background-size: 48px 48px;
@@ -237,20 +237,7 @@
   }
 }
 
-/* Ecosystem data pulses and other pure-CSS motion */
-@keyframes pulse-travel {
-  to { stroke-dashoffset: -400; }
-}
-@keyframes flow {
-  to { stroke-dashoffset: -30; }
-}
-@keyframes drip {
-  to { stroke-dashoffset: -9; }
-}
-@keyframes charge {
-  0% { stroke-dashoffset: 92; }
-  85%, 100% { stroke-dashoffset: 4; }
-}
+/* Pure-CSS motion */
 @keyframes mask-rise {
   from { transform: translateY(105%); }
   to { transform: translateY(0); }
@@ -266,16 +253,12 @@
 :where([data-paused]) *, :where([data-paused]) {
   animation-play-state: paused !important;
 }
-.pulse-line {
-  stroke-dasharray: 14 386;
-  animation: pulse-travel 4.2s steps(48) infinite;
-}
 .status-live {
   animation: blink-soft 2.4s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pulse-line, .status-live { animation: none; }
+  .status-live { animation: none; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-delay: 0s !important;

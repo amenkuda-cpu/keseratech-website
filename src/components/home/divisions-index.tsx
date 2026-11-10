@@ -7,7 +7,8 @@ import { ArrowUpRight } from 'lucide-react';
 import { DIVISIONS } from '@/content/site';
 import { Dot, Label } from '@/components/system/primitives';
 import { MaskLines } from '@/components/system/motion';
-import { DivisionGlyph } from '@/components/visuals/division-glyph';
+import { MediaFrame } from '@/components/visuals/media';
+import { DIVISION_MEDIA, media } from '@/content/media';
 
 // A studio-style index instead of a card grid: each division is a full-width row that opens up on hover.
 
@@ -61,8 +62,8 @@ export function DivisionsIndex() {
                 </span>
 
                 <span className="col-start-3 row-start-1 flex items-center justify-end gap-4 md:col-span-2 md:col-start-auto md:row-start-auto">
-                  <span className="hidden size-16 text-white/30 transition-[color,opacity,transform] duration-500 group-hover/row:text-white/70 lg:block" style={{ color: undefined }}>
-                    <DivisionGlyph slug={d.slug} accent={d.accent} />
+                  <span className="hidden opacity-75 transition-opacity duration-500 group-hover/row:opacity-100 lg:block">
+                    <MediaFrame media={media(DIVISION_MEDIA[d.slug]!)} aspect="3/2" className="w-28" sizes="112px" />
                   </span>
                   <span className="grid size-11 place-items-center rounded-full border border-hair transition-colors duration-300 group-hover/row:border-white/40 group-hover/row:bg-white group-hover/row:text-void">
                     <ArrowUpRight className="size-4" strokeWidth={1.75} />

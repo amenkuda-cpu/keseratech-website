@@ -7,7 +7,7 @@ import { divisionBySlug } from '@/content/site';
 import { exploreTarget } from '@/lib/project-links';
 import { Cta, Dot, Label, Lines, StatusTag } from '@/components/system/primitives';
 import { Reveal } from '@/components/system/motion';
-import { ProjectVisual, SchematicFrame } from '@/components/visuals/project-visual';
+import { ProjectVisual } from '@/components/visuals/project-visual';
 import { StageTracker } from '@/components/projects/stage-tracker';
 import { StoreButtons } from '@/components/projects/store-buttons';
 
@@ -67,9 +67,8 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[slug
 
       {project.visual !== 'none' && (
         <Reveal className="shell mt-16 md:mt-24">
-          <SchematicFrame note="Concept schematic">
-            <ProjectVisual visual={project.visual} />
-          </SchematicFrame>
+          <ProjectVisual visual={project.visual} loop aspect="auto" className="aspect-[4/3] sm:aspect-[21/9]" sizes="(min-width: 1440px) 1300px, 100vw" />
+
         </Reveal>
       )}
 

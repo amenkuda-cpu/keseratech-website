@@ -7,8 +7,9 @@ import { DIVISION_PAGES } from '@/content/divisions';
 import { listProjects } from '@/lib/db';
 import { Cta, Dot, Label, StatusTag } from '@/components/system/primitives';
 import { MaskLines, Reveal } from '@/components/system/motion';
-import { DivisionGlyph } from '@/components/visuals/division-glyph';
-import { ProjectVisual, SchematicFrame } from '@/components/visuals/project-visual';
+import { ProjectVisual } from '@/components/visuals/project-visual';
+import { MediaFrame } from '@/components/visuals/media';
+import { DIVISION_MEDIA, media } from '@/content/media';
 import { AssistantsDemo } from '@/components/home/assistants-demo';
 import { FrontDeskFlow } from '@/components/home/front-desk-flow';
 import { UpcycleFlow } from '@/components/visuals/upcycle-flow';
@@ -95,10 +96,14 @@ export default async function DivisionPage({ params }: PageProps<'/[division]'>)
               </p>
             </div>
           ) : (
-            <div className="hidden items-center justify-center text-white/25 lg:col-span-4 lg:flex">
-              <div className="size-[min(26vw,360px)]">
-                <DivisionGlyph slug={division.slug} accent={division.accent} />
-              </div>
+            <div className="lg:col-span-4 lg:self-center">
+              <MediaFrame
+                media={media(DIVISION_MEDIA[division.slug]!)}
+                aspect="auto"
+                className="aspect-[16/10] lg:aspect-[4/5]"
+                priority
+                sizes="(min-width: 1024px) 30vw, 100vw"
+              />
             </div>
           )}
         </div>
@@ -169,9 +174,7 @@ export default async function DivisionPage({ params }: PageProps<'/[division]'>)
                 </p>
               </div>
               <Reveal className="lg:col-span-7">
-                <SchematicFrame note="Concept schematic">
-                  <ProjectVisual visual="home" />
-                </SchematicFrame>
+                <ProjectVisual visual="home" aspect="16/10" sizes="(min-width: 1024px) 55vw, 100vw" />
               </Reveal>
             </div>
           </section>
@@ -188,9 +191,7 @@ export default async function DivisionPage({ params }: PageProps<'/[division]'>)
               <p className="t-body text-dim md:col-span-5">{page.signatureText}</p>
             </div>
             <Reveal className="mt-14 md:mt-20">
-              <SchematicFrame note="Concept schematic">
-                <ProjectVisual visual={page.signature} />
-              </SchematicFrame>
+              <ProjectVisual visual={page.signature} loop aspect="auto" className="aspect-[4/3] sm:aspect-[21/9]" sizes="(min-width: 1440px) 1300px, 100vw" />
             </Reveal>
           </div>
         </section>

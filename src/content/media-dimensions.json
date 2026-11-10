@@ -1,0 +1,78 @@
+{
+  "developer-nairobi": {
+    "width": 2000,
+    "height": 1333
+  },
+  "farmer-irrigating": {
+    "width": 2000,
+    "height": 1483
+  },
+  "farmer-inspecting": {
+    "width": 1875,
+    "height": 1500
+  },
+  "ev-plug": {
+    "width": 1125,
+    "height": 1500
+  },
+  "ev-chargers": {
+    "width": 2000,
+    "height": 1500
+  },
+  "delivery-nairobi": {
+    "width": 1998,
+    "height": 1500
+  },
+  "delivery-rider": {
+    "width": 2000,
+    "height": 1333
+  },
+  "owner-phone": {
+    "width": 1000,
+    "height": 1500
+  },
+  "call-agent": {
+    "width": 2000,
+    "height": 1333
+  },
+  "solar-technicians": {
+    "width": 2000,
+    "height": 1336
+  },
+  "team-workshop": {
+    "width": 2000,
+    "height": 1334
+  },
+  "welding-workshop": {
+    "width": 2000,
+    "height": 1333
+  },
+  "metal-cutting": {
+    "width": 1125,
+    "height": 1500
+  },
+  "timber-workshop": {
+    "width": 996,
+    "height": 1500
+  },
+  "tradesperson": {
+    "width": 1000,
+    "height": 1500
+  },
+  "container-home": {
+    "width": 2000,
+    "height": 1333
+  },
+  "irrigation-sprinklers": {
+    "width": 1280,
+    "height": 720
+  },
+  "ev-charging": {
+    "width": 1280,
+    "height": 720
+  },
+  "front-desk-call": {
+    "width": 1280,
+    "height": 720
+  }
+}

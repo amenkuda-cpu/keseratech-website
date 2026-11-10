@@ -11,9 +11,9 @@ import { exploreTarget } from '@/lib/project-links';
 import { StoreButtons } from '@/components/projects/store-buttons';
 import { Cta, Dot, Label, Lines, StatusTag } from '@/components/system/primitives';
 import { MaskLines, Reveal } from '@/components/system/motion';
-import { ProjectVisual, SchematicFrame } from '@/components/visuals/project-visual';
+import { ProjectVisual } from '@/components/visuals/project-visual';
 
-// "What we're building": the visual stays pinned while the three project chapters scroll past it.
+// "What we're building": the photo stays pinned while the project chapters scroll past it.
 
 function Chapter({ project, index, onActive }: { project: Project; index: number; onActive: (i: number) => void }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -27,9 +27,7 @@ function Chapter({ project, index, onActive }: { project: Project; index: number
   return (
     <article ref={ref} aria-labelledby={`venture-${project.slug}`} className="flex flex-col justify-center py-16 lg:min-h-[100svh] lg:py-0">
       <div className="mb-8 lg:hidden">
-        <SchematicFrame>
-          <ProjectVisual visual={project.visual} playing={inView} />
-        </SchematicFrame>
+        <ProjectVisual visual={project.visual} aspect="16/10" sizes="100vw" />
       </div>
 
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
@@ -96,19 +94,20 @@ export function VenturesShowcase({ projects }: { projects: Project[] }) {
           {/* Pinned visual (desktop) */}
           <div className="hidden lg:col-span-7 lg:block">
             <div className="sticky top-[calc(50svh-min(30vw,330px))] pt-10">
-              <SchematicFrame note="Concept schematic">
-                <AnimatePresence mode="wait" initial={false}>
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[6px] bg-deep">
+                <AnimatePresence initial={false}>
                   <motion.div
                     key={current.slug}
-                    initial={{ opacity: 0, scale: 0.985 }}
+                    className="absolute inset-0"
+                    initial={{ opacity: 0, scale: reduce ? 1 : 1.02 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={reduce ? undefined : { opacity: 0, scale: 1.01 }}
-                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: reduce ? 0 : 0.7, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <ProjectVisual visual={current.visual} />
+                    <ProjectVisual visual={current.visual} aspect="auto" className="size-full" rounded={false} sizes="(min-width: 1024px) 55vw, 100vw" />
                   </motion.div>
                 </AnimatePresence>
-              </SchematicFrame>
+              </div>
               <div className="mt-5 flex items-center gap-4" aria-hidden>
                 <span className="t-label text-faint">{String(active + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}</span>
                 <div className="flex flex-1 gap-1.5">

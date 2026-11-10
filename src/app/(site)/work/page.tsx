@@ -6,13 +6,14 @@ import { FOUNDER, SHOW_PLACEHOLDERS } from '@/content/people';
 import { Reveal } from '@/components/system/motion';
 import { PersonFrame, PlaceholderTag } from '@/components/site/people';
 import { WorkVideo } from '@/components/work/work-video';
+import { StoreButtons } from '@/components/projects/store-buttons';
 import { cn } from '@/lib/utils';
 
 // "Our Work": websites built by Amen at Kesera. Linked from the main menu. Projects come from src/content/work.ts.
 
 export const metadata: Metadata = {
   title: { absolute: 'Our Work: Websites Built by Kesera | Kesera Technologies' },
-  description: 'Websites Kesera has designed and built for businesses in Zimbabwe: online shops, farm platforms and retail stores, with the admin tools behind them.',
+  description: 'Websites and apps Kesera has designed and built: online shops, company and brand sites, a law firm, a church and the PocketJobs app.',
   alternates: { canonical: '/work' },
 };
 
@@ -29,7 +30,7 @@ export default function WorkPage() {
             <em className="block">Here’s some of my work.</em>
           </h1>
           <p className="t-lead mt-8 max-w-[34rem] text-white/80">
-            These are websites I’ve designed and built for businesses in Zimbabwe: online shops, booking and ordering, and the admin tools the owners use every day. Each one starts with how the business actually works.
+            These are websites and apps I’ve designed and built for businesses, brands and organisations in Zimbabwe and beyond: online shops, company sites, a law firm, a church and our own app, PocketJobs. Each one starts with how the business actually works. Every project below has a link, so you can try it for yourself.
           </p>
         </div>
         {withPhoto && (
@@ -80,16 +81,26 @@ export default function WorkPage() {
                       ))}
                     </ul>
                   )}
-                  {p.liveUrl && (
-                    <a
-                      href={p.liveUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-8 inline-flex min-h-12 items-center gap-3 rounded-[4px] border border-hair-strong px-5 text-[0.95rem] font-semibold transition-colors hover:border-white/50 hover:bg-white/[0.04]"
-                    >
-                      Visit live site <ArrowUpRight aria-hidden className="size-4" />
-                      <span className="sr-only">(opens in a new tab)</span>
-                    </a>
+                  {p.apps && <StoreButtons links={p.apps} name={p.name} className="mt-8" />}
+                  {(p.liveUrl || p.moreLinks?.length) && (
+                    <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+                      {p.liveUrl && (
+                        <a
+                          href={p.liveUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex min-h-12 items-center gap-3 rounded-[4px] border border-hair-strong px-5 text-[0.95rem] font-semibold transition-colors hover:border-white/50 hover:bg-white/[0.04]"
+                        >
+                          Visit live site <ArrowUpRight aria-hidden className="size-4" />
+                          <span className="sr-only">(opens in a new tab)</span>
+                        </a>
+                      )}
+                      {p.moreLinks?.map((l) => (
+                        <a key={l.href} href={l.href} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 py-2 text-sm text-white/75 underline-offset-4 hover:text-white hover:underline">
+                          {l.label} <ArrowUpRight aria-hidden className="size-3.5" />
+                        </a>
+                      ))}
+                    </div>
                   )}
                 </div>
               </Reveal>

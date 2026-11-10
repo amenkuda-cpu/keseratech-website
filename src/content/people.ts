@@ -15,7 +15,7 @@ export const FOUNDER = {
   name: 'Amen',
   role: 'Founder, Kesera Technologies',
   /** Photo next to the "Who we are" note on the home page and at the top of /work. */
-  photo: null as PersonPhoto,
+  photo: { src: '/people/amen.webp', alt: 'Amen smiling, in a blue PocketJobs cap and shirt' } as PersonPhoto,
   /** First-person note on the home page. A draft: rewrite it in your own words. */
   note: [
     'Hi, I’m Amen. I started Kesera because I kept seeing everyday problems around me that good software could fix, and not enough people here building the fix.',
@@ -27,7 +27,7 @@ export const FOUNDER = {
 export type TeamMember = { name: string; role: string; photo: PersonPhoto; placeholder: boolean };
 
 export const TEAM: TeamMember[] = [
-  { name: 'Amen', role: 'Founder', photo: null, placeholder: true },
+  { name: 'Amen', role: 'Founder', photo: { src: '/people/amen.webp', alt: 'Amen smiling, in a blue PocketJobs cap and shirt' }, placeholder: false },
   { name: 'Team member', role: 'Role', photo: null, placeholder: true },
   { name: 'Team member', role: 'Role', photo: null, placeholder: true },
   { name: 'Team member', role: 'Role', photo: null, placeholder: true },

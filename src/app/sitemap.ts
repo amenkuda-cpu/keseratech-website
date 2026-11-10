@@ -6,6 +6,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = process.env.SITE_URL ?? `https://${COMPANY.website}`;
   const paths = [
     '',
+    '/work',
     '/projects',
     '/pricing',
     '/start',

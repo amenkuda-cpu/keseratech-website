@@ -8,13 +8,12 @@ import { PersonFrame, PlaceholderTag } from '@/components/site/people';
 import { WorkVideo } from '@/components/work/work-video';
 import { cn } from '@/lib/utils';
 
-// Private portfolio, shared by link only: not in the navigation, footer or sitemap, and kept out of
-// search results. Projects come from src/content/work.ts.
+// "Our Work": websites built by Amen at Kesera. Linked from the main menu. Projects come from src/content/work.ts.
 
 export const metadata: Metadata = {
-  title: { absolute: 'Websites by Amen | Kesera Technologies' },
-  description: 'A selection of websites designed and built by Amen at Kesera Technologies.',
-  robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
+  title: { absolute: 'Our Work: Websites Built by Kesera | Kesera Technologies' },
+  description: 'Websites Kesera has designed and built for businesses in Zimbabwe: online shops, farm platforms and retail stores, with the admin tools behind them.',
+  alternates: { canonical: '/work' },
 };
 
 export default function WorkPage() {

@@ -128,6 +128,7 @@ export const divisionBySlug = (slug: string) => DIVISIONS.find((d) => d.slug ===
 
 export const NAV = [
   { href: '/#divisions', label: 'Divisions' },
+  { href: '/work', label: 'Our Work' },
   { href: '/projects', label: 'Projects' },
   { href: '/sera-tech', label: 'Sera Tech' },
   { href: '/pricing', label: 'Pricing' },

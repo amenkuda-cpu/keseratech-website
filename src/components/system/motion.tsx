@@ -1,6 +1,6 @@
 'use client';
 
-import { animate, motion, useInView, useMotionValue, useSpring } from 'motion/react';
+import { animate, motion, useInView } from 'motion/react';
 import { useReducedMotion } from '@/components/system/reduced-motion';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ElementType, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
@@ -106,8 +106,8 @@ export function MaskLines({ id, lines, className, lineClassName, delay = 0, as: 
     return (
       <Tag ref={ref} id={id} className={className}>
         {lines.map((line, i) => (
-          <span key={i} className="block overflow-hidden pb-[0.06em] -mb-[0.06em]">
-            <span className={cn('block animate-[mask-rise_1s_cubic-bezier(0.16,1,0.3,1)_both]', lineClassName)} style={{ animationDelay: `${delay + i * 0.09}s` }}>
+          <span key={i} className="block">
+            <span className={cn('block animate-[fade-up_0.9s_cubic-bezier(0.16,1,0.3,1)_both]', lineClassName)} style={{ animationDelay: `${delay + i * 0.08}s` }}>
               {line}
             </span>
           </span>
@@ -115,48 +115,22 @@ export function MaskLines({ id, lines, className, lineClassName, delay = 0, as: 
       </Tag>
     );
   }
+  // A gentle fade, line by line, as the heading scrolls into view.
   return (
     <Tag ref={ref} id={id} className={className}>
       {lines.map((line, i) => (
-        <span key={i} className="block overflow-hidden pb-[0.06em] -mb-[0.06em]">
+        <span key={i} className="block">
           <motion.span
             className={cn('block', lineClassName)}
-            initial={{ y: '105%' }}
-            animate={show ? { y: '0%' } : undefined}
-            transition={{ duration: 1, ease: EASE, delay: delay + i * 0.09 }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={show ? { opacity: 1, y: 0 } : undefined}
+            transition={{ duration: 0.9, ease: EASE, delay: delay + i * 0.08 }}
           >
             {line}
           </motion.span>
         </span>
       ))}
     </Tag>
-  );
-}
-
-/** Pulls its child gently toward the pointer. Primary CTAs only. */
-export function Magnetic({ children, strength = 0.25, className }: { children: ReactNode; strength?: number; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
-  const x = useSpring(useMotionValue(0), { stiffness: 220, damping: 18, mass: 0.4 });
-  const y = useSpring(useMotionValue(0), { stiffness: 220, damping: 18, mass: 0.4 });
-  return (
-    <motion.div
-      ref={ref}
-      className={cn('inline-flex', className)}
-      style={{ x, y }}
-      onPointerMove={(e) => {
-        if (reduce || e.pointerType !== 'mouse' || !ref.current) return;
-        const r = ref.current.getBoundingClientRect();
-        x.set((e.clientX - (r.left + r.width / 2)) * strength);
-        y.set((e.clientY - (r.top + r.height / 2)) * strength);
-      }}
-      onPointerLeave={() => {
-        x.set(0);
-        y.set(0);
-      }}
-    >
-      {children}
-    </motion.div>
   );
 }
 

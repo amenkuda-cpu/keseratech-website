@@ -17,9 +17,7 @@ fs.mkdirSync(OUT, { recursive: true });
 // id: Mixkit clip id · src: original file · start/length: seconds to keep · lift: brighten dark footage
 export const CLIPS = [
   { id: 'builder', mixkit: 23228, src: 'https://assets.mixkit.co/videos/23228/23228-720.mp4', start: 0.4, length: 6.8 },
-  { id: 'robot-arm', mixkit: 47258, src: 'https://assets.mixkit.co/videos/47258/47258-720.mp4', start: 7, length: 7 },
   { id: 'wind-engineer', mixkit: 24129, src: 'https://assets.mixkit.co/videos/24129/24129-720.mp4', start: 1, length: 7 },
-  { id: 'robot-planting', mixkit: 47260, src: 'https://assets.mixkit.co/videos/47260/47260-720.mp4', start: 6, length: 7 },
 ];
 
 const UA = { 'User-Agent': 'Mozilla/5.0 (KeseraSite)' };

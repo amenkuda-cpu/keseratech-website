@@ -22,7 +22,7 @@ export function FutureBoard({ projects, index = '04' }: { projects: Project[]; i
         <div className="grid gap-10 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">
             <Label index={index}>Innovation pipeline</Label>
-            <MaskLines id="future-title" as="h2" className="t-display-l mt-10" lines={['More is', 'coming.']} />
+            <MaskLines id="future-title" as="h2" className="t-display-l mt-10" lines={['Next on', 'our list.']} />
           </div>
           <p className="t-body text-dim md:col-span-4 md:col-start-9">
             Every Kesera project, where it really stands. New work appears here as it moves from research into development and out into the world.

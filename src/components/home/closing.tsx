@@ -1,29 +1,23 @@
 import { Cta, HorizonLine } from '@/components/system/primitives';
-import { Magnetic, MaskLines, Reveal } from '@/components/system/motion';
+import { MaskLines, Reveal } from '@/components/system/motion';
+import { COMPANY } from '@/content/site';
 
 export function Closing() {
   return (
-    <section aria-labelledby="closing-title" className="relative overflow-hidden border-t border-hair pt-[var(--section)]">
-      <div className="shell text-center">
-        <p className="t-label text-dim">Kesera</p>
-        <MaskLines
-          id="closing-title"
-          as="h2"
-          className="t-display-xl mx-auto mt-10 text-[clamp(2.6rem,9vw,9rem)]"
-          lines={['Build.', 'Develop.', 'Scale.']}
-        />
-        <Reveal>
-          <p className="t-lead mx-auto mt-10 max-w-md text-dim">Technology for what comes next.</p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Magnetic>
-              <Cta href="/start">Start a project</Cta>
-            </Magnetic>
-            <Cta href="/projects" variant="ghost">Explore our technology</Cta>
+    <section aria-labelledby="closing-title" className="relative border-t border-hair py-[var(--section)]">
+      <div className="shell grid gap-10 lg:grid-cols-12">
+        <div className="lg:col-span-7">
+          <MaskLines id="closing-title" as="h2" className="t-display-xl" lines={['Got something', <em key="m">in mind?</em>]} />
+        </div>
+        <Reveal className="lg:col-span-4 lg:col-start-9 lg:self-end">
+          <p className="t-lead text-white/80">Tell us about it. We’ll be honest about whether we can help, how long it would take and what it would cost.</p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+            <Cta href="/start">Start a project</Cta>
+            <Cta href={COMPANY.whatsappHref} variant="ghost" external>WhatsApp us</Cta>
           </div>
         </Reveal>
       </div>
-      <div aria-hidden className="pointer-events-none mx-auto mt-[calc(var(--section)*0.8)] h-40 w-full max-w-5xl bg-[radial-gradient(50%_100%_at_50%_100%,rgb(26_134_250/0.22),transparent)]" />
-      <HorizonLine />
+      <HorizonLine className="mt-[var(--section)]" />
     </section>
   );
 }

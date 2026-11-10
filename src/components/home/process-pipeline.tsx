@@ -14,7 +14,7 @@ export function ProcessPipeline({ markers, index = '09', more = false }: { marke
         <div className="grid gap-10 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">
             <Label index={index}>Innovation pipeline</Label>
-            <MaskLines id="process-title" as="h2" className="t-display-l mt-10" lines={['From idea', 'to scale.']} />
+            <MaskLines id="process-title" as="h2" className="t-display-l mt-10" lines={['How an idea', <em key="r">becomes real.</em>]} />
           </div>
           <p className="t-body text-dim md:col-span-4 md:col-start-9">
             Every Kesera product, and every client project, moves through the same stages. Nothing skips testing, and nothing is called finished before it is deployed and supported.

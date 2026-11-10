@@ -74,5 +74,9 @@
   "front-desk-call": {
     "width": 1280,
     "height": 720
+  },
+  "team-laptop": {
+    "width": 1280,
+    "height": 720
   }
 }

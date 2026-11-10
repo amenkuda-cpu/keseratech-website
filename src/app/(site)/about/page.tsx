@@ -5,6 +5,9 @@ import { listProjects } from '@/lib/db';
 import { Cta, Dot, Label } from '@/components/system/primitives';
 import { MaskLines, Reveal } from '@/components/system/motion';
 import { ProcessPipeline } from '@/components/home/process-pipeline';
+import { SHOW_PLACEHOLDERS, visibleTeam } from '@/content/people';
+import { PersonFrame, PlaceholderTag } from '@/components/site/people';
+import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: { absolute: 'About Kesera Technologies | Zimbabwe Tech Company' },
@@ -27,12 +30,13 @@ export default async function AboutPage() {
       return acc;
     }, {}),
   ).map(([stage, names]) => ({ stage, names }));
+  const team = visibleTeam();
 
   return (
     <>
       <section className="shell pb-20 pt-[calc(68px+3.5rem)] md:pb-28 md:pt-[calc(68px+6rem)]" aria-labelledby="about-title">
         <Label>About Kesera</Label>
-        <MaskLines id="about-title" as="h1" immediate className="t-display-xl mt-8 text-[clamp(2.4rem,7.2vw,7.4rem)]" lines={['We build for', 'the world ahead.']} />
+        <MaskLines id="about-title" as="h1" immediate className="t-display-xl mt-8 text-[clamp(2.4rem,7.2vw,7.4rem)]" lines={['Who we are,', <em key="w">and why.</em>]} />
         <div className="mt-12 grid gap-8 md:grid-cols-12">
           <p className="t-lead text-white md:col-span-6">
             {COMPANY.legal} is a technology and engineering company developing practical solutions across software, artificial intelligence, agriculture, energy and smart living, and building sustainable homes from recycled, reused and upcycled materials.
@@ -42,6 +46,33 @@ export default async function AboutPage() {
           </p>
         </div>
       </section>
+
+      {team.length > 0 && (
+        <section className="section border-t border-hair" aria-labelledby="team-title">
+          <div className="shell">
+            <Label>The people</Label>
+            <h2 id="team-title" className="t-display-m mt-8 max-w-[18ch]">The people who’ll actually <em>work on your project.</em></h2>
+            {/* Staggered, uneven grid: the first photo larger, the rest stepping down */}
+            <ul className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-12 md:gap-x-6">
+              {team.map((m, i) => (
+                <Reveal
+                  key={i}
+                  as="li"
+                  delay={i * 0.06}
+                  className={cn(i === 0 ? 'col-span-2 md:col-span-5' : 'md:col-span-3', i === 1 && 'md:mt-24', i === 2 && 'md:mt-8', i === 3 && 'md:col-start-7 md:-mt-40')}
+                >
+                  <PersonFrame photo={m.photo} label={`Photo of ${m.name}`} className={i === 0 ? 'aspect-[4/5]' : 'aspect-[3/4]'} sizes="(min-width: 768px) 30vw, 50vw" />
+                  <p className="mt-4 text-white">
+                    {m.name}
+                    <PlaceholderTag show={SHOW_PLACEHOLDERS && m.placeholder} />
+                  </p>
+                  <p className="t-label mt-1 text-faint">{m.role}</p>
+                </Reveal>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       <section className="border-t border-hair" aria-label="What we do">
         <ul className="shell grid md:grid-cols-2 lg:grid-cols-4">

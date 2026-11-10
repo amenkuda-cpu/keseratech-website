@@ -194,5 +194,18 @@
     "credit": "Mike Sangma",
     "creditUrl": "https://www.pexels.com/@mike-sangma-1611592/",
     "alt": "A smiling receptionist wearing a headset talks with a caller"
+  },
+  {
+    "id": "team-laptop",
+    "kind": "video",
+    "pexelsId": 7989443,
+    "source": "https://www.pexels.com/video/men-working-using-laptop-7989443/",
+    "credit": "Mikhail Nilov",
+    "creditUrl": "https://www.pexels.com/@mikhail-nilov/",
+    "alt": "Three colleagues around a laptop, one typing while the others read along",
+    "focus": "50% 50%",
+    "file": "https://videos.pexels.com/video-files/7989443/7989443-hd_1920_1080_25fps.mp4",
+    "start": 0,
+    "length": 10
   }
 ]

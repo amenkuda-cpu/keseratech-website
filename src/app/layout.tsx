@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from 'next';
-import { Archivo, IBM_Plex_Mono } from 'next/font/google';
+import { Archivo, Fraunces, IBM_Plex_Mono } from 'next/font/google';
 import { COMPANY } from '@/content/site';
 import './globals.css';
 
-// Archivo with its width axis: expanded for display type (echoing the wordmark), normal for text.
+// Fraunces (a soft, characterful serif) for headings; Archivo for body text; Plex Mono for small labels.
+const fraunces = Fraunces({ subsets: ['latin'], axes: ['SOFT', 'opsz'], style: ['normal', 'italic'], variable: '--font-fraunces', display: 'swap' });
 const archivo = Archivo({ subsets: ['latin'], axes: ['wdth'], variable: '--font-archivo', display: 'swap' });
 const plexMono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-plex-mono', display: 'swap' });
 
@@ -20,13 +21,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#05060b',
+  themeColor: '#100e0c',
   colorScheme: 'dark',
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="en" className={`${archivo.variable} ${plexMono.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${archivo.variable} ${plexMono.variable}`}>
       <body className="min-h-dvh">{children}</body>
     </html>
   );

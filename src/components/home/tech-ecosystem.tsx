@@ -21,7 +21,7 @@ export function TechEcosystem({ index = '06' }: { index?: string }) {
         <div className="grid gap-10 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8">
             <Label index={index}>Technology ecosystem</Label>
-            <MaskLines id="eco-title" as="h2" className="t-display-l mt-10" lines={['Leave the screen.', 'Solve real problems.']} />
+            <MaskLines id="eco-title" as="h2" className="t-display-l mt-10" lines={['The problems', <em key="p">we care about.</em>]} />
           </div>
           <p className="t-body text-dim md:col-span-4">
             Technology should leave the screen. Every capability at Kesera exists to change something physical: water, roads, power, buildings, waste and the working day.

@@ -25,7 +25,7 @@ export function Dot({ color = 'var(--color-signal)', size = 8, glow = false, cla
     <span
       aria-hidden
       className={cn('inline-block shrink-0 rounded-full', className)}
-      style={{ width: size, height: size, background: color, boxShadow: glow ? `0 0 0 4px color-mix(in srgb, ${color} 18%, transparent), 0 0 18px ${color}` : undefined }}
+      style={{ width: size, height: size, background: color, boxShadow: glow ? `0 0 0 4px color-mix(in srgb, ${color} 18%, transparent)` : undefined }}
     />
   );
 }
@@ -65,7 +65,7 @@ type CtaProps = {
 } & Omit<ComponentProps<typeof Link>, 'href' | 'className' | 'children' | 'style'>;
 
 const ctaBase =
-  'group/cta relative inline-flex min-h-12 items-center justify-between gap-6 rounded-[4px] px-5 text-[0.8rem] font-semibold uppercase tracking-[0.06em] transition-[background-color,border-color,color] duration-300 [font-variation-settings:"wdth"_112] focus-visible:outline-2';
+  'group/cta relative inline-flex min-h-12 items-center justify-between gap-6 rounded-[4px] px-5 text-[0.95rem] font-semibold transition-[background-color,border-color,color] duration-300 focus-visible:outline-2';
 
 const ctaVariants = {
   primary: 'bg-signal text-white hover:bg-[#3a98ff]',

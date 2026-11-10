@@ -20,7 +20,7 @@ export function DivisionsIndex() {
         <div className="grid gap-10 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8">
             <Label index="02">Divisions</Label>
-            <MaskLines as="h2" className="t-display-l mt-10" lines={['Different industries.', 'One vision.']} />
+            <MaskLines as="h2" className="t-display-l mt-10" lines={['Six things', <em key="s">we work on.</em>]} />
           </div>
           <p className="t-body text-dim md:col-span-4">
             Six specialised divisions, one engineering culture. Each one builds for its own industry; all of them share the same people, standards and technology.

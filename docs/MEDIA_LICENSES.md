@@ -38,9 +38,14 @@ These are illustrative stock images, not photographs of Kesera's own projects, s
 | `irrigation-sprinklers.mp4` + `.webp` | /agrisera "Smart irrigation" · /projects/smart-irrigation | Animated irrigation schematic | Amar Preciado | [pexels.com/video/8166769](https://www.pexels.com/video/watering-a-farm-8166769/) |
 | `ev-charging.mp4` + `.webp` | /sera-energy "Smart EV charging" · /projects/smart-ev-charging | Animated EV-charging schematic | Gustavo Fring | [pexels.com/video/4817951](https://www.pexels.com/video/charging-an-electric-car-4817951/) |
 | `front-desk-call.mp4` + `.webp` | Home: Sera Front Desk · /sera-front-desk "How a call is handled" | Animated call console and step-rail flowchart | Mike Sangma | [pexels.com/video/3986119](https://www.pexels.com/video/smiling-woman-working-at-a-call-center-3986119/) |
+| `team-laptop.mp4` + `.webp` | Home hero background (first clip and poster) | Robot-arm and robot-planting hero clips (Mixkit) | Mikhail Nilov | [pexels.com/video/7989443](https://www.pexels.com/video/men-working-using-laptop-7989443/) |
 
 ## Unchanged
 
 The Sera Home reference photos in `public/photos/` (Wikimedia Commons, CC BY / CC BY-SA) are listed in
 `src/content/photo-sources.json`. Their licences require a visible credit, which the site shows wherever they appear.
-The home page hero videos in `public/showcase/` are from Mixkit (see `scripts/showcase-media.mjs`).
+The other two home page hero clips (`public/showcase/builder` and `wind-engineer`) are from Mixkit, under the Mixkit Stock Video Free License (see `scripts/showcase-media.mjs`).
+
+## Portfolio recordings
+
+`public/work/` holds screen recordings of client websites built by Kesera (Naturo Wellness, Waterberry Croft, Rebrim Investments), recorded by us. No stock licence applies.

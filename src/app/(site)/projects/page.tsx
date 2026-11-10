@@ -24,7 +24,7 @@ export default async function ProjectsPage() {
     <>
       <section className="shell pb-16 pt-[calc(68px+3.5rem)] md:pt-[calc(68px+6rem)]" aria-labelledby="ventures-title">
         <Label>Kesera Ventures</Label>
-        <MaskLines id="ventures-title" as="h1" immediate className="t-display-xl mt-8 text-[clamp(2.8rem,8vw,8rem)]" lines={['Built here.', 'Born here.']} />
+        <MaskLines id="ventures-title" as="h1" immediate className="t-display-xl mt-8 text-[clamp(2.8rem,8vw,8rem)]" lines={['Things we’re', <em key="b">building.</em>]} />
         <p className="t-lead mt-10 max-w-2xl text-dim">
           Products Kesera designs, engineers and will operate itself, developed in Zimbabwe for real conditions here and beyond. These are our own ventures, not client work.
         </p>
@@ -78,7 +78,7 @@ export default async function ProjectsPage() {
       <section aria-labelledby="clients-title" className="section border-t border-hair">
         <div className="shell">
           <Label index="03">Client projects</Label>
-          <MaskLines id="clients-title" as="h2" className="t-display-l mt-10" lines={['Built for', 'our clients.']} />
+          <MaskLines id="clients-title" as="h2" className="t-display-l mt-10" lines={['Work we’ve done', 'for clients.']} />
           {clients.length > 0 ? (
             <ul className="mt-16 grid gap-4 md:grid-cols-2">
               {clients.map((p) => {

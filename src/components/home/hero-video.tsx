@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from '@/components/system/reduced-motion';
-import { SHOWCASE, showcaseSrc } from '@/content/showcase';
+import { SHOWCASE } from '@/content/showcase';
 import { cn } from '@/lib/utils';
 
 // Background video for the hero: the clips play one after another and crossfade into each other.
@@ -86,7 +86,7 @@ export function HeroVideo({ className }: { className?: string }) {
   return (
     <div ref={root} aria-hidden className={cn('absolute inset-0 overflow-hidden bg-void', className)}>
       {SHOWCASE.map((s, i) => {
-        const { video, poster } = showcaseSrc(s.id);
+        const { video, poster } = s;
         const isNext = i === (active + 1) % SHOWCASE.length;
         const load = pageLoaded && !reduce && (i === active || (isNext && warmNext));
         if (load) loaded.current.add(i);

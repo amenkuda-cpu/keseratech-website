@@ -64,7 +64,7 @@ export const DIVISIONS: Division[] = [
     accent: 'var(--color-agri)',
     discipline: 'Agriculture',
     short: 'Agricultural engineering: smart irrigation, sensing and automation for farms.',
-    headline: 'Engineering the future of agriculture.',
+    headline: 'Less water. Better crops.',
     intro:
       'AgriSera applies sensors, data and automation to farming problems, starting with water. Its first project is smart irrigation that delivers water where and when crops need it.',
     focus: ['Smart irrigation', 'Water-saving technology', 'Agricultural automation', 'Crop monitoring', 'Agricultural robotics', 'Crop disease detection'],
@@ -75,7 +75,7 @@ export const DIVISIONS: Division[] = [
     accent: 'var(--color-energy)',
     discipline: 'Energy & mobility',
     short: 'Energy technology and the charging infrastructure electric mobility needs.',
-    headline: 'Powering what moves next.',
+    headline: 'Somewhere to charge your EV.',
     intro:
       'Sera Energy is working toward smart EV charging infrastructure for Zimbabwe: connected chargers, energy management and the software that ties them together.',
     focus: ['EV charging infrastructure', 'Smart EV charging', 'Energy management', 'Connected charging', 'Future mobility'],
@@ -106,7 +106,7 @@ export const DIVISIONS: Division[] = [
     accent: 'var(--color-assist)',
     discipline: 'Artificial intelligence',
     short: 'AI assistants that answer, act and hand over to people when it matters.',
-    headline: 'Intelligence that works.',
+    headline: 'Assistants that actually help.',
     intro:
       'Sera Assistants builds AI assistants and automated workflows for businesses: answering customers, qualifying enquiries and taking routine work off people’s desks.',
     focus: ['AI assistants', 'Business automation', 'Intelligent workflows', 'AI customer interaction', 'Multilingual assistants'],
@@ -117,7 +117,7 @@ export const DIVISIONS: Division[] = [
     accent: 'var(--color-desk)',
     discipline: 'AI reception',
     short: 'An AI receptionist that answers calls, books appointments and updates your systems.',
-    headline: 'Your business. Always answered.',
+    headline: 'Never miss a call again.',
     intro:
       'Sera Front Desk answers the phone for your business: it understands what callers need, books, reschedules or cancels appointments, captures their details and logs every conversation.',
     focus: ['Answering calls', 'Booking appointments', 'Rescheduling', 'Cancelling appointments', 'Capturing customer information', 'Updating business systems'],

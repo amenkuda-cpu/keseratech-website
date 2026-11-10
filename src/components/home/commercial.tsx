@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { SERVICES } from '@/content/site';
 import { formatUsd, type Plan } from '@/lib/pricing';
 import { Label } from '@/components/system/primitives';
-import { Magnetic, MaskLines, Reveal } from '@/components/system/motion';
+import { MaskLines, Reveal } from '@/components/system/motion';
 import { PlanTable } from '@/components/commercial/plan-table';
 
 // The commercial chapter: the page turns to paper. Sera Tech's services and website prices.
@@ -19,15 +19,15 @@ export function Commercial({ websitePlans, appFromCents, index = '05' }: { websi
           </div>
           <Reveal className="md:col-span-4">
             <p className="t-lead">Sera Tech turns ideas into websites, applications and software systems.</p>
-            <Magnetic className="mt-8">
+            <div className="mt-8">
               <Link
                 href="/start"
-                className="group/cta inline-flex min-h-12 items-center gap-6 rounded-[4px] bg-ink px-5 text-[0.8rem] font-semibold uppercase tracking-[0.06em] text-white transition-colors hover:bg-[#16213b] [font-variation-settings:'wdth'_112]"
+                className="group/cta inline-flex min-h-12 items-center gap-6 rounded-[4px] bg-ink px-5 text-[0.95rem] font-semibold text-white transition-colors hover:bg-[#16213b]"
               >
                 Start a project
                 <ArrowRight aria-hidden className="size-4 transition-transform group-hover/cta:translate-x-1" />
               </Link>
-            </Magnetic>
+            </div>
           </Reveal>
         </div>
 

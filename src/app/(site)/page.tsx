@@ -8,6 +8,8 @@ import { AssistantsDemo } from '@/components/home/assistants-demo';
 import { FrontDeskFlow } from '@/components/home/front-desk-flow';
 import { ProcessPipeline } from '@/components/home/process-pipeline';
 import { Closing } from '@/components/home/closing';
+import { ClientQuotes } from '@/components/home/client-quotes';
+import { PhotoBand } from '@/components/home/photo-band';
 import { getPlans, listProjects } from '@/lib/db';
 import type { Metadata } from 'next';
 import { STATUS_STAGE } from '@/content/site';
@@ -34,12 +36,14 @@ export default async function HomePage() {
       <Hero projectsInDevelopment={ventures.filter((p) => p.status === 'IN_DEVELOPMENT').length} />
       <Intro />
       <DivisionsIndex />
+      <PhotoBand id="solar-technicians" line="We’d rather build something small that people use than something big that nobody does." />
       <VenturesShowcase projects={featured} />
       <Commercial
         index="04"
         websitePlans={plans.filter((p) => p.group === 'website')}
         appFromCents={appPlans.length ? Math.min(...appPlans.map((p) => p.priceCents)) : null}
       />
+      <ClientQuotes />
       <TechEcosystem index="05" />
       <AssistantsDemo index="06" />
       <FrontDeskFlow index="07" />

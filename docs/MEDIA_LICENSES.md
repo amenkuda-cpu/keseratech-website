@@ -59,4 +59,4 @@ The other two home page hero clips (`public/showcase/builder` and `wind-engineer
 
 ## Scroll scene clips
 
-`public/scenes/` (robotic arm, crane, sprinkler) are AI-generated clips supplied by Kesera (made in CapCut, November 2026). Re-encode them for scroll scrubbing with `node scripts/encode-scenes.mjs` from originals kept in `.cache/scenes/` (not committed); the encode crops off the "AI 生成" corner label.
+`public/scenes/` (robotic arm, crane) are AI-generated clips supplied by Kesera (made in CapCut, November 2026). Re-encode them for scroll scrubbing with `node scripts/encode-scenes.mjs` from originals kept in `.cache/scenes/` (not committed); the encode crops off the "AI 生成" corner label.

@@ -258,11 +258,11 @@
      follows with margin-top: -100svh, so it starts rising over the stage exactly when phase 1
      ends and covers it as the stage is released. --pull-p1 must match SCENES.pull.phase1. */
   .pull-track {
-    --pull-p1: 60svh;
+    --pull-p1: 120svh;
     height: calc(200svh + var(--pull-p1));
   }
   @media (min-width: 768px) {
-    .pull-track { --pull-p1: 120svh; }
+    .pull-track { --pull-p1: 200svh; }
   }
   .pull-stage {
     position: sticky;

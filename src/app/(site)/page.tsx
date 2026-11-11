@@ -13,7 +13,6 @@ import { PhotoBand } from '@/components/home/photo-band';
 import { AmeyAi } from '@/components/home/amey-ai';
 import { EvChargeScene } from '@/components/home/ev-charge-scene';
 import { PullTransition } from '@/components/scenes/pull-transition';
-import { SprinklerFinale } from '@/components/scenes/sprinkler-finale';
 import { getPlans, listProjects } from '@/lib/db';
 import type { Metadata } from 'next';
 import { STATUS_STAGE } from '@/content/site';
@@ -38,7 +37,7 @@ export default async function HomePage() {
       <OrganizationJsonLd />
       <Hero projectsInDevelopment={ventures.filter((p) => p.status === 'IN_DEVELOPMENT').length} />
       <Intro />
-      {/* Scroll scenes: robotic arm -> divisions, crane -> Sera Tech, EV -> process, sprinkler -> closing.
+      {/* Scroll scenes: robotic arm -> divisions, crane -> Sera Tech, EV -> process.
           Always at least two sections apart; timing in src/animations/scroll-scenes.ts. */}
       <PullTransition clip="robotic-arm" nextClassName="bg-void" label="A robotic arm assembles itself and lifts the next section into view.">
         <DivisionsIndex />
@@ -55,9 +54,7 @@ export default async function HomePage() {
       <EvChargeScene />
       <ProcessPipeline markers={markers} index="08" more />
       <AmeyAi />
-      <SprinklerFinale>
-        <Closing />
-      </SprinklerFinale>
+      <Closing />
     </>
   );
 }

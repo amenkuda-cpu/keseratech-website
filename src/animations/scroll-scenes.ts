@@ -3,7 +3,6 @@
 //   pullScene()    robotic arm and crane: the clip scrubs with the scroll, then the next section
 //                  rises over it as if the arm / hook were lifting it into view
 //   evChargeScene() EV charging: the clip scrubs while a charger screen fills to 100 %
-//   sprinklerScene() finale: a full-screen splash washes in the closing call to action
 //
 // Layout is plain CSS (sticky stages inside tall "tracks", see the scene components), so the page
 // has no layout shift, works without JavaScript and never jumps when a pin starts. GSAP only
@@ -29,18 +28,29 @@ const EASE_OUT = 'power2.out';
 /** All tunable values in one place. Distances are in viewport heights (1 = 100svh). */
 export const SCENES = {
   pull: {
-    /** Scroll length of phase 1 (clip plays, nothing covers it), desktop / phone. Phase 2 is always 1 screen. */
-    phase1: { desktop: 1.2, mobile: 0.6 },
-    /** ScrollTrigger scrub smoothing in seconds (true = instant). */
-    scrub: 1,
+    /**
+     * Scroll length of phase 1 (the clip builds up to the grip, nothing covers it), desktop / phone.
+     * Phase 2 (the lift) is always 1 screen. Must match --pull-p1 in globals.css.
+     */
+    phase1: { desktop: 2, mobile: 1.2 },
+    /**
+     * The clip reaches the grip this far into phase 1, then holds on it briefly, so the grip has
+     * always happened before the next section starts to rise.
+     */
+    gripLead: 0.85,
+    /**
+     * ScrollTrigger scrub smoothing in seconds. Kept short: the next section moves exactly with
+     * the scroll, so a long smoothing lets it arrive before the video has caught up.
+     */
+    scrub: 0.25,
     /** How far the video layer drifts up (yPercent) while the next section lifts in, and where it fades to. */
     videoRise: -22,
     videoFadeTo: 0.25,
     // The next section is not scaled while it lifts: scaling a whole tall section made the browser
     // redraw it every frame. It rises with the scroll itself, which costs nothing.
   },
-  /** Fraction of each clip where the grip happens: phase 1 plays up to here, phase 2 plays the rest. */
-  gripAt: { 'robotic-arm': 0.74, crane: 0.72 },
+  /** Fraction of each clip where the grip has happened: phase 1 plays up to here, phase 2 plays the rest. */
+  gripAt: { 'robotic-arm': 0.8, crane: 0.72 },
   ev: {
     // How long the EV stage is held (2.6 screens desktop, 1.8 phone) is the .ev-track height in globals.css.
     scrub: 0.6,
@@ -48,18 +58,6 @@ export const SCENES = {
     plugEnd: 0.5,
     screenIn: 0.42,
     chargeStart: 0.56,
-  },
-  sprinkler: {
-    scrub: 0.8,
-    /** The splash ends when the closing section's top reaches this point of the viewport. */
-    endAt: '25%',
-    /** The splash starts when the closing section's top reaches this point (so the section above stays readable). */
-    startAt: '85%',
-    /** Timeline split (0-1): overlay fades in by `fadeIn`, content wipes in `revealStart`-`revealEnd`, overlay fades out from `fadeOut`. */
-    fadeIn: 0.2,
-    revealStart: 0.45,
-    revealEnd: 0.9,
-    fadeOut: 0.78,
   },
 };
 
@@ -234,8 +232,9 @@ export function pullScene(root: HTMLElement, clip: keyof typeof SCENES.gripAt): 
             onToggle: (self) => willChangeWhileActive([layer])(self.isActive),
           },
         });
-        // Phase 1: assembly / drop-in, up to the grip
-        tl.add(scrub(head.state, 0, grip, split), 0);
+        // Phase 1: assembly / drop-in. The clip reaches the grip a little before phase 1 ends and
+        // holds there, so the grip has happened before the next section starts to rise.
+        tl.add(scrub(head.state, 0, grip, split * SCENES.pull.gripLead), 0);
         // Phase 2: the pull. The next section rises with the scroll (layout, no transform); the
         // video layer drifts up with it and fades, so the lift reads as one motion.
         tl.add(scrub(head.state, grip, 1, 1 - split), split);
@@ -310,61 +309,6 @@ export function evChargeScene(root: HTMLElement, { track, video, render }: EvRef
         tl.fromTo(charge, { pct: 0 }, { pct: 100, duration: 1 - chargeStart - 0.02, immediateRender: false }, chargeStart);
         tl.to(q('[data-ev=glow]'), { scale: 1.35, duration: 1 - chargeStart }, chargeStart);
         tl.fromTo(q('[data-ev=outro]'), { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.08 }, 0.9);
-        return tl;
-      }),
-    );
-    return () => {
-      stopLoading();
-      stops.forEach((stop) => stop());
-    };
-  });
-
-  return () => mm.revert();
-}
-
-// ---------------------------------------------------------------------------
-// Sprinkler finale
-
-/**
- * Expected markup (see components/scenes/sprinkler-finale.tsx):
- *   [data-sprinkler]            wrapper around the closing section
- *     [data-sprinkler-overlay]  position: fixed, full viewport, pointer-events: none, hidden
- *       video
- *     [data-sprinkler-content]  the closing section, revealed with a clip-path wipe
- */
-export function sprinklerScene(root: HTMLElement): Cleanup {
-  const overlay = root.querySelector<HTMLElement>('[data-sprinkler-overlay]')!;
-  const video = overlay.querySelector('video')!;
-  const content = root.querySelector<HTMLElement>('[data-sprinkler-content]')!;
-  const { fadeIn, revealStart, revealEnd, fadeOut } = SCENES.sprinkler;
-  const mm = gsap.matchMedia();
-
-  mm.add({ motion: MOTION, mobile: MOBILE }, (ctx) => {
-    if (!ctx.conditions?.motion) return;
-    const stops: Cleanup[] = [];
-    const stopLoading = loadWhenNear(video, root, !!ctx.conditions.mobile, () =>
-      buildIn(ctx, () => {
-        const head = playhead(video);
-        stops.push(head.stop);
-        const tl = gsap.timeline({
-          defaults: { ease: 'none' },
-          scrollTrigger: {
-            trigger: content,
-            // From the moment the closing section peeks in until its top is `endAt` down the
-            // viewport, so the splash has always finished by the time the call to action is in
-            // view. clamp() keeps both points reachable however short the page below is.
-            start: `clamp(top ${SCENES.sprinkler.startAt})`,
-            end: `clamp(top ${SCENES.sprinkler.endAt})`,
-            scrub: SCENES.sprinkler.scrub,
-            invalidateOnRefresh: true,
-            markers: markers(),
-            onToggle: (self) => willChangeWhileActive([overlay, content], 'opacity, clip-path')(self.isActive),
-          },
-        });
-        tl.fromTo(overlay, { autoAlpha: 0 }, { autoAlpha: 1, duration: fadeIn }, 0);
-        tl.add(scrub(head.state, 0, 1, fadeOut + 0.1), 0);
-        tl.fromTo(content, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: revealEnd - revealStart, ease: 'power1.inOut' }, revealStart);
-        tl.to(overlay, { autoAlpha: 0, duration: 1 - fadeOut }, fadeOut);
         return tl;
       }),
     );

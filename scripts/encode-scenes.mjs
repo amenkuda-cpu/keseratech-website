@@ -1,4 +1,4 @@
-// Encodes the scroll-scene clips (robotic arm, crane, sprinkler) for scroll scrubbing.
+// Encodes the scroll-scene clips (robotic arm, crane) for scroll scrubbing.
 //
 // Sources: .cache/scenes/<id>.mov (or .mp4), and optionally .cache/scenes/<id>-mobile.mov for a
 // purpose-made 9:16 version. Without one, the phone version is a centre crop of the main clip.
@@ -10,7 +10,7 @@
 // stop above it.
 //
 // Outputs, per clip, in public/scenes/:
-//   <id>.mp4 + <id>.webm             1280x720 (sprinkler 960x540), desktop
+//   <id>.mp4 + <id>.webm             1280x720, desktop
 //   <id>-mobile.mp4 + -mobile.webm   540x960, phones under 768 px
 //   <id>.webp + <id>-mobile.webp     posters (first frame)
 //
@@ -25,14 +25,14 @@ const SRC = path.join(root, '.cache', 'scenes');
 const OUT = path.join(root, 'public', 'scenes');
 fs.mkdirSync(OUT, { recursive: true });
 
-const IDS = ['robotic-arm', 'crane', 'sprinkler'];
+const IDS = ['robotic-arm', 'crane'];
 const only = process.argv.slice(2);
 const find = (name) => ['.mov', '.mp4', '.webm'].map((e) => path.join(SRC, name + e)).find((f) => fs.existsSync(f));
 
 // Desktop: 88 % crop, 0.5 % in from the left and 4.5 % down, so the right 11 % and bottom 7.5 % fall away.
 const DESKTOP = (w, h) => `crop=trunc(iw*0.88/2)*2:trunc(ih*0.88/2)*2:trunc(iw*0.005):trunc(ih*0.045),scale=${w}:${h}:flags=lanczos`;
-// The sprinkler source is only 832x464, so it is not upscaled past 960x540.
-const SIZE = { sprinkler: [960, 540] };
+/** Per-clip output size, for sources smaller than 1280x720. */
+const SIZE = {};
 // Phone from a landscape clip: full width of a 9:16 window, centred, top 92 % of the height.
 const PHONE_FROM_WIDE = 'crop=trunc(ih*0.92*9/16/2)*2:trunc(ih*0.92/2)*2:(iw-ih*0.92*9/16)/2:0,scale=540:960:flags=lanczos';
 const PHONE_FROM_TALL = 'scale=540:960:force_original_aspect_ratio=increase:flags=lanczos,crop=540:960';

@@ -1,7 +1,7 @@
 'use client';
 
 import { Cta } from '@/components/system/primitives';
-import { MaskLines } from '@/components/system/motion';
+import { CountUp, MaskLines, Parallax } from '@/components/system/motion';
 import { HeroVideo } from './hero-video';
 
 export function Hero({ projectsInDevelopment }: { projectsInDevelopment: number }) {
@@ -13,8 +13,15 @@ export function Hero({ projectsInDevelopment }: { projectsInDevelopment: number 
 
   return (
     <section aria-label="Introduction" className="relative isolate overflow-hidden pt-[68px]">
-      {/* Full-width video of people at work. A plain dark wash keeps the headline readable. */}
-      <HeroVideo className="-z-20" />
+      {/* Full-width video of people at work, drifting slowly forward and moving slower than the page
+          as it scrolls (parallax). A plain dark wash keeps the headline readable. */}
+      <div aria-hidden className="absolute inset-x-0 -top-[8%] -z-20 h-[116%]">
+        <Parallax className="size-full" strength={140}>
+          <div className="relative size-full motion-safe:animate-[slow-zoom_14s_cubic-bezier(0.16,1,0.3,1)_both]">
+            <HeroVideo />
+          </div>
+        </Parallax>
+      </div>
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-black/55" />
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-b from-transparent to-void" />
 
@@ -47,8 +54,8 @@ export function Hero({ projectsInDevelopment }: { projectsInDevelopment: number 
         <div aria-hidden className="horizon" />
         <div className="shell">
           <dl className="t-label grid grid-cols-2 gap-y-3 py-5 text-faint md:flex md:gap-x-12">
-            <div><dt className="sr-only">Divisions</dt><dd><span className="text-white">6</span> divisions</dd></div>
-            <div><dt className="sr-only">Projects</dt><dd><span className="text-white">{projectsInDevelopment}</span> projects being built</dd></div>
+            <div><dt className="sr-only">Divisions</dt><dd><CountUp to={6} className="text-white" /> divisions</dd></div>
+            <div><dt className="sr-only">Projects</dt><dd><CountUp to={projectsInDevelopment} className="text-white" /> projects being built</dd></div>
             <div className="col-span-2 md:ml-auto"><dt className="sr-only">Based in</dt><dd>Based in Zimbabwe</dd></div>
           </dl>
         </div>

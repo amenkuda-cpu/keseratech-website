@@ -34,7 +34,7 @@ export function Intro() {
             ))}
           </div>
           <p className="mt-8 text-white">
-            <span className="font-display text-2xl italic">{FOUNDER.name}</span>
+            <span className="font-display text-2xl font-medium tracking-tight">{FOUNDER.name}</span>
             <span className="t-label ml-3 text-faint">{FOUNDER.role}</span>
           </p>
         </Reveal>

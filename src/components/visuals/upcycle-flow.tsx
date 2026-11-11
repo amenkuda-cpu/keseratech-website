@@ -5,9 +5,10 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useInView } from 'motion/react';
 import { useReducedMotion } from '@/components/system/reduced-motion';
 import { cn } from '@/lib/utils';
-import { photo, type Photo as PhotoData } from '@/content/photos';
+import { PHOTOS, photo, type Photo as PhotoData } from '@/content/photos';
 import { media, type Media } from '@/content/media';
 import { Photo } from './photo';
+import { MediaFrame } from './media';
 
 // Waste → transformation → in use, told in photographs: what the material looks like discarded,
 // the workshop step that changes it, and what the same material becomes.
@@ -34,12 +35,13 @@ const TRACKS: {
   {
     id: 'container',
     tab: 'Shipping container',
-    stageNotes: ['A retired steel shipping container.', 'Openings cut, frames welded, walls insulated.', 'A finished home, gym or office, ready to move into.'],
+    stageNotes: ['Retired steel shipping containers, sound but finished with shipping.', 'Openings cut, frames fitted, walls insulated and lined.', 'A finished home: glass, timber and light, ready to live in.'],
     steps: ['Source and inspect a sound container', 'Cut and frame doors, windows and vents', 'Insulate and line against the heat', 'Fit out power, water, lighting and solar', 'Place on foundations and connect'],
     becomes: ['Homes', 'Gyms', 'Offices', 'Shops', 'Studios', 'Site offices'],
-    before: 'containers-abandoned',
-    transform: 'welding-workshop',
-    after: ['container-stall-benin', 'container-flats-le-havre'],
+    // Container track: all Pexels stock (see `media`), from yard to conversion to a finished home
+    before: 'container-yard',
+    transform: 'container-build',
+    after: ['container-home', 'container-cabin-glass'],
   },
   {
     id: 'drum',
@@ -89,7 +91,10 @@ const refFrame = (p: PhotoData): Frame => ({
   ),
 });
 
-const stockFrame = (m: Media): Frame => ({ key: m.id, src: m.src, alt: m.alt, focus: m.focus, credit: <>Workshop photo: {m.credit}, Pexels</> });
+const stockFrame = (m: Media): Frame => ({ key: m.id, src: m.src, alt: m.alt, focus: m.focus, credit: <>Photo: {m.credit}, Pexels</> });
+
+/** A frame from either library: openly licensed reference photos first, then Pexels stock. */
+const frameFor = (id: string): Frame => (PHOTOS[id] ? refFrame(photo(id)) : stockFrame(media(id)));
 
 export function UpcycleFlow({ initialTrack = 'container' }: { initialTrack?: TrackId }) {
   const [trackId, setTrackId] = useState<TrackId>(initialTrack);
@@ -99,8 +104,10 @@ export function UpcycleFlow({ initialTrack = 'container' }: { initialTrack?: Tra
   const inView = useInView(ref, { margin: '-15% 0px' });
   const reduce = useReducedMotion();
   const track = TRACKS.find((t) => t.id === trackId)!;
-  const frames = [refFrame(photo(track.before)), stockFrame(media(track.transform)), refFrame(photo(track.after[0]))];
+  const frames = [frameFor(track.before), frameFor(track.transform), frameFor(track.after[0])];
   const frame = frames[stage]!;
+  // Homes are lived in; drums and other materials are in use.
+  const stageLabel = (i: number) => (track.id === 'container' && i === 2 ? 'Lived in' : STAGES[i]!.label);
 
   // Walk through the three stages while on screen, until someone takes control.
   useEffect(() => {
@@ -164,7 +171,7 @@ export function UpcycleFlow({ initialTrack = 'container' }: { initialTrack?: Tra
                   </motion.div>
                 </AnimatePresence>
                 <span className="t-label absolute left-3 top-3 rounded-sm bg-black/55 px-2 py-1 text-[0.62rem] text-white/90 backdrop-blur-md">
-                  0{stage + 1} {STAGES[stage]!.label}
+                  0{stage + 1} {stageLabel(stage)}
                 </span>
               </div>
               <figcaption className="t-label mt-2 min-h-8 text-[0.6rem] leading-relaxed text-white/45">{frame.credit}</figcaption>
@@ -186,7 +193,7 @@ export function UpcycleFlow({ initialTrack = 'container' }: { initialTrack?: Tra
                       <span className="block h-full origin-left rounded-full bg-home transition-transform duration-500" style={{ transform: `scaleX(${stage >= s.id ? 1 : 0})` }} />
                     </span>
                     <span className={cn('t-label mt-3 block', stage === s.id ? 'text-white' : 'text-white/40 group-hover/st:text-white/70')}>
-                      0{s.id + 1} {s.label}
+                      0{s.id + 1} {stageLabel(s.id)}
                     </span>
                     <span className={cn('mt-1.5 hidden text-sm leading-snug sm:block', stage === s.id ? 'text-dim' : 'text-white/25')}>
                       {track.stageNotes[s.id]}
@@ -202,7 +209,14 @@ export function UpcycleFlow({ initialTrack = 'container' }: { initialTrack?: Tra
             <p className="t-label mb-3 flex items-center gap-2 text-faint">
               <span className="size-1.5 rounded-full bg-home" aria-hidden /> Also built from it
             </p>
-            <Photo photo={photo(track.after[1])} aspect="4/3" sizes="(min-width: 1024px) 30vw, 100vw" />
+            {PHOTOS[track.after[1]] ? (
+              <Photo photo={photo(track.after[1])} aspect="4/3" sizes="(min-width: 1024px) 30vw, 100vw" />
+            ) : (
+              <figure>
+                <MediaFrame media={media(track.after[1])} aspect="4/3" className="zoom-frame" sizes="(min-width: 1024px) 30vw, 100vw" />
+                <figcaption className="t-label mt-2 text-[0.6rem] leading-relaxed text-white/45">Photo: {media(track.after[1]).credit}, Pexels</figcaption>
+              </figure>
+            )}
           </div>
 
           {/* Steps and outcomes */}

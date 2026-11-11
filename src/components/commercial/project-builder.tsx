@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { AnimatePresence, motion } from 'motion/react';
 import { useReducedMotion } from '@/components/system/reduced-motion';
 import { ArrowLeft, ArrowRight, Check, Loader2 } from 'lucide-react';
-import { estimate, estimateBreakdown, formatUsd, isEstimable, type EstimatorConfig, type Plan, type ServiceId } from '@/lib/pricing';
+import { PLAN_GROUP_INFO, estimate, estimateBreakdown, formatUsd, isEstimable, type EstimatorConfig, type Plan, type ServiceId } from '@/lib/pricing';
 import { Tween } from '@/components/system/motion';
 import { cn } from '@/lib/utils';
 import { COMPANY } from '@/content/site';
@@ -35,7 +35,7 @@ type Form = { name: string; company: string; email: string; phone: string; descr
 export function ProjectBuilder({ config, plans, prefill }: { config: EstimatorConfig; plans: Plan[]; prefill: BuilderPrefill }) {
   const reduce = useReducedMotion();
   const initialPlan = plans.find((p) => p.id === prefill.package);
-  const initialService = (initialPlan?.group ?? SERVICES.find((s) => s.id === prefill.service)?.id ?? null) as ServiceId | null;
+  const initialService = ((initialPlan ? PLAN_GROUP_INFO[initialPlan.group].service : null) ?? SERVICES.find((s) => s.id === prefill.service)?.id ?? null) as ServiceId | null;
 
   const [step, setStep] = useState(initialService ? 1 : 0);
   const [dir, setDir] = useState(1);
@@ -53,7 +53,7 @@ export function ProjectBuilder({ config, plans, prefill }: { config: EstimatorCo
   const top = useRef<HTMLDivElement>(null);
 
   const svc = service && isEstimable(service) ? config.services[service] : null;
-  const servicePlans = plans.filter((p) => p.group === service);
+  const servicePlans = plans.filter((p) => PLAN_GROUP_INFO[p.group].service === service);
   const plan = servicePlans.find((p) => p.id === pkg) ?? null;
   const types = service === 'unsure' ? UNSURE_TYPES.map((t) => ({ ...t, cents: 0 })) : svc?.types ?? [];
 
@@ -209,7 +209,10 @@ export function ProjectBuilder({ config, plans, prefill }: { config: EstimatorCo
                             <span className={radio(pkg === p.id)}>{pkg === p.id && <Check className="size-3" strokeWidth={3} />}</span>
                             <span className="flex flex-1 items-baseline justify-between gap-3">
                               <span className="font-medium">{p.name}</span>
-                              <span className="t-label text-ink/60">{p.from ? 'from ' : ''}{formatUsd(p.priceCents)}{p.plus ? '+' : ''}</span>
+                              <span className="t-label text-right text-ink/60">
+                                {p.from ? 'from ' : ''}{formatUsd(p.priceCents)}{p.plus ? '+' : ''}
+                                {p.monthlyCents ? ` + ${formatUsd(p.monthlyCents)}/mo` : ''}
+                              </span>
                             </span>
                           </button>
                         ))}

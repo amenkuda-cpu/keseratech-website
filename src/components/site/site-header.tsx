@@ -34,11 +34,13 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500',
-        solid ? 'border-b border-hair bg-void/95 backdrop-blur-sm' : 'border-b border-transparent',
+        'fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter,box-shadow] duration-500',
+        solid
+          ? 'border-b border-hair bg-void/80 shadow-[0_10px_40px_-20px_rgb(0_0_0/0.8)] backdrop-blur-xl backdrop-saturate-150'
+          : 'border-b border-transparent bg-gradient-to-b from-black/40 to-transparent',
       )}
     >
-      <div className="shell flex h-[68px] items-center justify-between gap-6">
+      <div className={cn('shell flex items-center justify-between gap-6 transition-[height] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]', scrolled ? 'h-[60px]' : 'h-[68px]')}>
         <Link href="/" aria-label="Kesera, home" className="-m-2 p-2">
           <Logo priority className="w-[104px] md:w-[118px]" />
         </Link>
@@ -50,12 +52,18 @@ export function SiteHeader() {
               href={item.href}
               aria-current={isActive(item.href) ? 'page' : undefined}
               className={cn(
-                'relative rounded-sm px-3.5 py-2 text-[0.84rem] tracking-[0.01em] text-dim transition-colors hover:text-white',
+                'group/nav relative rounded-sm px-3.5 py-2 text-[0.86rem] font-medium tracking-[0.005em] text-dim transition-colors hover:text-white',
                 isActive(item.href) && 'text-white',
               )}
             >
               {item.label}
-              {isActive(item.href) && <span aria-hidden className="absolute inset-x-3.5 -bottom-px h-px bg-signal" />}
+              <span
+                aria-hidden
+                className={cn(
+                  'absolute inset-x-3.5 -bottom-px h-px origin-left bg-signal transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]',
+                  isActive(item.href) ? 'scale-x-100' : 'scale-x-0 group-hover/nav:scale-x-100',
+                )}
+              />
             </Link>
           ))}
         </nav>

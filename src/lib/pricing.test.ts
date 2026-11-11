@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_ESTIMATOR, DEFAULT_PLANS, estimate, estimatorSchema, formatUsd, planPriceLabel, planSchema } from './pricing';
+import { DEFAULT_ESTIMATOR, DEFAULT_PLANS, PLAN_GROUPS, estimate, estimatorSchema, formatUsd, planPriceLabel, planSchema, planSubline, planTier } from './pricing';
 
 describe('formatUsd', () => {
   it('formats whole dollars without cents', () => {
@@ -78,5 +78,25 @@ describe('estimate', () => {
         expect(r.highCents).toBeGreaterThanOrEqual(r.lowCents);
       }
     }
+  });
+});
+
+describe('package groups', () => {
+  it('has Basic, Pro and Corporate in every group, with Pro as the one recommended plan', () => {
+    for (const g of PLAN_GROUPS) {
+      const ps = DEFAULT_PLANS.filter((p) => p.group === g).sort((a, b) => a.sort - b.sort);
+      expect(ps.map(planTier)).toEqual(['Basic', 'Pro', 'Corporate']);
+      expect(ps.filter((p) => p.highlight).map(planTier)).toEqual(['Pro']);
+    }
+  });
+  it('shows a monthly fee or a note under the price', () => {
+    const byId = (id: string) => DEFAULT_PLANS.find((p) => p.id === id)!;
+    expect(planSubline(byId('pro-chatbot'))).toBe('+ $20 / month');
+    expect(planSubline(byId('corporate-automation'))).toBe('Monthly plan quoted');
+    expect(planSubline(byId('pro-app'))).toBeNull();
+  });
+  it('reads plans stored before monthly fees and notes existed', () => {
+    const { monthlyCents: _m, note: _n, ...old } = DEFAULT_PLANS[0]!;
+    expect(planSchema.parse(old)).toMatchObject({ monthlyCents: null, note: null });
   });
 });

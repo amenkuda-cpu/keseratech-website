@@ -134,6 +134,113 @@ export function MaskLines({ id, lines, className, lineClassName, delay = 0, as: 
   );
 }
 
+/**
+ * A list whose items fade and lift in one after another when it scrolls into view.
+ * Pass `as="ul"` / `"ol"` and plain children; each child is wrapped in a motion item of `itemAs`.
+ */
+export function Stagger({
+  children,
+  className,
+  itemClassName,
+  as = 'ul',
+  itemAs = 'li',
+  gap = 0.07,
+  delay = 0,
+  y = 18,
+}: {
+  children: ReactNode[];
+  className?: string;
+  itemClassName?: string;
+  as?: ElementType;
+  itemAs?: ElementType;
+  gap?: number;
+  delay?: number;
+  y?: number;
+}) {
+  const ref = useRef<HTMLElement>(null);
+  const shown = useRevealed(ref, 0.08);
+  const Tag = as;
+  const Item = useMemo(() => motion.create(itemAs), [itemAs]);
+  return (
+    <Tag ref={ref} className={className}>
+      {children.map((child, i) => (
+        <Item
+          key={i}
+          className={itemClassName}
+          initial={{ opacity: 0, y }}
+          animate={shown ? { opacity: 1, y: 0 } : undefined}
+          transition={{ duration: 0.7, ease: EASE, delay: delay + i * gap }}
+        >
+          {child}
+        </Item>
+      ))}
+    </Tag>
+  );
+}
+
+/** Counts up from zero to `to` the first time it scrolls into view. Reduced motion shows the number at once. */
+export function CountUp({ to, duration = 1.6, suffix = '', className }: { to: number; duration?: number; suffix?: string; className?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const shown = useRevealed(ref, 0.05);
+  const reduce = useReducedMotion();
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (!shown) return;
+    if (reduce) {
+      setN(to);
+      return;
+    }
+    const controls = animate(0, to, { duration, ease: EASE, onUpdate: (v) => setN(Math.round(v)) });
+    return () => controls.stop();
+  }, [shown, reduce, to, duration]);
+  return (
+    <span ref={ref} className={cn('tabular-nums', className)}>
+      {/* Screen readers and no-JS get the real number */}
+      <span aria-hidden>{n}{suffix}</span>
+      <span className="sr-only">{to}{suffix}</span>
+    </span>
+  );
+}
+
+/**
+ * Moves its content slower than the page as it scrolls past (a subtle depth effect).
+ * `strength` is the total travel in px across the element's time on screen.
+ */
+export function Parallax({ children, className, strength = 80 }: { children: ReactNode; className?: string; strength?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || reduce) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const r = el.parentElement?.getBoundingClientRect() ?? el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      if (r.bottom < -200 || r.top > vh + 200) return;
+      // -0.5 when entering at the bottom, +0.5 when leaving at the top
+      const p = (vh - r.top) / (vh + r.height) - 0.5;
+      el.style.transform = `translate3d(0, ${(p * strength).toFixed(1)}px, 0)`;
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, [reduce, strength]);
+  return (
+    <div ref={ref} className={cn('will-change-transform', className)}>
+      {children}
+    </div>
+  );
+}
+
 /** Tweens between numeric values: used for live estimates, never for decoration. */
 export function Tween({ value, format }: { value: number; format: (n: number) => string }) {
   const reduce = useReducedMotion();

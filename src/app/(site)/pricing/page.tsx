@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { PlanTable } from '@/components/commercial/plan-table';
+import { PricingTabs } from '@/components/commercial/pricing-tabs';
 import { SoftwareEstimator } from '@/components/commercial/software-estimator';
 import { getEstimator, getPlans } from '@/lib/db';
 import { Label } from '@/components/system/primitives';
 
 export const metadata: Metadata = {
   title: 'Website, App & Software Prices in Zimbabwe',
-  description: 'Clear prices for websites in Zimbabwe from $100, mobile app packages, and a live estimator for custom software. Built by Sera Tech, Kesera Technologies.',
+  description: 'Clear prices in Zimbabwe: websites from $100, mobile apps from $200, AI chatbots from $40, AI automation from $80 and CRM dashboards from $100, plus a live estimator for custom software.',
   alternates: { canonical: '/pricing' },
 };
 
@@ -29,43 +29,29 @@ export default async function PricingPage() {
         <p className="t-label text-ink/55">Sera Tech · Pricing</p>
         <h1 id="pricing-title" className="t-display-l mt-6 max-w-[14ch]">Clear prices. Real scope.</h1>
         <p className="t-lead mt-6 max-w-2xl text-ink/70">
-          Websites have fixed packages. Apps start from a package and grow with what they need. Custom software is priced by scope, and you can estimate it below.
+          Fixed packages for websites, mobile apps, AI chatbots, AI automation and CRM dashboards. Anything bigger is priced by scope, and you can estimate it below.
         </p>
         <nav aria-label="Pricing sections" className="t-label mt-10 flex flex-wrap gap-x-8 gap-y-3 text-ink/70">
-          <a href="#websites" className="hover:text-ink">01 Websites</a>
-          <a href="#apps" className="hover:text-ink">02 Apps</a>
-          <a href="#software" className="hover:text-ink">03 Custom software</a>
+          <a href="#packages" className="hover:text-ink">01 Packages</a>
+          <a href="#software" className="hover:text-ink">02 Custom software</a>
         </nav>
       </section>
 
-      <section id="websites" className="shell scroll-mt-24 pb-24 md:pb-36" aria-labelledby="websites-title">
-        <div className="mb-12 flex flex-col justify-between gap-4 md:mb-16 md:flex-row md:items-end">
+      <section id="packages" className="shell scroll-mt-24 pb-24 md:pb-36" aria-labelledby="packages-title">
+        <div className="mb-10 flex flex-col justify-between gap-4 md:mb-12 md:flex-row md:items-end">
           <div>
-            <Label index="01">Websites</Label>
-            <h2 id="websites-title" className="t-display-m mt-5">Website packages</h2>
+            <Label index="01">Packages</Label>
+            <h2 id="packages-title" className="t-display-m mt-5">Choose a service</h2>
           </div>
-          <p className="max-w-sm text-sm text-ink/65">Every package is designed for your business, works on every screen and is launched by us.</p>
+          <p className="max-w-sm text-sm text-ink/65">Every package is designed for your business, works on every screen and is launched by us. Prices are in US dollars.</p>
         </div>
-        <PlanTable plans={plans.filter((p) => p.group === 'website')} service="website" />
-      </section>
-
-      <section id="apps" className="shell scroll-mt-24 pb-24 md:pb-36" aria-labelledby="apps-title">
-        <div className="mb-12 flex flex-col justify-between gap-4 md:mb-16 md:flex-row md:items-end">
-          <div>
-            <Label index="02">Apps</Label>
-            <h2 id="apps-title" className="t-display-m mt-5">App development</h2>
-          </div>
-          <p className="max-w-sm text-sm text-ink/65">
-            Apps take more engineering than websites: a backend, accounts, app-store releases and testing on real phones. Prices start here and are confirmed after scoping.
-          </p>
-        </div>
-        <PlanTable plans={plans.filter((p) => p.group === 'app')} service="app" />
+        <PricingTabs plans={plans} />
       </section>
 
       <section id="software" className="shell scroll-mt-24 pb-24 md:pb-36" aria-labelledby="software-title">
         <div className="mb-12 flex flex-col justify-between gap-4 md:mb-16 md:flex-row md:items-end">
           <div>
-            <Label index="03">Custom software</Label>
+            <Label index="02">Custom software</Label>
             <h2 id="software-title" className="t-display-m mt-5">Priced by scope</h2>
           </div>
           <p className="max-w-sm text-sm text-ink/65">Configure the system you need and see an estimated range. Nothing is sent until you choose to start.</p>

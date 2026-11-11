@@ -3,8 +3,26 @@
 
 import { z } from 'zod';
 
-export const PLAN_GROUPS = ['website', 'app'] as const;
+export const PLAN_GROUPS = ['website', 'app', 'chatbot', 'automation', 'crm'] as const;
 export type PlanGroup = (typeof PLAN_GROUPS)[number];
+
+export const SERVICE_IDS = ['website', 'app', 'software', 'webapp', 'automation', 'unsure'] as const;
+export type ServiceId = (typeof SERVICE_IDS)[number];
+
+/** How each package group is named on the site, and which project-builder service it starts. */
+export const PLAN_GROUP_INFO: Record<PlanGroup, { label: string; tab: string; service: ServiceId }> = {
+  website: { label: 'Website', tab: 'Websites', service: 'website' },
+  app: { label: 'Mobile App', tab: 'Mobile apps', service: 'app' },
+  chatbot: { label: 'AI Chatbot', tab: 'AI chatbots', service: 'automation' },
+  automation: { label: 'AI Automation', tab: 'AI automation', service: 'automation' },
+  crm: { label: 'CRM & Dashboards', tab: 'CRM & dashboards', service: 'software' },
+};
+
+/** "Pro Mobile App" -> "Pro": the tier, with the group's own name taken off. */
+export const planTier = (p: Pick<Plan, 'name' | 'group'>) => {
+  const label = PLAN_GROUP_INFO[p.group].label;
+  return p.name.toLowerCase().endsWith(label.toLowerCase()) ? p.name.slice(0, -label.length).trim() || p.name : p.name;
+};
 
 export const planSchema = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
@@ -21,11 +39,15 @@ export const planSchema = z.object({
   sort: z.number().int(),
   /** A proposed price the owner hasn't confirmed yet. Shown publicly as normal, flagged in the admin. */
   proposal: z.boolean(),
+  /** A monthly fee on top of the one-off price: shown as "+ $20 / month". */
+  monthlyCents: z.number().int().min(0).nullable().default(null),
+  /** A short line under the price, e.g. "Monthly plan quoted". */
+  note: z.string().max(60).nullable().default(null),
 });
 export type Plan = z.infer<typeof planSchema>;
 
-export const SERVICE_IDS = ['website', 'app', 'software', 'webapp', 'automation', 'unsure'] as const;
-export type ServiceId = (typeof SERVICE_IDS)[number];
+/** Bump when DEFAULT_PLANS must replace the stored plans once (db.ts applies it on start-up). */
+export const PLANS_VERSION = 2;
 
 const optionSchema = z.object({ id: z.string(), label: z.string(), cents: z.number().int().min(0) });
 const multiplierSchema = z.object({ id: z.string(), label: z.string(), multiplier: z.number().min(0.5).max(3) });
@@ -120,53 +142,88 @@ export function planPriceLabel(p: Pick<Plan, 'priceCents' | 'plus' | 'from'>): {
   return { prefix: p.from ? 'From' : '', amount: formatUsd(p.priceCents), suffix: p.plus ? '+' : '' };
 }
 
+/** "+ $20 / month", or the plan's note ("Monthly plan quoted"), or null. */
+export function planSubline(p: Pick<Plan, 'monthlyCents' | 'note'>): string | null {
+  if (p.monthlyCents) return `+ ${formatUsd(p.monthlyCents)} / month`;
+  return p.note || null;
+}
+
 // ---------------------------------------------------------------------------
-// Defaults. Website plans are the supplied Sera Tech prices; everything marked
-// `proposal` is a starting point for the owner to confirm in the admin.
+// Defaults: the Sera Tech price cards (November 2026). The Basic and Corporate website
+// plans predate those cards and are unchanged. Edit live prices in /admin.
+
+type PlanSeed = Omit<Plan, 'blurb' | 'plus' | 'from' | 'highlight' | 'proposal' | 'monthlyCents' | 'note'> & Partial<Plan>;
+const plan = (p: PlanSeed): Plan => ({ blurb: '', plus: false, from: false, highlight: null, proposal: false, monthlyCents: null, note: null, ...p });
+const POPULAR = 'Most popular';
 
 export const DEFAULT_PLANS: Plan[] = [
-  {
-    id: 'basic-website', group: 'website', name: 'Basic Website', priceCents: 10000, plus: false, from: false,
+  plan({
+    id: 'basic-website', group: 'website', name: 'Basic Website', priceCents: 10000, sort: 1,
     blurb: 'A clear, professional presence for a new or small business.',
     features: ['Custom 3-page website', 'Responsive design', 'Basic SEO setup', 'Logo integration', 'Contact form'],
-    highlight: null, sort: 1, proposal: false,
-  },
-  {
-    id: 'pro-website', group: 'website', name: 'Pro Website', priceCents: 18000, plus: false, from: false,
+  }),
+  plan({
+    id: 'pro-website', group: 'website', name: 'Pro Website', priceCents: 18000, sort: 2, highlight: POPULAR,
     blurb: 'A fuller site that brings in and measures enquiries.',
     features: ['Custom 6-page website', 'Responsive design', 'Contact form', 'Social media integration', 'Google Analytics + Maps', '6 months hosting support'],
-    highlight: 'Most popular', sort: 2, proposal: false,
-  },
-  {
-    id: 'corporate-website', group: 'website', name: 'Corporate Website', priceCents: 25000, plus: true, from: false,
+  }),
+  plan({
+    id: 'corporate-website', group: 'website', name: 'Corporate Website', priceCents: 25000, plus: true, sort: 3,
     blurb: 'For organisations that sell, manage users or run operations online.',
     features: ['Custom website design', 'E-commerce ready', 'Admin panel', 'User accounts / dashboards', 'Ongoing support quoted separately'],
-    highlight: null, sort: 3, proposal: false,
-  },
-  {
-    id: 'app-starter', group: 'app', name: 'App Starter', priceCents: 60000, plus: false, from: true,
-    blurb: 'A simple mobile app: information, catalogue or a single task done well.',
-    features: ['Up to 6 screens', 'Android and iPhone from one codebase', 'Content managed by us', 'Contact, call and WhatsApp actions', 'Store submission'],
-    highlight: null, sort: 1, proposal: true,
-  },
-  {
-    id: 'app-pro', group: 'app', name: 'App Pro', priceCents: 150000, plus: false, from: true,
-    blurb: 'An app with accounts, a backend and the integrations a business needs.',
-    features: ['User accounts and sign-in', 'Backend and database', 'Admin dashboard', 'Push notifications', 'One integration (payments, maps or booking)', 'Store submission'],
-    highlight: 'Most chosen', sort: 2, proposal: true,
-  },
-  {
-    id: 'app-advanced', group: 'app', name: 'App Advanced', priceCents: 350000, plus: false, from: true,
-    blurb: 'Platforms with several user types, payments and real-time features.',
-    features: ['Customer, provider and admin roles', 'EcoCash, OneMoney and card payments', 'Live tracking and maps', 'In-app chat', 'Real-time updates', 'Analytics'],
-    highlight: null, sort: 3, proposal: true,
-  },
-  {
-    id: 'app-custom', group: 'app', name: 'Custom App Development', priceCents: 500000, plus: false, from: true,
-    blurb: 'Bespoke products scoped with you, from discovery to launch and beyond.',
-    features: ['Discovery and technical scoping', 'Architecture for scale', 'Phased delivery', 'Support agreement'],
-    highlight: null, sort: 4, proposal: true,
-  },
+  }),
+
+  plan({
+    id: 'basic-app', group: 'app', name: 'Basic Mobile App', priceCents: 20000, sort: 1,
+    features: ['Android app (up to 5 screens)', 'Modern, clean design', 'User login & accounts', 'Push notifications', 'Play Store publishing'],
+  }),
+  plan({
+    id: 'pro-app', group: 'app', name: 'Pro Mobile App', priceCents: 35000, sort: 2, highlight: POPULAR,
+    features: ['Android + iOS app', 'Up to 10 screens', 'Admin dashboard', 'Payment integration', 'Push notifications', '3 months support'],
+  }),
+  plan({
+    id: 'corporate-app', group: 'app', name: 'Corporate Mobile App', priceCents: 60000, plus: true, sort: 3,
+    features: ['Fully custom app', 'Android, iOS + web', 'Backend & database', 'API integrations', 'Ongoing support (quoted)'],
+  }),
+
+  plan({
+    id: 'basic-chatbot', group: 'chatbot', name: 'Basic AI Chatbot', priceCents: 4000, monthlyCents: 1000, sort: 1,
+    features: ['WhatsApp or website bot', 'Answers FAQs 24/7', 'Captures leads', 'Business hours replies', 'Setup & training'],
+  }),
+  plan({
+    id: 'pro-chatbot', group: 'chatbot', name: 'Pro AI Chatbot', priceCents: 8000, monthlyCents: 2000, sort: 2, highlight: POPULAR,
+    features: ['WhatsApp + website bot', 'AI trained on your business', 'Orders & bookings', 'Human handover', 'Monthly chat reports', 'Priority support'],
+  }),
+  plan({
+    id: 'corporate-chatbot', group: 'chatbot', name: 'Corporate AI Chatbot', priceCents: 15000, plus: true, note: 'Monthly plan quoted', sort: 3,
+    features: ['WhatsApp, web + social media', 'Payment integration', 'CRM integration', 'Custom workflows', 'Ongoing support (quoted)'],
+  }),
+
+  plan({
+    id: 'basic-automation', group: 'automation', name: 'Basic AI Automation', priceCents: 8000, monthlyCents: 2500, sort: 1,
+    features: ['AI call answering 24/7', 'Answers customer FAQs', 'Call summaries to WhatsApp', '1 business line', 'Setup & training'],
+  }),
+  plan({
+    id: 'pro-automation', group: 'automation', name: 'Pro AI Automation', priceCents: 15000, monthlyCents: 4500, sort: 2, highlight: POPULAR,
+    features: ['AI receptionist 24/7', 'Appointment booking', 'Calendar integration', 'WhatsApp & SMS follow-ups', 'Call recordings + summaries', 'Priority support'],
+  }),
+  plan({
+    id: 'corporate-automation', group: 'automation', name: 'Corporate AI Automation', priceCents: 25000, plus: true, note: 'Monthly plan quoted', sort: 3,
+    features: ['Multi-line AI call centre', 'Custom workflow automation', 'CRM integration', 'Multi-language support', 'Dedicated support (quoted)'],
+  }),
+
+  plan({
+    id: 'basic-crm', group: 'crm', name: 'Basic CRM & Dashboards', priceCents: 10000, sort: 1,
+    features: ['Sales & customer dashboard', 'Live charts & reports', 'Excel / Sheets integration', 'Mobile friendly', '1 month support'],
+  }),
+  plan({
+    id: 'pro-crm', group: 'crm', name: 'Pro CRM & Dashboards', priceCents: 18000, sort: 2, highlight: POPULAR,
+    features: ['Custom CRM system', 'Customer & lead tracking', 'Staff accounts & roles', 'Live reports & charts', 'Data export', '3 months support'],
+  }),
+  plan({
+    id: 'corporate-crm', group: 'crm', name: 'Corporate CRM & Dashboards', priceCents: 30000, plus: true, sort: 3,
+    features: ['Full business system', 'Inventory, finance + HR', 'Connects to your tools', 'Advanced analytics', 'Ongoing support (quoted)'],
+  }),
 ];
 
 const t = (id: string, label: string, dollars: number) => ({ id, label, cents: dollars * 100 });

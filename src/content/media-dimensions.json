@@ -60,8 +60,8 @@
     "height": 1500
   },
   "container-home": {
-    "width": 2000,
-    "height": 1333
+    "width": 1125,
+    "height": 1500
   },
   "irrigation-sprinklers": {
     "width": 1280,
@@ -78,5 +78,21 @@
   "team-laptop": {
     "width": 1280,
     "height": 720
+  },
+  "container-cabin-glass": {
+    "width": 1125,
+    "height": 1500
+  },
+  "container-yard": {
+    "width": 2000,
+    "height": 1500
+  },
+  "container-build": {
+    "width": 993,
+    "height": 1500
+  },
+  "delivery-night": {
+    "width": 1200,
+    "height": 1500
   }
 }

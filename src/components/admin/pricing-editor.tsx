@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { saveEstimatorAction, savePlansAction } from '@/app/admin/actions';
-import type { EstimatorConfig, EstimableService, Plan, PlanGroup } from '@/lib/pricing';
+import { PLAN_GROUPS, PLAN_GROUP_INFO, type EstimatorConfig, type EstimableService, type Plan, type PlanGroup } from '@/lib/pricing';
 import { AreaField, MoneyField, NumberField, SaveBar, TextField, Toggle } from './fields';
 
 export function PlansEditor({ initial }: { initial: Plan[] }) {
@@ -19,15 +19,15 @@ export function PlansEditor({ initial }: { initial: Plan[] }) {
   };
   const add = (group: PlanGroup) => {
     const n = plans.filter((p) => p.group === group).length + 1;
-    setPlans((ps) => [...ps, { id: `${group}-plan-${Date.now().toString(36)}`, group, name: 'New plan', priceCents: 0, plus: false, from: group === 'app', blurb: '', features: [], highlight: null, sort: n, proposal: true }]);
+    setPlans((ps) => [...ps, { id: `${group}-plan-${Date.now().toString(36)}`, group, name: `New ${PLAN_GROUP_INFO[group].label}`, priceCents: 0, plus: false, from: false, blurb: '', features: [], highlight: null, sort: n, proposal: true, monthlyCents: null, note: null }]);
   };
 
   return (
     <>
-      {(['website', 'app'] as const).map((group) => (
+      {PLAN_GROUPS.map((group) => (
         <section key={group} className="mt-10" aria-labelledby={`g-${group}`}>
           <div className="flex items-center justify-between">
-            <h2 id={`g-${group}`} className="t-label text-white">{group === 'website' ? 'Website packages' : 'App packages'}</h2>
+            <h2 id={`g-${group}`} className="t-label text-white">{PLAN_GROUP_INFO[group].label} packages</h2>
             <button type="button" onClick={() => add(group)} className="inline-flex h-9 items-center gap-2 rounded-sm border border-hair px-3 text-sm text-dim hover:text-white">
               <Plus className="size-4" /> Add plan
             </button>
@@ -44,6 +44,8 @@ export function PlansEditor({ initial }: { initial: Plan[] }) {
                   <TextField label="Name" value={p.name} onChange={(v) => update(p.id, { name: v })} className="col-span-2" />
                   <MoneyField label="Price (USD)" cents={p.priceCents} onChange={(c) => update(p.id, { priceCents: c })} />
                   <NumberField label="Order" value={p.sort} step={1} onChange={(v) => update(p.id, { sort: Math.round(v) })} />
+                  <MoneyField label="Monthly fee (0 = none)" cents={p.monthlyCents ?? 0} onChange={(c) => update(p.id, { monthlyCents: c > 0 ? c : null })} className="col-span-2" />
+                  <TextField label="Note under price" value={p.note ?? ''} onChange={(v) => update(p.id, { note: v.trim() ? v : null })} className="col-span-2" />
                 </div>
                 <div className="mt-2 flex flex-wrap gap-x-5">
                   <Toggle label="Show “From”" checked={p.from} onChange={(v) => update(p.id, { from: v })} />

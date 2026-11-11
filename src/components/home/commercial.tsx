@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { SERVICES } from '@/content/site';
-import { formatUsd, type Plan } from '@/lib/pricing';
+import type { Plan } from '@/lib/pricing';
 import { Label } from '@/components/system/primitives';
 import { MaskLines, Reveal } from '@/components/system/motion';
-import { PlanTable } from '@/components/commercial/plan-table';
+import { PricingTabs } from '@/components/commercial/pricing-tabs';
 
-// The commercial chapter: the page turns to paper. Sera Tech's services and website prices.
+// The commercial chapter: the page turns to paper. Sera Tech's services and package prices.
 
-export function Commercial({ websitePlans, appFromCents, index = '05' }: { websitePlans: Plan[]; appFromCents: number | null; index?: string }) {
+export function Commercial({ plans, index = '05' }: { plans: Plan[]; index?: string }) {
   return (
     <section aria-labelledby="built-title" className="paper relative">
       <div className="shell section">
@@ -56,19 +56,17 @@ export function Commercial({ websitePlans, appFromCents, index = '05' }: { websi
         <div className="mt-24 md:mt-36">
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <div>
-              <p className="t-label text-ink/50">Website packages</p>
+              <p className="t-label text-ink/50">Packages</p>
               <h3 className="t-display-m mt-5">Clear prices.<br />No surprises.</h3>
             </div>
             <p className="max-w-sm text-sm leading-relaxed text-ink/65">
-              Fixed packages for websites. Apps and custom software are estimated from what you need. Try the{' '}
+              Fixed packages for every service. Bigger custom software is estimated from what you need. Try the{' '}
               <Link href="/pricing#software" className="underline underline-offset-4 hover:text-ink">estimator</Link>.
             </p>
           </div>
-          <div className="mt-12 md:mt-16">
-            <PlanTable plans={websitePlans} service="website" />
-          </div>
+          <PricingTabs plans={plans} className="mt-12 md:mt-14" />
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm text-ink/65">{appFromCents !== null && `Apps from ${formatUsd(appFromCents)}, `}custom software priced by scope.</p>
+            <p className="text-sm text-ink/65">Prices in US dollars. Custom software priced by scope.</p>
             <Link href="/pricing" className="t-label inline-flex items-center gap-2 text-ink hover:text-[#0a63d1]">
               All pricing <ArrowRight aria-hidden className="size-3.5" />
             </Link>

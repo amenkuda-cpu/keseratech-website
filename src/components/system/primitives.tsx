@@ -65,12 +65,12 @@ type CtaProps = {
 } & Omit<ComponentProps<typeof Link>, 'href' | 'className' | 'children' | 'style'>;
 
 const ctaBase =
-  'group/cta relative inline-flex min-h-12 items-center justify-between gap-6 rounded-[4px] px-5 text-[0.95rem] font-semibold transition-[background-color,border-color,color] duration-300 focus-visible:outline-2';
+  'group/cta relative inline-flex min-h-12 items-center justify-between gap-6 rounded-[4px] px-5 text-[0.95rem] font-semibold transition-[background-color,border-color,color,transform,box-shadow] duration-300 ease-out focus-visible:outline-2 active:translate-y-0 active:scale-[0.98]';
 
 const ctaVariants = {
-  primary: 'bg-signal text-white hover:bg-[#3a98ff]',
-  ghost: 'border border-hair-strong text-foreground hover:border-white/50 hover:bg-white/[0.04]',
-  ink: 'bg-ink text-white hover:bg-[#16213b]',
+  primary: 'bg-signal text-white hover:-translate-y-0.5 hover:bg-[#3a98ff] hover:shadow-[0_14px_34px_-12px_rgb(26_134_250/0.7)]',
+  ghost: 'border border-hair-strong text-foreground hover:-translate-y-0.5 hover:border-white/50 hover:bg-white/[0.06]',
+  ink: 'bg-ink text-white hover:-translate-y-0.5 hover:bg-[#16213b] hover:shadow-[0_14px_34px_-14px_rgb(0_0_0/0.5)]',
   text: 'min-h-0 px-0 gap-3 text-foreground hover:text-signal-soft',
 };
 

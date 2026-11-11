@@ -3,7 +3,7 @@ import { createClient } from '@libsql/client/web';
 import fs from 'node:fs';
 import path from 'node:path';
 import { z } from 'zod';
-import { DEFAULT_ESTIMATOR, DEFAULT_PLANS, estimatorSchema, planSchema, type EstimatorConfig, type Plan } from './pricing';
+import { DEFAULT_ESTIMATOR, DEFAULT_PLANS, PLANS_VERSION, estimatorSchema, planSchema, type EstimatorConfig, type Plan } from './pricing';
 import { DIVISION_SLUGS, STATUSES } from '@/content/site';
 import { SEED_PROJECTS } from '@/content/projects';
 
@@ -22,6 +22,9 @@ type Store = {
 };
 
 const NOW = `strftime('%Y-%m-%dT%H:%M:%fZ','now')`;
+
+/** A Vercel preview deployment: same database as the live site, so it must not migrate data. */
+const PREVIEW = process.env.VERCEL_ENV === 'preview';
 
 const SCHEMA: Stmt[] = [
   `CREATE TABLE IF NOT EXISTS kv (
@@ -92,6 +95,23 @@ async function prepare(): Promise<Store> {
   await store.batch([
     ...SCHEMA,
     { sql: `INSERT OR IGNORE INTO kv (key, value) VALUES ('plans', ?)`, args: [JSON.stringify(DEFAULT_PLANS)] },
+    // When PLANS_VERSION goes up, the new default plans replace the stored ones once; later admin edits stay.
+    // Preview deployments share the live database, so they never run this: getPlans() shows them the
+    // new defaults instead, and the live data changes only when the new version reaches production.
+    ...(PREVIEW
+      ? []
+      : [
+          {
+            sql: `UPDATE kv SET value = ?, updated_at = ${NOW} WHERE key = 'plans'
+                  AND NOT EXISTS (SELECT 1 FROM kv WHERE key = 'plans_version' AND CAST(value AS INTEGER) >= ?)`,
+            args: [JSON.stringify(DEFAULT_PLANS), PLANS_VERSION],
+          },
+          {
+            sql: `INSERT INTO kv (key, value) VALUES ('plans_version', ?)
+                  ON CONFLICT(key) DO UPDATE SET value = excluded.value WHERE CAST(kv.value AS INTEGER) < CAST(excluded.value AS INTEGER)`,
+            args: [String(PLANS_VERSION)],
+          },
+        ]),
     { sql: `INSERT OR IGNORE INTO kv (key, value) VALUES ('estimator', ?)`, args: [JSON.stringify(DEFAULT_ESTIMATOR)] },
     ...SEED_PROJECTS.map((p) => ({ sql: `INSERT OR IGNORE INTO projects (slug, data, sort) VALUES (?, ?, ?)`, args: [p.slug, JSON.stringify(p), p.sort] })),
   ]);
@@ -127,6 +147,10 @@ async function run(sql: string, args: Arg[] = []) {
 // Pricing
 
 export async function getPlans(): Promise<Plan[]> {
+  if (PREVIEW) {
+    const v = await one<{ value: string }>(`SELECT value FROM kv WHERE key = 'plans_version'`);
+    if (Number(v?.value ?? 0) < PLANS_VERSION) return [...DEFAULT_PLANS].sort((a, b) => a.sort - b.sort);
+  }
   const row = await one<{ value: string }>(`SELECT value FROM kv WHERE key = 'plans'`);
   const parsed = z.array(planSchema).safeParse(row ? JSON.parse(row.value) : null);
   const plans = parsed.success ? parsed.data : DEFAULT_PLANS;

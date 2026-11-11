@@ -21,7 +21,6 @@ export default async function HomePage() {
   const ventures = (await listProjects()).filter((p) => p.kind === 'venture');
   const featured = ventures.filter((p) => p.featured).slice(0, 5);
   const plans = await getPlans();
-  const appPlans = plans.filter((p) => p.group === 'app');
 
   const markers = Object.entries(
     ventures.reduce<Record<string, string[]>>((acc, p) => {
@@ -38,11 +37,7 @@ export default async function HomePage() {
       <DivisionsIndex />
       <PhotoBand id="solar-technicians" line="We’d rather build something small that people use than something big that nobody does." />
       <VenturesShowcase projects={featured} />
-      <Commercial
-        index="04"
-        websitePlans={plans.filter((p) => p.group === 'website')}
-        appFromCents={appPlans.length ? Math.min(...appPlans.map((p) => p.priceCents)) : null}
-      />
+      <Commercial index="04" plans={plans} />
       <ClientQuotes />
       <TechEcosystem index="05" />
       <AssistantsDemo index="06" />

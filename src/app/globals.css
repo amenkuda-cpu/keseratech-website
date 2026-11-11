@@ -46,10 +46,10 @@
   --color-assist: #7fb4ff;
   --color-desk: #9c9bff;
 
-  --font-sans: var(--font-archivo);
-  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Clash Display', var(--font-manrope), ui-sans-serif, sans-serif;
   --font-mono: var(--font-plex-mono);
-  --font-heading: var(--font-fraunces);
+  --font-heading: 'Clash Display', var(--font-manrope), ui-sans-serif, sans-serif;
 
   --radius-sm: 2px;
   --radius-md: 4px;
@@ -128,7 +128,7 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-variation-settings: "wdth" 100;
+    font-feature-settings: "ss01", "cv11";
   }
   ::selection {
     background: #1a86fa;
@@ -156,51 +156,56 @@
     padding-block: var(--section);
   }
 
-  /* Display type: Fraunces, a soft serif, in sentence case */
+  /* Display type: Clash Display, bold and geometric, in sentence case. One scale for every section:
+     xl (page heroes) > l (section titles) > m (sub-sections) > title (cards and names). */
   .t-display-xl,
   .t-display-l,
   .t-display-m,
   .t-title {
     font-family: var(--font-display);
-    font-weight: 500;
-    font-variation-settings: "SOFT" 60;
-    letter-spacing: -0.02em;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    word-spacing: 0.04em;
     text-wrap: balance;
+    font-kerning: normal;
   }
   .t-display-xl {
-    font-size: clamp(2.7rem, 8vw, 8rem);
-    line-height: 0.98;
-    letter-spacing: -0.03em;
+    font-size: clamp(2.9rem, 8.4vw, 8.5rem);
+    line-height: 0.96;
+    letter-spacing: -0.02em;
   }
   .t-display-l {
-    font-size: clamp(2.1rem, 5.4vw, 5.25rem);
-    line-height: 1.02;
-    letter-spacing: -0.025em;
+    font-size: clamp(2.3rem, 5.8vw, 5.75rem);
+    line-height: 1;
+    letter-spacing: -0.015em;
   }
   .t-display-m {
-    font-size: clamp(1.7rem, 3.6vw, 3.25rem);
-    line-height: 1.06;
+    font-size: clamp(1.8rem, 3.8vw, 3.5rem);
+    line-height: 1.02;
   }
   .t-title {
-    font-size: clamp(1.25rem, 1.9vw, 1.75rem);
+    font-size: clamp(1.3rem, 1.9vw, 1.8rem);
+    font-weight: 500;
     line-height: 1.15;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.005em;
   }
-  /* Italic serif for a word or two of emphasis inside a heading */
+  /* Emphasis inside a heading: the same face, lighter and quieter, for an editorial contrast */
   .t-display-xl em,
   .t-display-l em,
   .t-display-m em {
-    font-style: italic;
-    font-variation-settings: "SOFT" 100;
+    font-style: normal;
+    font-weight: 400;
+    color: color-mix(in srgb, currentColor 62%, transparent);
   }
   .t-lead {
-    font-size: clamp(1.08rem, 1.5vw, 1.3rem);
-    line-height: 1.5;
+    font-size: clamp(1.1rem, 1.5vw, 1.32rem);
+    line-height: 1.6;
+    font-weight: 400;
     text-wrap: pretty;
   }
   .t-body {
-    font-size: 1rem;
-    line-height: 1.65;
+    font-size: 1.02rem;
+    line-height: 1.72;
     text-wrap: pretty;
   }
   .t-label {
@@ -208,7 +213,30 @@
     font-size: 0.72rem;
     line-height: 1.3;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.09em;
+  }
+
+  /* Hover: lift a card and deepen its shadow */
+  .lift {
+    transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s var(--ease-out-expo), border-color 0.4s ease;
+  }
+  @media (hover: hover) {
+    .lift:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px -24px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.06);
+    }
+  }
+  /* Hover: slow, gentle zoom on an image inside a cropped frame (.zoom-frame wraps it) */
+  .zoom-frame img,
+  .zoom-frame video {
+    transition: transform 1.2s var(--ease-out-expo);
+  }
+  @media (hover: hover) {
+    .zoom-frame:hover img,
+    .zoom-frame:hover video,
+    .group:hover .zoom-frame img {
+      transform: scale(1.045);
+    }
   }
 
   /* A plain hairline divider */
@@ -231,6 +259,11 @@
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: none; }
+}
+/* Hero: a slow push-in on the background, like a camera drifting forward */
+@keyframes slow-zoom {
+  from { transform: scale(1.12); }
+  to { transform: scale(1); }
 }
 @keyframes blink-soft {
   0%, 100% { opacity: 1; }

@@ -152,12 +152,52 @@
   {
     "id": "container-home",
     "kind": "photo",
-    "pexelsId": 783942,
-    "source": "https://www.pexels.com/photo/gray-containerized-housing-unit-783942/",
-    "credit": "Lucas de Lara",
-    "creditUrl": "https://www.pexels.com/@lucas-de-lara-256141/",
-    "alt": "A two-storey home built from stacked shipping containers, with large windows cut into the steel walls",
+    "pexelsId": 40003256,
+    "source": "https://www.pexels.com/photo/modern-container-home-surrounded-by-nature-40003256/",
+    "credit": "SYDNEY Sir WEBBO",
+    "creditUrl": "https://www.pexels.com/@sydney-sir-webbo-337913196/",
+    "alt": "A finished two-storey shipping-container home in matte charcoal steel, with floor-to-ceiling glass, timber cladding and a lawn under tall trees",
+    "focus": "55% 60%"
+  },
+  {
+    "id": "container-cabin-glass",
+    "kind": "photo",
+    "pexelsId": 34041503,
+    "source": "https://www.pexels.com/photo/modern-glass-cabin-in-serene-natural-setting-34041503/",
+    "credit": "Fernanda Neitzel",
+    "creditUrl": "https://www.pexels.com/@fernanda-neitzel-2155821056/",
+    "alt": "A dark steel container cabin with a full glass front and a rooftop deck, lamp-lit from inside among trees",
+    "focus": "50% 55%"
+  },
+  {
+    "id": "container-yard",
+    "kind": "photo",
+    "pexelsId": 9716376,
+    "source": "https://www.pexels.com/photo/drone-shot-of-stacks-of-cargo-containers-9716376/",
+    "credit": "Kindel Media",
+    "creditUrl": "https://www.pexels.com/@kindelmedia/",
+    "alt": "Aerial view of a yard of retired shipping containers stacked in rows, the raw material for a container home",
     "focus": "50% 50%"
+  },
+  {
+    "id": "container-build",
+    "kind": "photo",
+    "pexelsId": 17949905,
+    "source": "https://www.pexels.com/photo/view-of-a-container-house-under-construction-17949905/",
+    "credit": "Melvin Silva",
+    "creditUrl": "https://www.pexels.com/@melvin-silva-682283785/",
+    "alt": "Two stacked shipping containers mid-conversion, with window openings cut and frames fitted, on their way to becoming a home",
+    "focus": "50% 45%"
+  },
+  {
+    "id": "delivery-night",
+    "kind": "photo",
+    "pexelsId": 9325653,
+    "source": "https://www.pexels.com/photo/a-person-riding-a-black-motorcycle-on-the-road-at-night-9325653/",
+    "credit": "Vitaliy Mitrofanenko",
+    "creditUrl": "https://www.pexels.com/@mitrofan-pictures/",
+    "alt": "A rider on a motorbike moving through a city at night, headlight on and the street lights streaking past",
+    "focus": "70% 60%"
   },
   {
     "id": "irrigation-sprinklers",

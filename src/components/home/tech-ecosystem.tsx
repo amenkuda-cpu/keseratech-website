@@ -7,7 +7,7 @@ import { media } from '@/content/media';
 
 const SOLUTIONS = [
   { what: 'Farms that use water only where crops need it', who: 'AgriSera', image: 'farmer-inspecting' },
-  { what: 'Food, parcels and errands moved across town', who: 'BikerDash', image: 'delivery-rider' },
+  { what: 'Food, parcels and errands moved across town', who: 'BikerDash', image: 'delivery-night' },
   { what: 'Charging that makes electric vehicles practical', who: 'Sera Energy', image: 'ev-chargers' },
   { what: 'Phones answered and bookings made, day and night', who: 'Sera Front Desk', image: 'call-agent' },
   { what: 'Businesses run on software built around them', who: 'Sera Tech', image: 'developer-nairobi' },
@@ -30,9 +30,9 @@ export function TechEcosystem({ index = '06' }: { index?: string }) {
 
         <ul className="mt-16 grid gap-x-5 gap-y-10 sm:grid-cols-2 md:mt-24 lg:grid-cols-3" aria-label="Real-world solutions">
           {SOLUTIONS.map((s, i) => (
-            <Reveal as="li" key={s.who} delay={(i % 3) * 0.06}>
-              <MediaFrame media={media(s.image)} aspect="4/3" sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 100vw" />
-              <p className="mt-5 text-[1.02rem] leading-snug text-white">{s.what}</p>
+            <Reveal as="li" key={s.who} delay={(i % 3) * 0.08} className="group">
+              <MediaFrame media={media(s.image)} aspect="4/3" className="zoom-frame lift" sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 100vw" />
+              <p className="mt-5 text-[1.05rem] leading-snug text-white transition-colors duration-300 group-hover:text-signal-soft">{s.what}</p>
               <p className="t-label mt-3 text-faint">{s.who}</p>
             </Reveal>
           ))}

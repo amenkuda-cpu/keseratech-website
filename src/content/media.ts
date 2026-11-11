@@ -69,7 +69,7 @@ export const DIVISION_MEDIA: Record<string, string> = {
 /** Per project visual: a still for cards and showcases, and an optional loop for detail pages. */
 export const PROJECT_MEDIA: Record<string, { still: string; loop?: string }> = {
   marketplace: { still: 'tradesperson' },
-  delivery: { still: 'delivery-nairobi' },
+  delivery: { still: 'delivery-night' },
   irrigation: { still: 'farmer-irrigating', loop: 'irrigation-sprinklers' },
   ev: { still: 'ev-plug', loop: 'ev-charging' },
   upcycle: { still: 'container-home' },

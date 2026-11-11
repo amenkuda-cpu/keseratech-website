@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion, useInView } from 'motion/react';
 import { useReducedMotion } from '@/components/system/reduced-motion';
@@ -10,8 +10,10 @@ import { divisionBySlug } from '@/content/site';
 import { exploreTarget } from '@/lib/project-links';
 import { StoreButtons } from '@/components/projects/store-buttons';
 import { Cta, Dot, Label, Lines, StatusTag } from '@/components/system/primitives';
-import { MaskLines, Reveal } from '@/components/system/motion';
+import { MaskLines, Reveal, Stagger } from '@/components/system/motion';
 import { ProjectVisual } from '@/components/visuals/project-visual';
+import { BeforeAfter } from '@/components/visuals/before-after';
+import { media } from '@/content/media';
 
 // "What we're building": the photo stays pinned while the project chapters scroll past it.
 
@@ -45,14 +47,21 @@ function Chapter({ project, index, onActive }: { project: Project; index: number
       </h3>
       <p className="t-body mt-7 max-w-[34rem] text-dim">{project.summary}</p>
 
-      <ul className="mt-8 grid max-w-[34rem] gap-y-2.5 text-sm text-white/85">
+      <Stagger className="mt-8 grid max-w-[34rem] gap-y-2.5 text-sm text-white/85" itemClassName="flex items-baseline gap-3">
         {project.capabilities.slice(0, 4).map((c) => (
-          <li key={c} className="flex items-baseline gap-3">
+          <Fragment key={c}>
             <span aria-hidden className="h-px w-3 shrink-0 translate-y-[-3px]" style={{ background: division.accent }} />
             {c}
-          </li>
+          </Fragment>
         ))}
-      </ul>
+      </Stagger>
+
+      {/* Sustainable Homes: drag between the raw container and the finished home */}
+      {project.visual === 'upcycle' && (
+        <Reveal className="mt-10 max-w-[34rem]">
+          <BeforeAfter before={media('container-yard')} after={media('container-home')} beforeLabel="Discarded" afterLabel="Lived in" sizes="(min-width: 1024px) 34rem, 100vw" />
+        </Reveal>
+      )}
 
       <StoreButtons links={project.links} name={project.name} className="mt-10" />
 

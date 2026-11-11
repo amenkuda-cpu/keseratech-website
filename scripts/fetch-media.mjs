@@ -20,7 +20,9 @@ fs.mkdirSync(CACHE, { recursive: true });
 fs.mkdirSync(OUT, { recursive: true });
 
 const sources = JSON.parse(fs.readFileSync(path.join(root, 'src', 'content', 'media-sources.json'), 'utf8'));
-const dims = {};
+// With ids (`node scripts/fetch-media.mjs id1 id2`), only those assets are processed and the other sizes are kept.
+const only = process.argv.slice(2);
+const dims = only.length && fs.existsSync(DIMS) ? JSON.parse(fs.readFileSync(DIMS, 'utf8')) : {};
 
 async function download(url, file) {
   if (fs.existsSync(file)) return;
@@ -32,7 +34,7 @@ async function download(url, file) {
 /** The shared grade: a touch warmer, a touch less saturated, gentle contrast. */
 const grade = (img) => img.modulate({ saturation: 0.9 }).linear([1.04, 1.0, 0.95], [1, 0, -3]);
 
-for (const s of sources) {
+for (const s of sources.filter((x) => !only.length || only.includes(x.id))) {
   if (s.kind === 'photo') {
     const raw = path.join(CACHE, `${s.pexelsId}.jpg`);
     await download(`https://images.pexels.com/photos/${s.pexelsId}/pexels-photo-${s.pexelsId}.jpeg?auto=compress&cs=tinysrgb&w=2400`, raw);

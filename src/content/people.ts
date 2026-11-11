@@ -12,15 +12,18 @@ export type PersonPhoto = { src: string; alt: string } | null;
 export const SHOW_PLACEHOLDERS = process.env.VERCEL_ENV !== 'production';
 
 export const FOUNDER = {
-  name: 'Amen',
+  name: 'Amen Ndoro',
   role: 'Founder, Kesera Technologies',
   /** Photo next to the "Who we are" note on the home page and at the top of /work. */
   photo: { src: '/people/amen.webp', alt: 'Amen smiling, in a blue PocketJobs cap and shirt' } as PersonPhoto,
-  /** First-person note on the home page. A draft: rewrite it in your own words. */
+  /** First-person note on the home page, in Amen's words. */
   note: [
-    'Hi, I’m Amen. I started Kesera because I kept seeing everyday problems around me that good software could fix, and not enough people here building the fix.',
-    'Most days we build websites, apps and systems for businesses. That work pays the bills and teaches us a lot.',
-    'Alongside it we’re working on bigger things: farm irrigation that saves water, EV charging, homes made from shipping containers. Some are still early. We’d rather tell you that straight than dress it up.',
+    'I’ve always been interested in what could exist, not just what already does.',
+    'That’s probably the best way to understand Kesera.',
+    'One day we’re building a website for a business. Another day we’re exploring how to make farm irrigation more efficient, looking at EV charging infrastructure or rethinking how affordable housing could be built.',
+    'On paper, these things have very little in common. But I’ve never been particularly interested in staying within one box.',
+    'I want to build things that have a reason to exist. Things people can actually use.',
+    'I’m Amen, and this is what I’m putting my time into.',
   ],
 };
 

@@ -44,7 +44,7 @@ export function PricingTabs({ plans, initial = 'website', className }: { plans: 
       <div
         role="tablist"
         aria-label="Service"
-        className="-mx-[var(--gutter)] flex gap-1 overflow-x-auto px-[var(--gutter)] pb-2 [scrollbar-width:none] md:mx-0 md:inline-flex md:rounded-full md:border md:border-ink/12 md:bg-white/60 md:p-1.5 md:backdrop-blur"
+        className="-mx-[var(--gutter)] flex gap-1 overflow-x-auto px-[var(--gutter)] pb-2 [scrollbar-width:none] md:mx-0 md:inline-flex md:rounded-full md:border md:border-ink/12 md:bg-white/80 md:p-1.5"
       >
         {groups.map((g, i) => (
           <button

@@ -36,7 +36,7 @@ export function SiteHeader() {
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter,box-shadow] duration-500',
         solid
-          ? 'border-b border-hair bg-void/80 shadow-[0_10px_40px_-20px_rgb(0_0_0/0.8)] backdrop-blur-xl backdrop-saturate-150'
+          ? 'border-b border-hair bg-void/95 shadow-[0_10px_40px_-20px_rgb(0_0_0/0.8)]'
           : 'border-b border-transparent bg-gradient-to-b from-black/40 to-transparent',
       )}
     >

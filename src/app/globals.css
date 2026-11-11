@@ -315,15 +315,6 @@
   from { transform: scale(1.12); }
   to { transform: scale(1); }
 }
-/* Amey AI: drifting light and a scan line over the product preview */
-@keyframes amey-drift {
-  from { transform: translate3d(0, 0, 0) scale(1); }
-  to { transform: translate3d(12vw, -6vh, 0) scale(1.15); }
-}
-@keyframes amey-scan {
-  from { top: -6rem; }
-  to { top: 100%; }
-}
 @keyframes blink-soft {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.35; }

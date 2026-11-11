@@ -68,7 +68,7 @@ export function EvChargeScene() {
           <div
             data-ev="glow"
             aria-hidden
-            className="pointer-events-none invisible absolute left-[78%] top-[52%] size-[38vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgb(74_222_128/0.35),transparent_65%)] mix-blend-screen max-md:left-[70%] max-md:top-[42%]"
+            className="pointer-events-none invisible absolute left-[78%] top-[52%] size-[38vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgb(74_222_128/0.35),transparent_65%)] max-md:left-[70%] max-md:top-[42%]"
           />
 
           <div className="shell relative flex h-full flex-col justify-end pb-10 pt-24 md:justify-center md:pb-0">
@@ -85,8 +85,8 @@ export function EvChargeScene() {
             {/* The charger's screen. The outer box positions it (incl. its centring transform); the inner one is what GSAP animates. */}
             <div className="absolute bottom-24 left-[var(--gutter)] right-[var(--gutter)] sm:bottom-8 md:bottom-auto md:right-auto md:top-1/2 md:w-[min(420px,40vw)] md:-translate-y-1/2 motion-reduce:md:left-auto motion-reduce:md:right-[var(--gutter)]">
               <div data-ev="screen" role="img" aria-label="A charger screen counting up to a full battery" className="invisible">
-                <div className="relative overflow-hidden rounded-[22px] border border-white/15 bg-black/55 p-5 shadow-[0_30px_80px_-20px_rgb(0_0_0/0.8),inset_0_1px_0_rgb(255_255_255/0.08)] backdrop-blur-2xl md:p-7">
-                  <div aria-hidden className="pointer-events-none absolute -right-20 -top-20 size-56 rounded-full bg-[#4ade80]/15 blur-3xl" />
+                <div className="relative overflow-hidden rounded-[22px] border border-white/15 bg-[#0b0f0c]/85 p-5 shadow-[0_30px_80px_-20px_rgb(0_0_0/0.8),inset_0_1px_0_rgb(255_255_255/0.08)] md:p-7">
+                  <div aria-hidden className="pointer-events-none absolute -right-20 -top-20 size-64 rounded-full bg-[radial-gradient(circle,rgb(74_222_128/0.18),transparent_70%)]" />
                   <div className="relative flex items-center justify-between">
                     <span className="t-label flex items-center gap-2 text-[#86efac]">
                       <PlugZap className="size-3.5" aria-hidden /> <span ref={statusText}>Connected</span>

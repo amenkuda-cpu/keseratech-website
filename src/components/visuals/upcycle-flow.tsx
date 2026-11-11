@@ -170,7 +170,7 @@ export function UpcycleFlow({ initialTrack = 'container' }: { initialTrack?: Tra
                     <Image src={frame.src} alt={frame.alt} fill sizes="(min-width: 1024px) 60vw, 100vw" className="object-cover" style={{ objectPosition: frame.focus }} />
                   </motion.div>
                 </AnimatePresence>
-                <span className="t-label absolute left-3 top-3 rounded-sm bg-black/55 px-2 py-1 text-[0.62rem] text-white/90 backdrop-blur-md">
+                <span className="t-label absolute left-3 top-3 rounded-sm bg-black/55 px-2 py-1 text-[0.62rem] text-white/90">
                   0{stage + 1} {stageLabel(stage)}
                 </span>
               </div>

@@ -8,28 +8,28 @@ import { cn } from '@/lib/utils';
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 /**
- * True once the element has reached the viewport (allowing for the bottom margin) or been
- * scrolled past. A plain intersection check can miss elements during fast scrolls or jumps,
- * which would leave them hidden for good; checking position on scroll as well never does.
+ * True once the element has reached the viewport (allowing for the bottom margin) or is already
+ * above it.
+ *
+ * One IntersectionObserver callback per element, no scroll listeners: dozens of per-element
+ * scroll handlers, each measuring layout, made scrolling stutter on slower machines. An element
+ * that a fast scroll or jump skips over reveals as soon as it comes back into view, and anything
+ * already above the viewport when the page loads (a reload mid-page) is shown at once.
  */
 function useRevealed(ref: React.RefObject<Element | null>, bottomMargin = 0.1) {
   const inView = useInView(ref, { once: true, margin: `0px 0px -${Math.round(bottomMargin * 100)}% 0px` as `${number}px ${number}px ${number}% ${number}px` });
-  const [passed, setPassed] = useState(false);
+  const [above, setAbove] = useState(false);
   useEffect(() => {
-    if (inView || passed) return;
-    const check = () => {
-      const el = ref.current;
-      if (el && el.getBoundingClientRect().top < window.innerHeight * (1 - bottomMargin)) setPassed(true);
-    };
-    check();
-    window.addEventListener('scroll', check, { passive: true });
-    window.addEventListener('resize', check);
-    return () => {
-      window.removeEventListener('scroll', check);
-      window.removeEventListener('resize', check);
-    };
-  }, [ref, inView, passed, bottomMargin]);
-  return inView || passed;
+    const el = ref.current;
+    if (!el || inView) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e && !e.isIntersecting && e.boundingClientRect.bottom < 0) setAbove(true);
+      io.disconnect();
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref, inView]);
+  return inView || above;
 }
 
 /**

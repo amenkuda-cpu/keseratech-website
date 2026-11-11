@@ -97,8 +97,8 @@ function AmbientGlow() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgb(56_225_255/0.10),transparent_60%)]" />
-      <div className="absolute -left-40 top-20 size-[38rem] rounded-full bg-[#1a86fa]/20 blur-[120px] motion-safe:animate-[amey-drift_18s_ease-in-out_infinite_alternate]" />
-      <div className="absolute -right-32 bottom-0 size-[34rem] rounded-full bg-[#38e1ff]/15 blur-[120px] motion-safe:animate-[amey-drift_22s_ease-in-out_infinite_alternate-reverse]" />
+      {/* Soft light from radial gradients: no blur filter and no running animation, so scrolling stays smooth */}
+      <div className="absolute inset-0 bg-[radial-gradient(42rem_34rem_at_0%_20%,rgb(26_134_250/0.16),transparent_70%),radial-gradient(40rem_30rem_at_100%_100%,rgb(56_225_255/0.12),transparent_70%)]" />
       {/* Fine scan lines, very faint, for a screen-like texture */}
       <div className="absolute inset-0 opacity-[0.025] [background-image:repeating-linear-gradient(0deg,#fff_0_1px,transparent_1px_4px)]" />
     </div>
@@ -107,9 +107,9 @@ function AmbientGlow() {
 
 function FeatureCard({ icon: Icon, title, text }: (typeof FEATURES)[number]) {
   return (
-    <div className="lift relative h-full overflow-hidden rounded-[14px] border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm transition-colors duration-500 hover:border-[#38e1ff]/40 sm:p-6">
+    <div className="lift relative h-full overflow-hidden rounded-[14px] border border-white/10 bg-white/[0.03] p-4 transition-colors duration-500 hover:border-[#38e1ff]/40 sm:p-6">
       {/* glow that follows into the card on hover */}
-      <span aria-hidden className="pointer-events-none absolute -right-16 -top-16 size-40 rounded-full bg-[#38e1ff]/0 blur-3xl transition-colors duration-700 group-hover:bg-[#38e1ff]/25" />
+      <span aria-hidden className="pointer-events-none absolute -right-16 -top-16 size-48 rounded-full bg-[radial-gradient(circle,rgb(56_225_255/0.3),transparent_70%)] opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
       <span className="relative grid size-10 place-items-center rounded-xl border border-[#38e1ff]/30 bg-[#38e1ff]/10 text-[#9ff0ff] shadow-[0_0_24px_-4px_rgb(56_225_255/0.5)]">
         <Icon className="size-5" strokeWidth={1.75} aria-hidden />
       </span>
@@ -151,8 +151,6 @@ function ProductPreview() {
         {/* Muted loop that plays only on screen; a still for reduced motion */}
         <MediaFrame media={clip} aspect="auto" rounded={false} className="absolute inset-0" sizes="(min-width: 1024px) 45vw, 100vw" />
         <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-void via-void/30 to-transparent" />
-        {/* scanning line */}
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 h-24 bg-gradient-to-b from-transparent via-[#38e1ff]/10 to-transparent motion-safe:animate-[amey-scan_5s_linear_infinite]" />
 
         <div className="absolute inset-x-4 bottom-4 space-y-3 sm:inset-x-6 sm:bottom-6" aria-live="polite">
           <AnimatePresence initial={false}>
@@ -164,7 +162,7 @@ function ProductPreview() {
                 animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
                 exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
                 transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-                className={cn('flex items-start gap-3 rounded-2xl border border-white/15 bg-gradient-to-r to-black/50 p-3.5 backdrop-blur-xl sm:p-4', TONE[n.tone])}
+                className={cn('flex items-start gap-3 rounded-2xl border border-white/15 bg-gradient-to-r to-black/80 bg-black/55 p-3.5 sm:p-4', TONE[n.tone])}
               >
                 <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-white/10">
                   <n.icon className="size-4" strokeWidth={2} aria-hidden />

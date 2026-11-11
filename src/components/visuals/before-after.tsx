@@ -76,8 +76,8 @@ export function BeforeAfter({
           <Image src={before.src} alt={before.alt} fill sizes={sizes} className="object-cover" style={{ objectPosition: before.focus }} draggable={false} />
         </div>
 
-        <span className="t-label absolute left-3 top-3 rounded-sm bg-black/55 px-2 py-1 text-[0.62rem] text-white/90 backdrop-blur-md">{beforeLabel}</span>
-        <span className="t-label absolute right-3 top-3 rounded-sm bg-black/55 px-2 py-1 text-[0.62rem] text-white/90 backdrop-blur-md">{afterLabel}</span>
+        <span className="t-label absolute left-3 top-3 rounded-sm bg-black/55 px-2 py-1 text-[0.62rem] text-white/90">{beforeLabel}</span>
+        <span className="t-label absolute right-3 top-3 rounded-sm bg-black/55 px-2 py-1 text-[0.62rem] text-white/90">{afterLabel}</span>
 
         {/* Divider and handle */}
         <div
@@ -85,7 +85,7 @@ export function BeforeAfter({
           className={cn('pointer-events-none absolute inset-y-0 w-px bg-white/90 shadow-[0_0_12px_rgb(0_0_0/0.5)]', animated && 'transition-[left] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]')}
           style={{ left: `${pos}%` }}
         >
-          <span className="absolute left-1/2 top-1/2 grid size-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-white/70 bg-void/70 text-white backdrop-blur-md">
+          <span className="absolute left-1/2 top-1/2 grid size-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-white/70 bg-void/85 text-white">
             <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.75">
               <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
             </svg>

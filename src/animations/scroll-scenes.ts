@@ -36,8 +36,8 @@ export const SCENES = {
     /** How far the video layer drifts up (yPercent) while the next section lifts in, and where it fades to. */
     videoRise: -22,
     videoFadeTo: 0.25,
-    /** The next section grows from this scale to 1 as it is lifted, from its top edge. */
-    nextFromScale: 0.94,
+    // The next section is not scaled while it lifts: scaling a whole tall section made the browser
+    // redraw it every frame. It rises with the scroll itself, which costs nothing.
   },
   /** Fraction of each clip where the grip happens: phase 1 plays up to here, phase 2 plays the rest. */
   gripAt: { 'robotic-arm': 0.74, crane: 0.72 },
@@ -107,7 +107,8 @@ function loadWhenNear(video: HTMLVideoElement, near: Element, mobile: boolean, r
   };
   // iOS only lets a video seek once it has played: play and pause it silently.
   const unlockSeeking = () => video.play().then(() => video.pause()).catch(() => {});
-  const io = new IntersectionObserver((entries) => entries.some((e) => e.isIntersecting) && start(), { rootMargin: '100% 0px' });
+  // Start loading a screen and a half early, so slower connections have the clip in time.
+  const io = new IntersectionObserver((entries) => entries.some((e) => e.isIntersecting) && start(), { rootMargin: '150% 0px' });
   io.observe(near);
   return () => {
     io.disconnect();
@@ -138,13 +139,38 @@ function mirror<T extends Record<string, number>>(state: T, key: keyof T, apply:
   return () => gsap.ticker.remove(tick);
 }
 
-/** The video's playhead as a 0-1 fraction of its length, kept on screen by mirror(). */
+/**
+ * The video's playhead as a 0-1 fraction of its length, kept on screen by mirror().
+ * Seeks never pile up: while the decoder is still busy with one, only the latest target is kept
+ * and applied when it finishes (piled-up seeks were a main cause of scroll lag on slower laptops).
+ */
 function playhead(video: HTMLVideoElement) {
   const state = { p: 0 };
-  const stop = mirror(state, 'p', (p) => {
-    if (video.readyState >= 1 && video.duration) video.currentTime = Math.min(video.duration - 0.04, p * video.duration);
+  let pending: number | null = null;
+  const seekTo = (p: number) => {
+    if (!(video.readyState >= 1 && video.duration)) return;
+    const t = Math.min(video.duration - 0.04, p * video.duration);
+    if (Math.abs(video.currentTime - t) < 0.02) return; // within a frame: nothing to do
+    video.currentTime = t;
+  };
+  const onSeeked = () => {
+    if (pending === null) return;
+    const p = pending;
+    pending = null;
+    seekTo(p);
+  };
+  video.addEventListener('seeked', onSeeked);
+  const stopMirror = mirror(state, 'p', (p) => {
+    if (video.seeking) pending = p;
+    else seekTo(p);
   });
-  return { state, stop };
+  return {
+    state,
+    stop: () => {
+      stopMirror();
+      video.removeEventListener('seeked', onSeeked);
+    },
+  };
 }
 
 /** A tween that moves a playhead between two fractions of the clip. */
@@ -182,7 +208,6 @@ export function pullScene(root: HTMLElement, clip: keyof typeof SCENES.gripAt): 
   const track = root.querySelector<HTMLElement>('[data-pull-track]')!;
   const layer = root.querySelector<HTMLElement>('[data-pull-video-layer]')!;
   const video = root.querySelector<HTMLVideoElement>('video')!;
-  const next = root.querySelector<HTMLElement>('[data-pull-next]')!;
   const grip = SCENES.gripAt[clip];
   const mm = gsap.matchMedia();
 
@@ -206,16 +231,15 @@ export function pullScene(root: HTMLElement, clip: keyof typeof SCENES.gripAt): 
             scrub: SCENES.pull.scrub,
             invalidateOnRefresh: true,
             markers: markers(),
-            onToggle: (self) => willChangeWhileActive([layer, next])(self.isActive),
+            onToggle: (self) => willChangeWhileActive([layer])(self.isActive),
           },
         });
         // Phase 1: assembly / drop-in, up to the grip
         tl.add(scrub(head.state, 0, grip, split), 0);
-        // Phase 2: the pull. The next section rises with the scroll (layout), and grows from its
-        // top edge; the video layer drifts up with it and fades, so the lift reads as one motion.
+        // Phase 2: the pull. The next section rises with the scroll (layout, no transform); the
+        // video layer drifts up with it and fades, so the lift reads as one motion.
         tl.add(scrub(head.state, grip, 1, 1 - split), split);
         tl.fromTo(layer, { yPercent: 0, autoAlpha: 1 }, { yPercent: SCENES.pull.videoRise, autoAlpha: SCENES.pull.videoFadeTo, duration: 1 - split }, split);
-        tl.fromTo(next, { scale: SCENES.pull.nextFromScale, transformOrigin: '50% 0%' }, { scale: 1, duration: 1 - split, ease: EASE_OUT }, split);
         return tl;
       }),
     );

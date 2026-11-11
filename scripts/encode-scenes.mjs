@@ -3,8 +3,8 @@
 // Sources: .cache/scenes/<id>.mov (or .mp4), and optionally .cache/scenes/<id>-mobile.mov for a
 // purpose-made 9:16 version. Without one, the phone version is a centre crop of the main clip.
 //
-// Scrubbing means seeking to any frame on every scroll tick, so every 2nd frame is a keyframe
-// (-g 2). That keeps seeking instant at a fraction of the size of all-keyframe (-g 1) files.
+// Scrubbing means seeking to any frame on every scroll tick, so every 4th frame is a keyframe
+// (-g 4). That keeps seeking quick at a fraction of the size of all-keyframe (-g 1) files.
 // The clips carry an "AI 生成" (AI-generated) label in the bottom-right corner; the desktop crop
 // keeps 88 % of the frame from the top-left area, which removes it. Phone crops are centred and
 // stop above it.
@@ -44,8 +44,8 @@ const kb = (f) => `${Math.round(fs.statSync(f).size / 1024)} KB`;
 function encode(input, vf, base, crf) {
   const mp4 = path.join(OUT, `${base}.mp4`);
   const webm = path.join(OUT, `${base}.webm`);
-  ff(['-i', input, '-vf', `${vf},fps=30`, '-an', '-c:v', 'libx264', '-profile:v', 'high', '-preset', 'slow', '-crf', String(crf), '-g', '2', '-keyint_min', '2', '-sc_threshold', '0', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', mp4]);
-  ff(['-i', input, '-vf', `${vf},fps=30`, '-an', '-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', String(crf + 18), '-g', '2', '-row-mt', '1', '-deadline', 'good', '-cpu-used', '4', webm]);
+  ff(['-i', input, '-vf', `${vf},fps=30`, '-an', '-c:v', 'libx264', '-profile:v', 'high', '-preset', 'slow', '-crf', String(crf), '-g', '4', '-keyint_min', '4', '-sc_threshold', '0', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', mp4]);
+  ff(['-i', input, '-vf', `${vf},fps=30`, '-an', '-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', String(crf + 18), '-g', '4', '-row-mt', '1', '-deadline', 'good', '-cpu-used', '4', webm]);
   const png = path.join(SRC, `${base}-poster.png`);
   ff(['-i', mp4, '-frames:v', '1', png]);
   return sharp(png).webp({ quality: 78 }).toFile(path.join(OUT, `${base}.webp`)).then(() => console.log(base.padEnd(22), 'mp4', kb(mp4), '· webm', kb(webm)));
@@ -57,7 +57,7 @@ for (const id of IDS.filter((x) => !only.length || only.includes(x))) {
     console.warn(`skip ${id}: no source in .cache/scenes`);
     continue;
   }
-  await encode(main, DESKTOP(...(SIZE[id] ?? [1280, 720])), id, 26);
+  await encode(main, DESKTOP(...(SIZE[id] ?? [1280, 720])), id, 28);
   const tall = find(`${id}-mobile`);
-  await encode(tall ?? main, tall ? PHONE_FROM_TALL : PHONE_FROM_WIDE, `${id}-mobile`, 28);
+  await encode(tall ?? main, tall ? PHONE_FROM_TALL : PHONE_FROM_WIDE, `${id}-mobile`, 30);
 }

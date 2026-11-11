@@ -43,7 +43,7 @@ export function Photo({
         />
         <span
           className={cn(
-            't-label absolute left-3 top-3 rounded-sm px-2 py-1 text-[0.6rem] backdrop-blur-md',
+            't-label absolute left-3 top-3 rounded-sm px-2 py-1 text-[0.6rem]',
             photo.ours ? 'bg-home text-void' : 'bg-black/55 text-white/85',
           )}
         >

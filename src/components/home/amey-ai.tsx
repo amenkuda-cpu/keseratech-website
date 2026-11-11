@@ -81,7 +81,7 @@ export function AmeyAi() {
                 A calm guardian on every phone. Amey protects older people and busy families from scams, remembers medicines and tasks, calls for help when something goes wrong, and keeps loved ones close, all in the person’s own language.
               </p>
               <p className="t-body mt-4 max-w-xl text-dim">
-                For older people living alone or with a carer, and for the children in another city or country who want to know they’re safe. Launching on Android and iPhone on {AMEY_LAUNCH}.
+                For older people living alone or with a carer, and for the children in another city or country who want to know they’re safe. Launching on Android and iPhone on {AMEY_LAUNCH}, published in the App Store and Google Play by Attribute AI, LLC.
               </p>
             </Reveal>
             <WaitlistForm />

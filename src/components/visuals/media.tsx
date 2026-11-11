@@ -41,12 +41,12 @@ export function MediaFrame({
         className="object-cover"
         style={{ objectPosition: media.focus }}
       />
-      {media.kind === 'video' && media.video && <LoopVideo src={media.video} label={media.alt} />}
+      {media.kind === 'video' && media.video && <LoopVideo src={media.video} label={media.alt} focus={media.focus} />}
     </div>
   );
 }
 
-function LoopVideo({ src, label }: { src: string; label: string }) {
+function LoopVideo({ src, label, focus }: { src: string; label: string; focus?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   const reduce = useReducedMotion();
   const [near, setNear] = useState(false);
@@ -82,6 +82,7 @@ function LoopVideo({ src, label }: { src: string; label: string }) {
       preload="none"
       aria-label={label}
       className="absolute inset-0 size-full object-cover"
+      style={{ objectPosition: focus }}
     />
   );
 }

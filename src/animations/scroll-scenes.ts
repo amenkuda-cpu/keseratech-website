@@ -52,9 +52,11 @@ export const SCENES = {
   sprinkler: {
     scrub: 0.8,
     /** The splash ends when the closing section's top reaches this point of the viewport. */
-    endAt: '35%',
+    endAt: '25%',
+    /** The splash starts when the closing section's top reaches this point (so the section above stays readable). */
+    startAt: '85%',
     /** Timeline split (0-1): overlay fades in by `fadeIn`, content wipes in `revealStart`-`revealEnd`, overlay fades out from `fadeOut`. */
-    fadeIn: 0.12,
+    fadeIn: 0.2,
     revealStart: 0.45,
     revealEnd: 0.9,
     fadeOut: 0.78,
@@ -327,7 +329,7 @@ export function sprinklerScene(root: HTMLElement): Cleanup {
             // From the moment the closing section peeks in until its top is `endAt` down the
             // viewport, so the splash has always finished by the time the call to action is in
             // view. clamp() keeps both points reachable however short the page below is.
-            start: 'clamp(top bottom)',
+            start: `clamp(top ${SCENES.sprinkler.startAt})`,
             end: `clamp(top ${SCENES.sprinkler.endAt})`,
             scrub: SCENES.sprinkler.scrub,
             invalidateOnRefresh: true,

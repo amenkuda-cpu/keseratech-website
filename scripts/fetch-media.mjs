@@ -45,19 +45,21 @@ for (const s of sources.filter((x) => !only.length || only.includes(x.id))) {
     const raw = path.join(CACHE, `${s.pexelsId}.mp4`);
     await download(s.file, raw);
     const out = path.join(OUT, `${s.id}.mp4`);
+    // Optional per-clip "width"/"height"/"crf" in media-sources.json, for clips shown large.
+    const [w, h, crf] = [s.width ?? 1280, s.height ?? 720, s.crf ?? 29];
     const vf = [
-      'scale=1280:720:force_original_aspect_ratio=increase:flags=lanczos',
-      'crop=1280:720',
+      `scale=${w}:${h}:force_original_aspect_ratio=increase:flags=lanczos`,
+      `crop=${w}:${h}`,
       'eq=contrast=1.04:saturation=0.9',
       'colorbalance=rs=0.03:bs=-0.03:rh=0.03:bh=-0.03',
       'fps=25',
     ].join(',');
     execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-ss', String(s.start), '-t', String(s.length), '-i', raw, '-vf', vf, '-an',
-      '-c:v', 'libx264', '-profile:v', 'high', '-preset', 'slow', '-crf', '29', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', out]);
+      '-c:v', 'libx264', '-profile:v', 'high', '-preset', 'slow', '-crf', String(crf), '-pix_fmt', 'yuv420p', '-movflags', '+faststart', out]);
     const poster = path.join(CACHE, `${s.id}-poster.png`);
     execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', out, '-frames:v', '1', poster]);
     await sharp(poster).webp({ quality: 74 }).toFile(path.join(OUT, `${s.id}.webp`));
-    dims[s.id] = { width: 1280, height: 720 };
+    dims[s.id] = { width: w, height: h };
   }
   const size = (f) => (fs.statSync(path.join(OUT, f)).size / 1024).toFixed(0) + ' KB';
   console.log(s.id.padEnd(22), s.kind === 'photo' ? size(`${s.id}.webp`) : `${size(`${s.id}.mp4`)} + poster ${size(`${s.id}.webp`)}`);

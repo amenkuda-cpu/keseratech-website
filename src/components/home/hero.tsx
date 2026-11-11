@@ -33,15 +33,15 @@ export function Hero({ projectsInDevelopment }: { projectsInDevelopment: number 
             as="h1"
             immediate
             delay={0.1}
-            className="t-display-xl mt-6 text-[clamp(2.4rem,10.5vw,4.4rem)] lg:text-[clamp(3.6rem,5.2vw,6rem)]"
-            lines={['We build the websites,', 'apps and systems', <em key="z">your business runs on.</em>]}
+            className="t-display-xl mt-6 text-[clamp(2.8rem,12vw,5rem)] lg:text-[clamp(4.4rem,6.6vw,7.2rem)]"
+            lines={['Software that', <em key="z">moves business.</em>]}
           />
         </div>
 
         {/* Off to the right on wide screens, so the hero isn't one centred block */}
         <div className="lg:col-span-4 lg:pb-3" style={fade(0.5).style}>
           <p className={`t-lead text-white/85 ${fade(0).className}`}>
-            Made in Zimbabwe, for businesses here and abroad. We’re also building our own projects in farming, energy and housing.
+            Websites, apps and AI, made in Zimbabwe for businesses here and abroad. We’re also building our own projects in farming, energy and housing.
           </p>
           <div className={`mt-8 flex flex-col gap-3 sm:flex-row ${fade(0).className}`}>
             <Cta href="/start" className="w-full sm:w-auto">Start a project</Cta>

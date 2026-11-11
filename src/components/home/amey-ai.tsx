@@ -1,13 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import { Fragment, useEffect, useRef, useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import { AnimatePresence, motion, useInView } from 'motion/react';
-import { Activity, ArrowRight, Gift, HeartPulse, Languages, Lock, Loader2, MessageCircleHeart, Pill, ShieldAlert, Siren, Smartphone, UserRoundCheck, Users, WifiOff } from 'lucide-react';
+import { Activity, ArrowRight, Loader2, MessageCircleHeart, Pill, ShieldAlert, Siren, Users } from 'lucide-react';
 import { useReducedMotion } from '@/components/system/reduced-motion';
 import { MaskLines, Reveal, Stagger } from '@/components/system/motion';
 import { Label } from '@/components/system/primitives';
 import { media } from '@/content/media';
+import { MediaFrame } from '@/components/visuals/media';
 import { submitWaitlist } from '@/app/(site)/waitlist-action';
 import { cn } from '@/lib/utils';
 
@@ -17,37 +18,21 @@ import { cn } from '@/lib/utils';
 /** Launch facts shown under the heading. */
 export const AMEY_LAUNCH = '25 December 2026';
 
+/** Six things Amey does, one short line each. */
 const FEATURES = [
-  { icon: ShieldAlert, title: 'Scam protection', text: 'Checks messages, links and calls, and warns in plain words before money or a PIN is shared. Knows local scams: EcoCash, banks, ZIMRA, NSSA, fake prizes. Works offline.' },
-  { icon: MessageCircleHeart, title: 'Ask Amey, a voice companion', text: 'Talk to Amey out loud in a warm, natural voice. She answers questions, tells stories, sets reminders and explains phone tasks one step at a time.' },
-  { icon: Pill, title: 'Medicine, water and task reminders', text: 'Simple daily reminders with big buttons. A pill organiser and water glass fill up as the day goes. Amey reminds; she never gives medical advice.' },
-  { icon: Siren, title: 'SOS and emergency help', text: 'One tap to call for help, the right emergency numbers for your country, and a countdown that calls a trusted person if nobody answers.' },
-  { icon: Activity, title: 'Fall and crash detection', text: '“Are you OK?” after a hard fall or a crash, and a call for help if there is no answer.' },
-  { icon: HeartPulse, title: 'Emergency medical info', text: 'Allergies, medicines, blood type and contacts on one clear card, readable from the lock screen by first responders.' },
-  { icon: Users, title: 'Family Circle', text: 'Optional. Family see only what the person chooses to share: alerts, check-ins and one short sentence, never message contents.' },
-  { icon: UserRoundCheck, title: 'Talk to someone privately', text: 'A discreet way to tell a trusted person if a carer is mistreating them. Nothing is stored and carers are never told.' },
-  { icon: Gift, title: 'Rewards for healthy habits', text: 'A streak for every perfect day. Every 14 perfect days earns an Amey Voucher paid to EcoCash.' },
+  { icon: ShieldAlert, title: 'Stops scams', text: 'Warns before money or a PIN is shared.' },
+  { icon: Pill, title: 'Reminds', text: 'Medicine, water and daily tasks.' },
+  { icon: Activity, title: 'Spots falls', text: 'Asks “Are you OK?” and calls for help.' },
+  { icon: Siren, title: 'SOS in one tap', text: 'Always free, on every plan.' },
+  { icon: MessageCircleHeart, title: 'Talks with you', text: 'A warm voice, in Shona, Ndebele and 38 more languages.' },
+  { icon: Users, title: 'Keeps family close', text: 'They see only what you choose to share.' },
 ];
 
-/** Why Amey is different, as short proof points. */
-const PROOF = [
-  { icon: Languages, text: '40 languages, including Shona and Ndebele' },
-  { icon: WifiOff, text: 'Scam checks, SOS and reminders work offline' },
-  { icon: Smartphone, text: 'Built to run fast on a 2 GB Android phone' },
-  { icon: Lock, text: 'Messages are checked on the phone and never stored' },
-];
-
-/** The plans from the pitch. SOS, the countdown and fall alerts are free for everyone. */
-const PLANS = [
-  { name: 'Shield', price: '$2.99', text: 'Full protection, reminders, Ask Amey and natural voice' },
-  { name: 'Family', price: '$5.99', text: 'Everything in Shield, plus a Family Circle with live alerts' },
-];
-
-/** The notifications that play over the product photo, one after another. */
+/** The notifications that play over the video, one after another. */
 const PREVIEW = [
-  { tone: 'alert', title: 'This looks like a scam', text: '“Wrong transfer, please send it back” is a known EcoCash trick. Don’t share your PIN.', icon: ShieldAlert },
-  { tone: 'safe', title: 'Medicine time', text: 'Your 9:00 tablets. Tap when you’ve taken them. 2 of 3 done today.', icon: Pill },
-  { tone: 'urgent', title: 'Are you OK?', text: 'Hard fall detected. Calling Tendai in 30 s unless you tap “I’m fine”.', icon: Activity },
+  { tone: 'alert', title: 'Scam warning', text: 'Don’t send it. This “wrong transfer” is a known trick.', icon: ShieldAlert },
+  { tone: 'safe', title: 'Medicine time', text: 'Your 9:00 tablets. 2 of 3 done today.', icon: Pill },
+  { tone: 'urgent', title: 'Are you OK?', text: 'Fall detected. Calling Tendai in 30 s.', icon: Activity },
 ] as const;
 
 const TONE = {
@@ -77,11 +62,11 @@ export function AmeyAi() {
             </div>
             <MaskLines id="amey-title" as="h2" className="t-display-l mt-10" lines={['Join the waitlist', <em key="a">for Amey AI.</em>]} />
             <Reveal>
-              <p className="t-lead mt-8 max-w-xl text-white/85">
-                A calm guardian on every phone. Amey protects older people and busy families from scams, remembers medicines and tasks, calls for help when something goes wrong, and keeps loved ones close, all in the person’s own language.
+              <p className="t-lead mt-8 max-w-lg text-white/85">
+                An AI guardian for older people. Amey stops scams, reminds them about their medicine and calls for help if they fall.
               </p>
-              <p className="t-body mt-4 max-w-xl text-dim">
-                For older people living alone or with a carer, and for the children in another city or country who want to know they’re safe. Launching on Android and iPhone on {AMEY_LAUNCH}, published in the App Store and Google Play by Attribute AI, LLC.
+              <p className="mt-4 max-w-lg text-sm leading-relaxed text-white/55">
+                Android and iPhone, {AMEY_LAUNCH}. From $2.99 a month after a 14-day free trial. Published by Attribute AI, LLC.
               </p>
             </Reveal>
             <WaitlistForm />
@@ -94,43 +79,14 @@ export function AmeyAi() {
 
         <Stagger
           as="ul"
-          gap={0.08}
-          className="mt-20 grid gap-4 sm:grid-cols-2 lg:mt-28 lg:grid-cols-3"
+          gap={0.07}
+          className="mt-16 grid grid-cols-2 gap-3 sm:gap-4 lg:mt-20 lg:grid-cols-3"
           itemClassName="group relative"
         >
           {FEATURES.map((f) => (
             <FeatureCard key={f.title} {...f} />
           ))}
         </Stagger>
-
-        {/* Proof points and plans */}
-        <div className="mt-16 grid gap-10 border-t border-white/10 pt-12 lg:grid-cols-12 lg:gap-12">
-          <Stagger as="ul" gap={0.06} className="grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:col-span-7" itemClassName="flex items-start gap-3 text-[0.98rem] text-white/85">
-            {PROOF.map((p) => (
-              <Fragment key={p.text}>
-                <p.icon className="mt-0.5 size-5 shrink-0 text-[#9ff0ff]" strokeWidth={1.75} aria-hidden />
-                {p.text}
-              </Fragment>
-            ))}
-          </Stagger>
-          <Reveal className="lg:col-span-5">
-            <p className="t-label text-white/50">Plans after a 14-day free trial</p>
-            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-              {PLANS.map((p) => (
-                <li key={p.name} className="lift rounded-[14px] border border-white/10 bg-white/[0.03] p-5">
-                  <p className="flex items-baseline justify-between gap-3">
-                    <span className="font-display text-lg font-semibold">{p.name}</span>
-                    <span className="tabular-nums"><span className="font-display text-2xl font-semibold">{p.price}</span><span className="text-sm text-white/50"> / month</span></span>
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed text-dim">{p.text}</p>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 flex items-center gap-2 text-sm text-[#86efac]">
-              <Siren className="size-4" aria-hidden /> SOS, the emergency countdown and fall alerts are always free.
-            </p>
-          </Reveal>
-        </div>
       </div>
     </section>
   );
@@ -151,25 +107,25 @@ function AmbientGlow() {
 
 function FeatureCard({ icon: Icon, title, text }: (typeof FEATURES)[number]) {
   return (
-    <div className="lift relative h-full overflow-hidden rounded-[14px] border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm transition-colors duration-500 hover:border-[#38e1ff]/40 md:p-7">
+    <div className="lift relative h-full overflow-hidden rounded-[14px] border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm transition-colors duration-500 hover:border-[#38e1ff]/40 sm:p-6">
       {/* glow that follows into the card on hover */}
       <span aria-hidden className="pointer-events-none absolute -right-16 -top-16 size-40 rounded-full bg-[#38e1ff]/0 blur-3xl transition-colors duration-700 group-hover:bg-[#38e1ff]/25" />
-      <span className="relative grid size-11 place-items-center rounded-xl border border-[#38e1ff]/30 bg-[#38e1ff]/10 text-[#9ff0ff] shadow-[0_0_24px_-4px_rgb(56_225_255/0.5)]">
+      <span className="relative grid size-10 place-items-center rounded-xl border border-[#38e1ff]/30 bg-[#38e1ff]/10 text-[#9ff0ff] shadow-[0_0_24px_-4px_rgb(56_225_255/0.5)]">
         <Icon className="size-5" strokeWidth={1.75} aria-hidden />
       </span>
-      <h3 className="t-title relative mt-6 text-[1.25rem]">{title}</h3>
-      <p className="relative mt-3 text-[0.95rem] leading-relaxed text-dim">{text}</p>
+      <h3 className="t-title relative mt-4 text-[1.1rem] sm:mt-5 sm:text-[1.25rem]">{title}</h3>
+      <p className="relative mt-1.5 text-sm leading-snug text-dim sm:text-[0.95rem]">{text}</p>
     </div>
   );
 }
 
-/** A real photograph with Amey's alerts arriving over it, as they would on the phone. */
+/** Real footage of a grandfather on his phone, with Amey's alerts arriving over it. */
 function ProductPreview() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.4 });
   const reduce = useReducedMotion();
   const [shown, setShown] = useState(reduce ? PREVIEW.length : 0);
-  const photo = media('amey-companion');
+  const clip = media('amey-grandfather');
 
   useEffect(() => {
     if (reduce) {
@@ -191,8 +147,9 @@ function ProductPreview() {
 
   return (
     <figure ref={ref} className="relative">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[18px] ring-1 ring-white/10 shadow-[0_40px_120px_-40px_rgb(56_225_255/0.45)] sm:aspect-[5/5] lg:aspect-[4/5]">
-        <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" style={{ objectPosition: photo.focus }} />
+      <div className="relative aspect-[4/5] overflow-hidden rounded-[18px] ring-1 ring-white/10 shadow-[0_40px_120px_-40px_rgb(56_225_255/0.45)] sm:aspect-square">
+        {/* Muted loop that plays only on screen; a still for reduced motion */}
+        <MediaFrame media={clip} aspect="auto" rounded={false} className="absolute inset-0" sizes="(min-width: 1024px) 45vw, 100vw" />
         <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-void via-void/30 to-transparent" />
         {/* scanning line */}
         <div aria-hidden className="pointer-events-none absolute inset-x-0 h-24 bg-gradient-to-b from-transparent via-[#38e1ff]/10 to-transparent motion-safe:animate-[amey-scan_5s_linear_infinite]" />
@@ -224,7 +181,7 @@ function ProductPreview() {
           </AnimatePresence>
         </div>
       </div>
-      <figcaption className="t-label mt-3 text-[0.6rem] text-white/40">Preview of Amey’s alerts. Photo: {photo.credit}, Pexels</figcaption>
+      <figcaption className="t-label mt-3 text-[0.6rem] text-white/40">Preview of Amey’s alerts. Video: {clip.credit}, Pexels</figcaption>
     </figure>
   );
 }

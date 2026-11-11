@@ -8,7 +8,7 @@ import { Label } from '@/components/system/primitives';
 
 export const metadata: Metadata = {
   title: 'Website, App & Software Prices in Zimbabwe',
-  description: 'Clear prices in Zimbabwe: websites from $100, mobile apps from $200, AI chatbots from $40, AI automation from $80 and CRM dashboards from $100, plus a live estimator for custom software.',
+  description: 'Clear prices in Zimbabwe: websites from $120, apps from $250, CRM dashboards from $100, AI chatbots from $40 and AI automation from $80, plus a live estimator for custom software.',
   alternates: { canonical: '/pricing' },
 };
 
@@ -29,7 +29,7 @@ export default async function PricingPage() {
         <p className="t-label text-ink/55">Sera Tech · Pricing</p>
         <h1 id="pricing-title" className="t-display-l mt-6 max-w-[14ch]">Clear prices. Real scope.</h1>
         <p className="t-lead mt-6 max-w-2xl text-ink/70">
-          Fixed packages for websites, mobile apps, AI chatbots, AI automation and CRM dashboards. Anything bigger is priced by scope, and you can estimate it below.
+          Fixed packages for websites, apps, CRM dashboards, AI chatbots and AI automation. Anything bigger is priced by scope, and you can estimate it below.
         </p>
         <nav aria-label="Pricing sections" className="t-label mt-10 flex flex-wrap gap-x-8 gap-y-3 text-ink/70">
           <a href="#packages" className="hover:text-ink">01 Packages</a>

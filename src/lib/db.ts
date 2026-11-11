@@ -12,7 +12,7 @@ import { SEED_PROJECTS } from '@/content/projects';
 //   pure-JavaScript web client, so hosts like Netlify need no native modules;
 // - locally (no Turso settings): a file under DATA_DIR through Node's built-in node:sqlite.
 
-type Arg = string | number;
+type Arg = string | number | null;
 type Stmt = { sql: string; args?: Arg[] };
 type Row = Record<string, unknown>;
 type Store = {
@@ -43,6 +43,16 @@ const SCHEMA: Stmt[] = [
     created_at TEXT NOT NULL DEFAULT (${NOW}),
     status TEXT NOT NULL DEFAULT 'NEW',
     data TEXT NOT NULL
+  )`,
+  // Product waitlists (Amey AI first). One row per email per product.
+  `CREATE TABLE IF NOT EXISTS waitlist (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at TEXT NOT NULL DEFAULT (${NOW}),
+    product TEXT NOT NULL,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    business TEXT,
+    UNIQUE (product, email)
   )`,
 ].map((sql) => ({ sql }));
 
@@ -279,4 +289,26 @@ export async function listEnquiries(): Promise<Enquiry[]> {
 
 export async function setEnquiryStatus(id: number, status: EnquiryStatus) {
   await run(`UPDATE enquiries SET status = ? WHERE id = ?`, [status, id]);
+}
+
+// ---------------------------------------------------------------------------
+// Waitlists
+
+export type WaitlistEntry = { id: number; createdAt: string; product: string; name: string; email: string; business: string | null };
+
+/** Adds someone to a product's waitlist. Signing up again with the same email updates the name and business. */
+export async function joinWaitlist(entry: { product: string; name: string; email: string; business: string | null }) {
+  await run(
+    `INSERT INTO waitlist (product, name, email, business) VALUES (?, ?, ?, ?)
+     ON CONFLICT (product, email) DO UPDATE SET name = excluded.name, business = COALESCE(excluded.business, waitlist.business)`,
+    [entry.product, entry.name, entry.email, entry.business ?? null],
+  );
+}
+
+export async function listWaitlist(product?: string): Promise<WaitlistEntry[]> {
+  const rows = await all<{ id: number; created_at: string; product: string; name: string; email: string; business: string | null }>(
+    `SELECT id, created_at, product, name, email, business FROM waitlist ${product ? 'WHERE product = ?' : ''} ORDER BY id DESC LIMIT 2000`,
+    product ? [product] : [],
+  );
+  return rows.map((r) => ({ id: Number(r.id), createdAt: r.created_at, product: r.product, name: r.name, email: r.email, business: r.business }));
 }

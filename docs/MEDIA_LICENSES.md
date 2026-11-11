@@ -34,6 +34,8 @@ These are illustrative stock images, not photographs of Kesera's own projects, s
 | `container-build.webp` | /sera-home stage 02 (container) | Container conversion | Melvin Silva | [pexels.com/photo/17949905](https://www.pexels.com/photo/view-of-a-container-house-under-construction-17949905/) |
 | `container-cabin-glass.webp` | /sera-home "Also built from it" (container) | Finished container cabin | Fernanda Neitzel | [pexels.com/photo/34041503](https://www.pexels.com/photo/modern-glass-cabin-in-serene-natural-setting-34041503/) |
 | `delivery-night.webp` | Home: Ventures showcase (BikerDash), Technology ecosystem · /projects card · /projects/bikerdash | BikerDash | Vitaliy Mitrofanenko | [pexels.com/photo/9325653](https://www.pexels.com/photo/a-person-riding-a-black-motorcycle-on-the-road-at-night-9325653/) |
+| `amey-companion.webp` | Home: Amey AI section (product preview) | Amey AI | Kampus Production | [pexels.com/photo/7551599](https://www.pexels.com/photo/elderly-man-sitting-on-sofa-while-holding-a-cellphone-7551599/) |
+| `ev-charging-scrub(.mp4/.webp)`, `ev-charging-scrub-portrait(.mp4/.webp)` | Home: EV charging scroll scene | Same footage as `ev-charging`, re-cut for scroll scrubbing (keyframe every 4 frames; portrait crop for phones) | Gustavo Fring | [pexels.com/video/4817951](https://www.pexels.com/video/charging-an-electric-car-4817951/) |
 
 ## Videos (8 s, silent, looping, 1280×720 H.264 with WebP poster)
 

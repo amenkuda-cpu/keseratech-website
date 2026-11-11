@@ -133,6 +133,7 @@ export const NAV = [
   { href: '/sera-tech', label: 'Sera Tech' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/about', label: 'About' },
+  { href: '/#amey-ai', label: 'Amey AI' },
 ] as const;
 
 export const SERVICES = [

@@ -3,7 +3,8 @@
 
 import { z } from 'zod';
 
-export const PLAN_GROUPS = ['website', 'app', 'chatbot', 'automation', 'crm'] as const;
+/** Also the order of the pricing tabs. */
+export const PLAN_GROUPS = ['website', 'app', 'crm', 'chatbot', 'automation'] as const;
 export type PlanGroup = (typeof PLAN_GROUPS)[number];
 
 export const SERVICE_IDS = ['website', 'app', 'software', 'webapp', 'automation', 'unsure'] as const;
@@ -12,13 +13,13 @@ export type ServiceId = (typeof SERVICE_IDS)[number];
 /** How each package group is named on the site, and which project-builder service it starts. */
 export const PLAN_GROUP_INFO: Record<PlanGroup, { label: string; tab: string; service: ServiceId }> = {
   website: { label: 'Website', tab: 'Websites', service: 'website' },
-  app: { label: 'Mobile App', tab: 'Mobile apps', service: 'app' },
+  app: { label: 'App', tab: 'Apps', service: 'app' },
+  crm: { label: 'CRM & Dashboards', tab: 'CRM dashboards', service: 'software' },
   chatbot: { label: 'AI Chatbot', tab: 'AI chatbots', service: 'automation' },
   automation: { label: 'AI Automation', tab: 'AI automation', service: 'automation' },
-  crm: { label: 'CRM & Dashboards', tab: 'CRM & dashboards', service: 'software' },
 };
 
-/** "Pro Mobile App" -> "Pro": the tier, with the group's own name taken off. */
+/** "Starter App" -> "Starter": the tier, with the group's own name taken off. */
 export const planTier = (p: Pick<Plan, 'name' | 'group'>) => {
   const label = PLAN_GROUP_INFO[p.group].label;
   return p.name.toLowerCase().endsWith(label.toLowerCase()) ? p.name.slice(0, -label.length).trim() || p.name : p.name;
@@ -47,7 +48,7 @@ export const planSchema = z.object({
 export type Plan = z.infer<typeof planSchema>;
 
 /** Bump when DEFAULT_PLANS must replace the stored plans once (db.ts applies it on start-up). */
-export const PLANS_VERSION = 2;
+export const PLANS_VERSION = 3;
 
 const optionSchema = z.object({ id: z.string(), label: z.string(), cents: z.number().int().min(0) });
 const multiplierSchema = z.object({ id: z.string(), label: z.string(), multiplier: z.number().min(0.5).max(3) });
@@ -149,8 +150,9 @@ export function planSubline(p: Pick<Plan, 'monthlyCents' | 'note'>): string | nu
 }
 
 // ---------------------------------------------------------------------------
-// Defaults: the Sera Tech price cards (November 2026). The Basic and Corporate website
-// plans predate those cards and are unchanged. Edit live prices in /admin.
+// Defaults (November 2026). Website and app prices from the owner's brief; CRM, chatbot and
+// automation plans from the Sera Tech price cards. Website and app feature lists are drafts
+// for the owner to confirm. Edit live prices in /admin.
 
 type PlanSeed = Omit<Plan, 'blurb' | 'plus' | 'from' | 'highlight' | 'proposal' | 'monthlyCents' | 'note'> & Partial<Plan>;
 const plan = (p: PlanSeed): Plan => ({ blurb: '', plus: false, from: false, highlight: null, proposal: false, monthlyCents: null, note: null, ...p });
@@ -158,32 +160,32 @@ const POPULAR = 'Most popular';
 
 export const DEFAULT_PLANS: Plan[] = [
   plan({
-    id: 'basic-website', group: 'website', name: 'Basic Website', priceCents: 10000, sort: 1,
+    id: 'basic-website', group: 'website', name: 'Basic Website', priceCents: 12000, sort: 1,
     blurb: 'A clear, professional presence for a new or small business.',
     features: ['Custom 3-page website', 'Responsive design', 'Basic SEO setup', 'Logo integration', 'Contact form'],
   }),
   plan({
-    id: 'pro-website', group: 'website', name: 'Pro Website', priceCents: 18000, sort: 2, highlight: POPULAR,
-    blurb: 'A fuller site that brings in and measures enquiries.',
-    features: ['Custom 6-page website', 'Responsive design', 'Contact form', 'Social media integration', 'Google Analytics + Maps', '6 months hosting support'],
+    id: 'ecommerce-website', group: 'website', name: 'Website + E-commerce Store', priceCents: 18000, sort: 2, highlight: 'Recommended',
+    blurb: 'A full website with an online shop your customers can order from.',
+    features: ['Custom 6-page website', 'Online store with your product catalogue', 'Cart and checkout (EcoCash, cards or cash)', 'Order notifications by email and WhatsApp', 'Responsive design', 'Google Analytics + Maps'],
   }),
   plan({
-    id: 'corporate-website', group: 'website', name: 'Corporate Website', priceCents: 25000, plus: true, sort: 3,
-    blurb: 'For organisations that sell, manage users or run operations online.',
-    features: ['Custom website design', 'E-commerce ready', 'Admin panel', 'User accounts / dashboards', 'Ongoing support quoted separately'],
+    id: 'corporate-website', group: 'website', name: 'Corporate Website', priceCents: 25000, sort: 3,
+    blurb: 'A fully functional website that runs your sales and operations.',
+    features: ['Fully functional custom website', 'CRM dashboard for leads and customers', 'Automated follow-ups and workflows', 'Admin panel and staff accounts', 'E-commerce ready', 'Ongoing support quoted separately'],
   }),
 
   plan({
-    id: 'basic-app', group: 'app', name: 'Basic Mobile App', priceCents: 20000, sort: 1,
+    id: 'starter-app', group: 'app', name: 'Starter App', priceCents: 25000, sort: 1,
     features: ['Android app (up to 5 screens)', 'Modern, clean design', 'User login & accounts', 'Push notifications', 'Play Store publishing'],
   }),
   plan({
-    id: 'pro-app', group: 'app', name: 'Pro Mobile App', priceCents: 35000, sort: 2, highlight: POPULAR,
+    id: 'standard-app', group: 'app', name: 'Standard App', priceCents: 35000, sort: 2, highlight: 'Recommended',
     features: ['Android + iOS app', 'Up to 10 screens', 'Admin dashboard', 'Payment integration', 'Push notifications', '3 months support'],
   }),
   plan({
-    id: 'corporate-app', group: 'app', name: 'Corporate Mobile App', priceCents: 60000, plus: true, sort: 3,
-    features: ['Fully custom app', 'Android, iOS + web', 'Backend & database', 'API integrations', 'Ongoing support (quoted)'],
+    id: 'premium-app', group: 'app', name: 'Premium App', priceCents: 45000, sort: 3,
+    features: ['Fully custom app', 'Android, iOS + web', 'Backend & database', 'API integrations', 'Analytics dashboard', 'Priority support'],
   }),
 
   plan({

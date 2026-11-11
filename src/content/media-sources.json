@@ -1,5 +1,15 @@
 [
   {
+    "id": "amey-companion",
+    "kind": "photo",
+    "pexelsId": 7551599,
+    "source": "https://www.pexels.com/photo/elderly-man-sitting-on-sofa-while-holding-a-cellphone-7551599/",
+    "credit": "Kampus Production",
+    "creditUrl": "https://www.pexels.com/@kampus/",
+    "alt": "A cheerful older man on his sofa at home, arms raised in delight, holding his phone",
+    "focus": "45% 35%"
+  },
+  {
     "id": "developer-nairobi",
     "kind": "photo",
     "pexelsId": 19805876,

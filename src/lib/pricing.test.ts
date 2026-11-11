@@ -23,12 +23,6 @@ describe('defaults', () => {
     expect(() => estimatorSchema.parse(DEFAULT_ESTIMATOR)).not.toThrow();
     for (const p of DEFAULT_PLANS) expect(() => planSchema.parse(p)).not.toThrow();
   });
-  it('keep the supplied website prices', () => {
-    const price = (id: string) => DEFAULT_PLANS.find((p) => p.id === id)!.priceCents;
-    expect(price('basic-website')).toBe(10000);
-    expect(price('pro-website')).toBe(18000);
-    expect(price('corporate-website')).toBe(25000);
-  });
 });
 
 describe('estimate', () => {
@@ -82,18 +76,31 @@ describe('estimate', () => {
 });
 
 describe('package groups', () => {
-  it('has Basic, Pro and Corporate in every group, with Pro as the one recommended plan', () => {
+  it('has three tiers in every group, with the middle one as the only recommended plan', () => {
+    const tiers: Record<string, string[]> = {
+      website: ['Basic', 'Website + E-commerce Store', 'Corporate'],
+      app: ['Starter', 'Standard', 'Premium'],
+      crm: ['Basic', 'Pro', 'Corporate'],
+      chatbot: ['Basic', 'Pro', 'Corporate'],
+      automation: ['Basic', 'Pro', 'Corporate'],
+    };
     for (const g of PLAN_GROUPS) {
       const ps = DEFAULT_PLANS.filter((p) => p.group === g).sort((a, b) => a.sort - b.sort);
-      expect(ps.map(planTier)).toEqual(['Basic', 'Pro', 'Corporate']);
-      expect(ps.filter((p) => p.highlight).map(planTier)).toEqual(['Pro']);
+      expect(ps.map(planTier)).toEqual(tiers[g]);
+      expect(ps.filter((p) => p.highlight).map((p) => p.id)).toEqual([ps[1]!.id]);
     }
+  });
+  it('matches the November 2026 website and app prices', () => {
+    const price = (id: string) => DEFAULT_PLANS.find((p) => p.id === id)!.priceCents;
+    expect([price('basic-website'), price('ecommerce-website'), price('corporate-website')]).toEqual([12000, 18000, 25000]);
+    expect([price('starter-app'), price('standard-app'), price('premium-app')]).toEqual([25000, 35000, 45000]);
+    expect([price('basic-crm'), price('pro-crm'), price('corporate-crm')]).toEqual([10000, 18000, 30000]);
   });
   it('shows a monthly fee or a note under the price', () => {
     const byId = (id: string) => DEFAULT_PLANS.find((p) => p.id === id)!;
     expect(planSubline(byId('pro-chatbot'))).toBe('+ $20 / month');
     expect(planSubline(byId('corporate-automation'))).toBe('Monthly plan quoted');
-    expect(planSubline(byId('pro-app'))).toBeNull();
+    expect(planSubline(byId('standard-app'))).toBeNull();
   });
   it('reads plans stored before monthly fees and notes existed', () => {
     const { monthlyCents: _m, note: _n, ...old } = DEFAULT_PLANS[0]!;

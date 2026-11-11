@@ -10,6 +10,8 @@ import { ProcessPipeline } from '@/components/home/process-pipeline';
 import { Closing } from '@/components/home/closing';
 import { ClientQuotes } from '@/components/home/client-quotes';
 import { PhotoBand } from '@/components/home/photo-band';
+import { AmeyAi } from '@/components/home/amey-ai';
+import { EvChargeScene } from '@/components/home/ev-charge-scene';
 import { getPlans, listProjects } from '@/lib/db';
 import type { Metadata } from 'next';
 import { STATUS_STAGE } from '@/content/site';
@@ -37,12 +39,14 @@ export default async function HomePage() {
       <DivisionsIndex />
       <PhotoBand id="solar-technicians" line="We’d rather build something small that people use than something big that nobody does." />
       <VenturesShowcase projects={featured} />
+      <EvChargeScene />
       <Commercial index="04" plans={plans} />
       <ClientQuotes />
       <TechEcosystem index="05" />
       <AssistantsDemo index="06" />
       <FrontDeskFlow index="07" />
       <ProcessPipeline markers={markers} index="08" more />
+      <AmeyAi />
       <Closing />
     </>
   );

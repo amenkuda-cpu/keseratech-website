@@ -249,6 +249,56 @@
   .drafting {
     background-image: none;
   }
+
+  /* ---- Scroll scenes (timing in src/animations/scroll-scenes.ts) ----
+     A tall "track" holds a sticky, full-screen "stage". The track's extra height is the scroll
+     length the stage stays put for, so nothing is pinned by script and nothing shifts.
+
+     Pull transitions (robotic arm, crane): track = stage + phase 1 + one screen. The next section
+     follows with margin-top: -100svh, so it starts rising over the stage exactly when phase 1
+     ends and covers it as the stage is released. --pull-p1 must match SCENES.pull.phase1. */
+  .pull-track {
+    --pull-p1: 60svh;
+    height: calc(200svh + var(--pull-p1));
+  }
+  @media (min-width: 768px) {
+    .pull-track { --pull-p1: 120svh; }
+  }
+  .pull-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+  }
+  .pull-next {
+    position: relative;
+    z-index: 10;
+    margin-top: -100svh;
+    box-shadow: 0 -40px 80px -30px rgb(0 0 0 / 0.75);
+  }
+
+  /* EV charging: the stage is held for SCENES.ev.hold screens (here as the track's extra height). */
+  .ev-track { height: calc(100svh + 180svh); }
+  @media (min-width: 768px) {
+    .ev-track { height: calc(100svh + 260svh); }
+  }
+  .ev-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 560px;
+    overflow: hidden;
+  }
+
+  /* Reduced motion: no held stages. The clips show as a still (their poster) and the next
+     section simply follows. */
+  @media (prefers-reduced-motion: reduce) {
+    .pull-track { height: auto; }
+    .pull-stage { position: relative; height: 60svh; }
+    .pull-next { margin-top: 0; }
+    .ev-track { height: auto; }
+    .ev-stage { position: relative; }
+  }
 }
 
 /* Pure-CSS motion */

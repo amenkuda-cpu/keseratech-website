@@ -12,6 +12,8 @@ import { ClientQuotes } from '@/components/home/client-quotes';
 import { PhotoBand } from '@/components/home/photo-band';
 import { AmeyAi } from '@/components/home/amey-ai';
 import { EvChargeScene } from '@/components/home/ev-charge-scene';
+import { PullTransition } from '@/components/scenes/pull-transition';
+import { SprinklerFinale } from '@/components/scenes/sprinkler-finale';
 import { getPlans, listProjects } from '@/lib/db';
 import type { Metadata } from 'next';
 import { STATUS_STAGE } from '@/content/site';
@@ -36,18 +38,26 @@ export default async function HomePage() {
       <OrganizationJsonLd />
       <Hero projectsInDevelopment={ventures.filter((p) => p.status === 'IN_DEVELOPMENT').length} />
       <Intro />
-      <DivisionsIndex />
+      {/* Scroll scenes: robotic arm -> divisions, crane -> Sera Tech, EV -> process, sprinkler -> closing.
+          Always at least two sections apart; timing in src/animations/scroll-scenes.ts. */}
+      <PullTransition clip="robotic-arm" nextClassName="bg-void" label="A robotic arm assembles itself and lifts the next section into view.">
+        <DivisionsIndex />
+      </PullTransition>
       <PhotoBand id="solar-technicians" line="We’d rather build something small that people use than something big that nobody does." />
       <VenturesShowcase projects={featured} />
-      <EvChargeScene />
-      <Commercial index="04" plans={plans} />
+      <PullTransition clip="crane" label="A crane hook catches the edge of the next section and hoists it into view.">
+        <Commercial index="04" plans={plans} />
+      </PullTransition>
       <ClientQuotes />
       <TechEcosystem index="05" />
       <AssistantsDemo index="06" />
       <FrontDeskFlow index="07" />
+      <EvChargeScene />
       <ProcessPipeline markers={markers} index="08" more />
       <AmeyAi />
-      <Closing />
+      <SprinklerFinale>
+        <Closing />
+      </SprinklerFinale>
     </>
   );
 }

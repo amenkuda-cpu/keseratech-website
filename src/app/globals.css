@@ -258,11 +258,11 @@
      follows with margin-top: -100svh, so it starts rising over the stage exactly when phase 1
      ends and covers it as the stage is released. --pull-p1 must match SCENES.pull.phase1. */
   .pull-track {
-    --pull-p1: 120svh;
+    --pull-p1: 100svh;
     height: calc(200svh + var(--pull-p1));
   }
   @media (min-width: 768px) {
-    .pull-track { --pull-p1: 200svh; }
+    .pull-track { --pull-p1: 150svh; }
   }
   .pull-stage {
     position: sticky;
@@ -278,9 +278,9 @@
   }
 
   /* EV charging: the stage is held for SCENES.ev.hold screens (here as the track's extra height). */
-  .ev-track { height: calc(100svh + 180svh); }
+  .ev-track { height: calc(100svh + 160svh); }
   @media (min-width: 768px) {
-    .ev-track { height: calc(100svh + 260svh); }
+    .ev-track { height: calc(100svh + 220svh); }
   }
   .ev-stage {
     position: sticky;

@@ -157,9 +157,8 @@ function ProductPreview() {
             {PREVIEW.slice(0, shown).map((n) => (
               <motion.div
                 key={n.title}
-                layout={!reduce}
-                initial={reduce ? false : { opacity: 0, y: 24, scale: 0.96, filter: 'blur(6px)' }}
-                animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+                initial={reduce ? false : { opacity: 0, y: 24, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
                 transition={{ type: 'spring', stiffness: 260, damping: 24 }}
                 className={cn('flex items-start gap-3 rounded-2xl border border-white/15 bg-gradient-to-r to-black/80 bg-black/55 p-3.5 sm:p-4', TONE[n.tone])}

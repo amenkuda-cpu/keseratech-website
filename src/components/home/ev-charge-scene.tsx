@@ -6,12 +6,13 @@ import { useGSAP } from '@gsap/react';
 import { BatteryCharging, PlugZap, Zap } from 'lucide-react';
 import { Label } from '@/components/system/primitives';
 import { evChargeScene } from '@/animations/scroll-scenes';
+import { SceneCanvas } from '@/components/scenes/scene-canvas';
 
 gsap.registerPlugin(useGSAP);
 
 // Smart EV charging, told with real footage driven by the scroll: the stage holds still while the
-// clip of a driver plugging in plays forward and back with the scrollbar, then the charger's screen
-// fills to 100 %. The screen updates through refs (no React re-renders mid-scroll). Timing lives in
+// scene of a driver plugging in (a frame sequence, see SceneCanvas) plays forward and back with the
+// scrollbar, then the charger's screen fills to 100 %. The screen updates through refs (no React re-renders mid-scroll). Timing lives in
 // animations/scroll-scenes.ts (evChargeScene, SCENES.ev); the hold length in globals.css (.ev-track).
 
 const SEGMENTS = 12;
@@ -22,7 +23,6 @@ const PRICE_PER_KWH = 0.18; // USD, illustrative
 export function EvChargeScene() {
   const root = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
-  const video = useRef<HTMLVideoElement>(null);
   const pctText = useRef<HTMLSpanElement>(null);
   const bar = useRef<HTMLSpanElement>(null);
   const statusText = useRef<HTMLSpanElement>(null);
@@ -30,39 +30,30 @@ export function EvChargeScene() {
   const energyText = useRef<HTMLSpanElement>(null);
   const costText = useRef<HTMLSpanElement>(null);
 
+  // Writes text only when it changes: replacing a text node, even with the same words, makes the
+  // browser lay the page out again, and this runs on every animation frame while charging.
+  const setText = (el: HTMLElement | null, text: string) => {
+    if (el && el.textContent !== text) el.textContent = text;
+  };
   const render = (pct: number) => {
     const p = Math.max(0, Math.min(100, pct));
-    if (pctText.current) pctText.current.textContent = String(Math.round(p));
+    setText(pctText.current, String(Math.round(p)));
     if (bar.current) bar.current.style.transform = `scaleX(${p / 100})`;
     const remainingMin = (((100 - p) / 100) * BATTERY_KWH) / KW * 60;
-    if (timeText.current) timeText.current.textContent = p >= 100 ? 'Full' : `${Math.floor(remainingMin / 60)}h ${String(Math.round(remainingMin % 60)).padStart(2, '0')}m`;
+    setText(timeText.current, p >= 100 ? 'Full' : `${Math.floor(remainingMin / 60)}h ${String(Math.round(remainingMin % 60)).padStart(2, '0')}m`);
     const added = (p / 100) * BATTERY_KWH;
-    if (energyText.current) energyText.current.textContent = `${added.toFixed(1)} kWh`;
-    if (costText.current) costText.current.textContent = `$${(added * PRICE_PER_KWH).toFixed(2)}`;
-    if (statusText.current) statusText.current.textContent = p >= 100 ? 'Charged' : p > 0 ? 'Charging' : 'Connected';
+    setText(energyText.current, `${added.toFixed(1)} kWh`);
+    setText(costText.current, `$${(added * PRICE_PER_KWH).toFixed(2)}`);
+    setText(statusText.current, p >= 100 ? 'Charged' : p > 0 ? 'Charging' : 'Connected');
   };
 
-  useGSAP(() => evChargeScene(root.current!, { track: track.current!, video: video.current!, render }), { scope: root });
+  useGSAP(() => evChargeScene(root.current!, { track: track.current!, canvas: root.current!.querySelector('canvas')!, render }), { scope: root });
 
   return (
     <section ref={root} id="ev-charging" aria-labelledby="ev-title" className="relative bg-void">
       <div ref={track} className="ev-track">
         <div className="ev-stage">
-          <video
-            ref={video}
-            muted
-            playsInline
-            preload="auto"
-            aria-hidden
-            tabIndex={-1}
-            poster="/media/ev-charging-scrub.webp"
-            data-mp4="/media/ev-charging-scrub.mp4"
-            data-webm="/media/ev-charging-scrub.webm"
-            data-mp4-mobile="/media/ev-charging-scrub-portrait.mp4"
-            data-webm-mobile="/media/ev-charging-scrub-portrait.webm"
-            data-poster-mobile="/media/ev-charging-scrub-portrait.webp"
-            className="absolute inset-0 size-full object-cover"
-          />
+          <SceneCanvas scene="ev-charging" />
           {/* Light falls off towards the text; the port glows green while it charges */}
           <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-void/85 via-void/35 to-transparent max-md:bg-gradient-to-t max-md:from-void/95 max-md:via-void/40" />
           <div

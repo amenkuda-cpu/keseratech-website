@@ -36,7 +36,7 @@ These are illustrative stock images, not photographs of Kesera's own projects, s
 | `delivery-night.webp` | Home: Ventures showcase (BikerDash), Technology ecosystem · /projects card · /projects/bikerdash | BikerDash | Vitaliy Mitrofanenko | [pexels.com/photo/9325653](https://www.pexels.com/photo/a-person-riding-a-black-motorcycle-on-the-road-at-night-9325653/) |
 | `amey-grandfather.mp4` + `.webp` | Home: Amey AI section (product preview video) | Amey AI | Kampus Production | [pexels.com/video/6306260](https://www.pexels.com/video/man-talking-on-the-phone-6306260/) |
 | `amey-companion.webp` | Not used on the page (kept as a still of the same person) | Amey AI | Kampus Production | [pexels.com/photo/7551599](https://www.pexels.com/photo/elderly-man-sitting-on-sofa-while-holding-a-cellphone-7551599/) |
-| `ev-charging-scrub(.mp4/.webp)`, `ev-charging-scrub-portrait(.mp4/.webp)` | Home: EV charging scroll scene | Same footage as `ev-charging`, re-cut for scroll scrubbing (keyframe every 4 frames; portrait crop for phones) | Gustavo Fring | [pexels.com/video/4817951](https://www.pexels.com/video/charging-an-electric-car-4817951/) |
+| `public/scenes/ev-charging/` (frame sequence) | Home: EV charging scroll scene | Same footage as `ev-charging`, as 12 fps WebP frames for scroll scrubbing (desktop 1280x720; phone 540x960 crop) | Gustavo Fring | [pexels.com/video/4817951](https://www.pexels.com/video/charging-an-electric-car-4817951/) |
 
 ## Videos (8 s, silent, looping, 1280×720 H.264 with WebP poster)
 
@@ -59,4 +59,4 @@ The other two home page hero clips (`public/showcase/builder` and `wind-engineer
 
 ## Scroll scene clips
 
-`public/scenes/` (robotic arm, crane) are AI-generated clips supplied by Kesera (made in CapCut, November 2026). Re-encode them for scroll scrubbing with `node scripts/encode-scenes.mjs` from originals kept in `.cache/scenes/` (not committed); the encode crops off the "AI 生成" corner label.
+`public/scenes/robotic-arm/` and `public/scenes/crane/` are frame sequences made from AI-generated clips supplied by Kesera (made in CapCut, November 2026). Rebuild them with `node scripts/encode-scenes.mjs` from originals kept in `.cache/scenes/` (not committed); the export crops off the "AI 生成" corner label.

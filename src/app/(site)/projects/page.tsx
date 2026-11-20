@@ -10,9 +10,9 @@ import { FutureBoard } from '@/components/home/future-board';
 import { StoreButtons } from '@/components/projects/store-buttons';
 
 export const metadata: Metadata = {
-  title: 'Projects: BikerDash, Smart Irrigation & EV Charging',
+  title: 'Projects: BikerDash, AgriSera Horizon & EV Charging',
   alternates: { canonical: '/projects' },
-  description: 'Kesera Ventures (BikerDash, Smart Irrigation and Smart EV Charging) and the projects Sera Tech builds for clients.',
+  description: 'Kesera Ventures (BikerDash, AgriSera Horizon smart irrigation and Smart EV Charging) and the projects Sera Tech builds for clients.',
 };
 
 export default async function ProjectsPage() {

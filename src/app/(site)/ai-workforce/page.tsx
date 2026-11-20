@@ -43,6 +43,12 @@ export default function AiWorkforcePage() {
           </a>
         </div>
         <p className="mt-6 text-sm text-faint">USD {WORKFORCE_PRICE_USD} per employee per month · EcoCash, InnBucks, Zimswitch, Visa and Mastercard</p>
+        <figure className="mt-14 overflow-hidden rounded-sm border border-hair">
+          <video className="aspect-video w-full bg-black" controls playsInline preload="metadata" poster="/workforce/explainer-poster.jpg">
+            <source src="/workforce/kesera-ai-workforce-explainer.mp4" type="video/mp4" />
+          </video>
+          <figcaption className="t-label px-5 py-3 text-faint">How it works · under a minute</figcaption>
+        </figure>
       </section>
 
       <section id="team" className="shell scroll-mt-24 pb-20 md:pb-32" aria-labelledby="team-title">

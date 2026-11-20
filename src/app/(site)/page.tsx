@@ -45,17 +45,18 @@ export default async function HomePage() {
       </PullTransition>
       <PhotoBand id="solar-technicians" line="We’d rather build something small that people use than something big that nobody does." />
       <VenturesShowcase projects={featured} />
-      <PullTransition clip="crane" label="A crane hook catches the edge of the next section and hoists it into view.">
-        <Commercial index="04" plans={plans} />
+      <PullTransition clip="crane" nextClassName="bg-void" label="A crane hook catches the edge of the next section and hoists it into view.">
+        <ClientQuotes />
       </PullTransition>
-      <ClientQuotes />
-      <TechEcosystem index="05" />
-      <AssistantsDemo index="06" />
-      <FrontDeskFlow index="07" />
+      <TechEcosystem index="04" />
+      <AssistantsDemo index="05" />
+      <FrontDeskFlow index="06" />
       <EvChargeScene />
-      <ProcessPipeline markers={markers} index="08" more />
-      <AgriseraHorizon index="09" />
+      <ProcessPipeline markers={markers} index="07" more />
+      <AgriseraHorizon index="08" />
       <AmeyAi />
+      {/* Pricing sits near the end: people see the work and products first. */}
+      <Commercial index="09" plans={plans} />
       <Closing />
     </>
   );

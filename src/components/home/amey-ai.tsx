@@ -32,10 +32,10 @@ const FEATURES = [
 
 /** Plans, in US dollars, as on ameyai.app. */
 const PLANS = [
-  { name: 'Always free', price: '$0', note: 'Help button and countdown, fall and crash alerts, one helper told.' },
-  { name: 'Shield', price: '$4.99/mo', note: '$1.99 a week or $44.99 a year. Unlimited scam checks and reminders, natural-voice Ask Amey.' },
-  { name: 'Family', price: '$9.99/mo', note: '$3.99 a week or $89.99 a year. Everything in Shield for up to 4 people.' },
-  { name: 'SafeWatch Camera Care', price: '$300 once', note: 'New. Camera, AI hub and installation; fall and inactivity alerts. Monitoring from $20 a month.' },
+  { name: 'Always free', price: '$0', note: 'Help button and countdown, fall and crash alerts, one helper told.', href: `${AMEY_SITE}/#plans` },
+  { name: 'Shield', price: '$4.99/mo', note: '$1.99 a week or $44.99 a year. Unlimited scam checks and reminders, natural-voice Ask Amey.', href: `${AMEY_SITE}/#plans` },
+  { name: 'Family', price: '$9.99/mo', note: '$3.99 a week or $89.99 a year. Everything in Shield for up to 4 people.', href: `${AMEY_SITE}/#plans` },
+  { name: 'SafeWatch Camera Care', price: '$300 once', note: 'New. Camera, AI hub and installation; fall and inactivity alerts. Monitoring from $20 a month.', href: `${AMEY_SITE}/#safewatch-pricing` },
 ];
 
 /** The notifications that play over the video, one after another. */
@@ -105,14 +105,28 @@ export function AmeyAi() {
           <h3 className="t-label text-[#9ff0ff]/90">Plans</h3>
           <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {PLANS.map((p) => (
-              <li key={p.name} className="rounded-[14px] border border-white/10 bg-white/[0.03] p-5">
-                <p className="text-sm text-white/60">{p.name}</p>
-                <p className="t-title mt-2 text-[1.5rem]">{p.price}</p>
-                <p className="mt-2 text-sm leading-snug text-dim">{p.note}</p>
+              <li key={p.name}>
+                <a
+                  href={p.href}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label={`${p.name}, ${p.price}: see the plan on ameyai.app (opens in a new tab)`}
+                  className="group/plan lift flex h-full flex-col rounded-[14px] border border-white/10 bg-white/[0.03] p-5 transition-colors duration-300 hover:border-[#38e1ff]/50 hover:bg-white/[0.05]"
+                >
+                  <span className="flex items-center justify-between text-sm text-white/60">
+                    {p.name}
+                    <ArrowUpRight className="size-4 text-white/40 transition-[color,transform] group-hover/plan:-translate-y-0.5 group-hover/plan:translate-x-0.5 group-hover/plan:text-[#9ff0ff]" aria-hidden />
+                  </span>
+                  <span className="t-title mt-2 block text-[1.5rem]">{p.price}</span>
+                  <span className="mt-2 block text-sm leading-snug text-dim">{p.note}</span>
+                </a>
               </li>
             ))}
           </ul>
-          <p className="mt-4 text-xs text-white/45">Prices in US dollars, the same in every country. Full details on ameyai.app.</p>
+          <p className="mt-4 text-xs text-white/45">
+            Prices in US dollars, the same in every country.{' '}
+            <a href={`${AMEY_SITE}/#plans`} target="_blank" rel="noopener" className="underline underline-offset-2 hover:text-white">See all plans on ameyai.app</a>
+          </p>
         </div>
       </div>
     </section>
@@ -134,7 +148,13 @@ function AmbientGlow() {
 
 function FeatureCard({ icon: Icon, title, text }: (typeof FEATURES)[number]) {
   return (
-    <div className="lift relative h-full overflow-hidden rounded-[14px] border border-white/10 bg-white/[0.03] p-4 transition-colors duration-500 hover:border-[#38e1ff]/40 sm:p-6">
+    <a
+      href={`${AMEY_SITE}/#features`}
+      target="_blank"
+      rel="noopener"
+      aria-label={`${title}: ${text} More on ameyai.app (opens in a new tab)`}
+      className="lift relative block h-full overflow-hidden rounded-[14px] border border-white/10 bg-white/[0.03] p-4 transition-colors duration-500 hover:border-[#38e1ff]/40 sm:p-6"
+    >
       {/* glow that follows into the card on hover */}
       <span aria-hidden className="pointer-events-none absolute -right-16 -top-16 size-48 rounded-full bg-[radial-gradient(circle,rgb(56_225_255/0.3),transparent_70%)] opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
       <span className="relative grid size-10 place-items-center rounded-xl border border-[#38e1ff]/30 bg-[#38e1ff]/10 text-[#9ff0ff] shadow-[0_0_24px_-4px_rgb(56_225_255/0.5)]">
@@ -142,7 +162,7 @@ function FeatureCard({ icon: Icon, title, text }: (typeof FEATURES)[number]) {
       </span>
       <h3 className="t-title relative mt-4 text-[1.1rem] sm:mt-5 sm:text-[1.25rem]">{title}</h3>
       <p className="relative mt-1.5 text-sm leading-snug text-dim sm:text-[0.95rem]">{text}</p>
-    </div>
+    </a>
   );
 }
 

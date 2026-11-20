@@ -89,6 +89,47 @@ export const SEED_PROJECTS: Project[] = [
     sort: 2,
   },
   {
+    slug: 'agrisera-horizon',
+    name: 'AgriSera Horizon',
+    kind: 'venture',
+    division: 'agrisera',
+    status: 'IN_DEVELOPMENT',
+    tagline: 'The intelligence beneath your fields',
+    headline: 'Less water.\nStronger crops.',
+    summary:
+      'AgriSera Horizon is a farm system for Zimbabwe’s dry seasons. Soil probes, weather stations, pumps, valves and boreholes report into one live dashboard. Horizon shows which fields are healthy and which are thirsty, says whether to water now or wait, and opens and closes the valves itself, from a phone or on the farmer’s own rules.',
+    capabilities: [
+      'Soil moisture at three depths, every few seconds',
+      'Whole-farm map, live: green is healthy, amber is thirsty',
+      'Water now from a phone or laptop; valves close on their own at the target',
+      'Soil pH, NPK, salinity and soil temperature',
+      'Crop health from satellite NDVI, pest traps and disease risk',
+      'Dam and borehole levels, pump pressure and leak detection',
+      'Frost and heat warnings by WhatsApp and SMS',
+      'Solar, battery and generator monitoring for load-shedding',
+      'Automation rules set by the farmer',
+    ],
+    sections: [
+      {
+        title: 'The problem',
+        text: 'El Niño is coming. The rains are late, dams are falling and soil is cracking, and on most farms nobody knows exactly how much water each field needs until the crop shows it.',
+      },
+      {
+        title: 'What we are building',
+        text: 'Horizon senses, decides and acts. Probes in the soil and stations on the farm feed one dashboard; each field shows moisture at the roots against its crop’s target; one tap opens a valve and Horizon closes it when the soil has had enough. Not a drop wasted.',
+      },
+      {
+        title: 'Where it is now',
+        text: 'Horizon is in development and the dashboard is working on a demo farm, shown in the launch film on the AgriSera page. Field results will be published from pilots, not before.',
+      },
+    ],
+    visual: 'irrigation',
+    client: null,
+    featured: true,
+    published: true,
+    sort: 1,
+  },
+  {
     slug: 'smart-irrigation',
     name: 'Smart Irrigation',
     kind: 'venture',
@@ -121,8 +162,9 @@ export const SEED_PROJECTS: Project[] = [
     ],
     visual: 'irrigation',
     client: null,
-    featured: true,
-    published: true,
+    // Replaced by AgriSera Horizon; kept unpublished so /admin still has it.
+    featured: false,
+    published: false,
     sort: 1,
   },
   {

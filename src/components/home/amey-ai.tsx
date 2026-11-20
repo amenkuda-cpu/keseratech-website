@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { AnimatePresence, motion, useInView } from 'motion/react';
-import { Activity, ArrowRight, Loader2, MessageCircleHeart, Pill, ShieldAlert, Siren, Users } from 'lucide-react';
+import { Activity, ArrowRight, ArrowUpRight, Loader2, MessageCircleHeart, Mic, Pill, ShieldAlert, Siren, Sun, Users } from 'lucide-react';
 import { useReducedMotion } from '@/components/system/reduced-motion';
 import { MaskLines, Reveal, Stagger } from '@/components/system/motion';
 import { Label } from '@/components/system/primitives';
@@ -12,20 +12,30 @@ import { MediaFrame } from '@/components/visuals/media';
 import { submitWaitlist } from '@/app/(site)/waitlist-action';
 import { cn } from '@/lib/utils';
 
-// Amey AI ("Always here for you"): a calm guardian on every phone, launching 25 December 2026.
-// All copy follows the Amey AI pitch document; keep claims to what that document says is built.
+// Amey AI ("your AI guardian"): a calm guardian on every phone, by Attribute AI, LLC.
+// All copy follows the live product site, ameyai.app (checked 20 November 2026). Keep claims and
+// prices to what that site says. It gives no launch date yet ("almost ready"), so neither do we.
 
-/** Launch facts shown under the heading. */
-export const AMEY_LAUNCH = '25 December 2026';
+export const AMEY_SITE = 'https://ameyai.app';
 
-/** Six things Amey does, one short line each. */
+/** What Amey does, one short line each (ameyai.app, "What Amey does"). */
 const FEATURES = [
-  { icon: ShieldAlert, title: 'Stops scams', text: 'Warns before money or a PIN is shared.' },
-  { icon: Pill, title: 'Reminds', text: 'Medicine, water and daily tasks.' },
-  { icon: Activity, title: 'Spots falls', text: 'Asks “Are you OK?” and calls for help.' },
-  { icon: Siren, title: 'SOS in one tap', text: 'Always free, on every plan.' },
-  { icon: MessageCircleHeart, title: 'Talks with you', text: 'A warm voice, in Shona, Ndebele and 38 more languages.' },
-  { icon: Users, title: 'Keeps family close', text: 'They see only what you choose to share.' },
+  { icon: Mic, title: 'Just ask Amey', text: 'Press and speak: “Call my son.” Amey asks before it calls or texts.' },
+  { icon: ShieldAlert, title: 'Scam checks', text: 'Show it a message, link or letter: Safe, Careful or Scam, with reasons.' },
+  { icon: Pill, title: 'Reminders that ring', text: 'Medicine, tasks, visits and water. One button: “I took it.”' },
+  { icon: Siren, title: 'Help in one tap', text: 'A 30-second countdown, then it calls your helper. Always free.' },
+  { icon: Activity, title: 'Fall check', text: 'After a hard fall it asks “Are you OK?” and gets help.' },
+  { icon: Users, title: 'Family close by', text: 'Link phones with a 6-number code. Never private messages.' },
+  { icon: Sun, title: 'A daily “I’m OK”', text: 'One morning tap tells the family you are well.' },
+  { icon: MessageCircleHeart, title: 'A friendly companion', text: 'Kind chats, and gentle nudges to call the people you love.' },
+];
+
+/** Plans, in US dollars, as on ameyai.app. */
+const PLANS = [
+  { name: 'Always free', price: '$0', note: 'Help button and countdown, fall and crash alerts, one helper told.' },
+  { name: 'Shield', price: '$4.99/mo', note: '$1.99 a week or $44.99 a year. Unlimited scam checks and reminders, natural-voice Ask Amey.' },
+  { name: 'Family', price: '$9.99/mo', note: '$3.99 a week or $89.99 a year. Everything in Shield for up to 4 people.' },
+  { name: 'SafeWatch Camera Care', price: '$300 once', note: 'New. Camera, AI hub and installation; fall and inactivity alerts. Monitoring from $20 a month.' },
 ];
 
 /** The notifications that play over the video, one after another. */
@@ -55,19 +65,22 @@ export function AmeyAi() {
               <div>
                 <p className="t-label flex flex-wrap items-center gap-2 text-[#9ff0ff]/90">
                   Amey AI
-                  <span className="rounded-full border border-[#38e1ff]/40 bg-[#38e1ff]/10 px-2 py-0.5 text-[0.6rem] text-[#9ff0ff]">Coming {AMEY_LAUNCH}</span>
+                  <span className="rounded-full border border-[#38e1ff]/40 bg-[#38e1ff]/10 px-2 py-0.5 text-[0.6rem] text-[#9ff0ff]">Coming soon</span>
                 </p>
-                <p className="mt-1.5 text-sm text-white/60">Always here for you.</p>
+                <p className="mt-1.5 text-sm text-white/60">Your AI guardian. Always here for you.</p>
               </div>
             </div>
             <MaskLines id="amey-title" as="h2" className="t-display-l mt-10" lines={['Join the waitlist', <em key="a">for Amey AI.</em>]} />
             <Reveal>
               <p className="t-lead mt-8 max-w-lg text-white/85">
-                An AI guardian for older people. Amey stops scams, reminds them about their medicine and calls for help if they fall.
+                Amey keeps you safe from scams and helps look after the people you love: medicine reminders, scam checks and help in one tap, in English, Shona, Ndebele and many more languages.
               </p>
               <p className="mt-4 max-w-lg text-sm leading-relaxed text-white/55">
-                Android and iPhone, {AMEY_LAUNCH}. From $2.99 a month after a 14-day free trial. Published by Attribute AI, LLC.
+                Android and iPhone, coming soon. Help in an emergency is free on every plan; Shield starts at $4.99 a month after a 14-day free trial, no card needed. Pay with EcoCash, InnBucks or card. Made in Africa, published by Attribute AI, LLC.
               </p>
+              <a href={AMEY_SITE} target="_blank" rel="noopener" className="t-label mt-5 inline-flex items-center gap-2 text-[#9ff0ff] hover:text-white">
+                ameyai.app <ArrowUpRight className="size-3.5" aria-hidden />
+              </a>
             </Reveal>
             <WaitlistForm />
           </div>
@@ -80,13 +93,27 @@ export function AmeyAi() {
         <Stagger
           as="ul"
           gap={0.07}
-          className="mt-16 grid grid-cols-2 gap-3 sm:gap-4 lg:mt-20 lg:grid-cols-3"
+          className="mt-16 grid grid-cols-2 gap-3 sm:gap-4 lg:mt-20 lg:grid-cols-4"
           itemClassName="group relative"
         >
           {FEATURES.map((f) => (
             <FeatureCard key={f.title} {...f} />
           ))}
         </Stagger>
+
+        <div className="mt-14 lg:mt-20">
+          <h3 className="t-label text-[#9ff0ff]/90">Plans</h3>
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {PLANS.map((p) => (
+              <li key={p.name} className="rounded-[14px] border border-white/10 bg-white/[0.03] p-5">
+                <p className="text-sm text-white/60">{p.name}</p>
+                <p className="t-title mt-2 text-[1.5rem]">{p.price}</p>
+                <p className="mt-2 text-sm leading-snug text-dim">{p.note}</p>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-xs text-white/45">Prices in US dollars, the same in every country. Full details on ameyai.app.</p>
+        </div>
       </div>
     </section>
   );
@@ -230,7 +257,7 @@ function WaitlistForm() {
               <SuccessMark />
               <div>
                 <p className="t-title text-[1.35rem]">You’re on the list.</p>
-                <p className="mt-1.5 text-sm text-white/70">Thank you, {f.name.split(' ')[0]}. We’ll email {f.email} when Amey launches on {AMEY_LAUNCH}.</p>
+                <p className="mt-1.5 text-sm text-white/70">Thank you, {f.name.split(' ')[0]}. We’ll email {f.email} once, when Amey is ready.</p>
               </div>
             </div>
           </motion.div>

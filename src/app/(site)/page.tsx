@@ -11,6 +11,7 @@ import { Closing } from '@/components/home/closing';
 import { ClientQuotes } from '@/components/home/client-quotes';
 import { PhotoBand } from '@/components/home/photo-band';
 import { AmeyAi } from '@/components/home/amey-ai';
+import { AgriseraHorizon } from '@/components/home/agrisera-horizon';
 import { EvChargeScene } from '@/components/home/ev-charge-scene';
 import { PullTransition } from '@/components/scenes/pull-transition';
 import { getPlans, listProjects } from '@/lib/db';
@@ -53,6 +54,7 @@ export default async function HomePage() {
       <FrontDeskFlow index="07" />
       <EvChargeScene />
       <ProcessPipeline markers={markers} index="08" more />
+      <AgriseraHorizon index="09" />
       <AmeyAi />
       <Closing />
     </>

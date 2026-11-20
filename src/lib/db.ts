@@ -124,6 +124,17 @@ async function prepare(): Promise<Store> {
         ]),
     { sql: `INSERT OR IGNORE INTO kv (key, value) VALUES ('estimator', ?)`, args: [JSON.stringify(DEFAULT_ESTIMATOR)] },
     ...SEED_PROJECTS.map((p) => ({ sql: `INSERT OR IGNORE INTO projects (slug, data, sort) VALUES (?, ?, ?)`, args: [p.slug, JSON.stringify(p), p.sort] })),
+    // AgriSera Horizon replaces the older Smart Irrigation page (/projects/smart-irrigation redirects
+    // to it). Unpublish the old row once, live only; it stays in /admin and can be republished there.
+    ...(PREVIEW
+      ? []
+      : [
+          {
+            sql: `UPDATE projects SET data = json_set(data, '$.published', json('false'), '$.featured', json('false'))
+                  WHERE slug = 'smart-irrigation' AND NOT EXISTS (SELECT 1 FROM kv WHERE key = 'horizon_replaces_irrigation')`,
+          },
+          { sql: `INSERT OR IGNORE INTO kv (key, value) VALUES ('horizon_replaces_irrigation', '1')` },
+        ]),
   ]);
   return store;
 }

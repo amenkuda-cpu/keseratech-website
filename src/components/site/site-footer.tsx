@@ -23,7 +23,7 @@ const COLUMNS = [
     links: [
       { href: '/projects/pocketjobs', label: 'PocketJobs' },
       { href: '/projects/bikerdash', label: VENTURE_NAMES.delivery },
-      { href: '/projects/smart-irrigation', label: 'Smart Irrigation' },
+      { href: '/projects/agrisera-horizon', label: 'AgriSera Horizon' },
       { href: '/projects/smart-ev-charging', label: 'Smart EV Charging' },
       { href: '/projects', label: 'All projects' },
     ],

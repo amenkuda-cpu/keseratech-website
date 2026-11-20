@@ -12,6 +12,7 @@ import { MediaFrame } from '@/components/visuals/media';
 import { DIVISION_MEDIA, media } from '@/content/media';
 import { AssistantsDemo } from '@/components/home/assistants-demo';
 import { FrontDeskFlow } from '@/components/home/front-desk-flow';
+import { AgriseraHorizon } from '@/components/home/agrisera-horizon';
 import { UpcycleFlow } from '@/components/visuals/upcycle-flow';
 import { ReuseGallery } from '@/components/visuals/reuse-gallery';
 import { Photo } from '@/components/visuals/photo';
@@ -180,7 +181,8 @@ export default async function DivisionPage({ params }: PageProps<'/[division]'>)
           </section>
         </>
       )}
-      {(page.signature === 'irrigation' || page.signature === 'ev') && (
+      {page.signature === 'irrigation' && <AgriseraHorizon index="02" showLink={false} />}
+      {page.signature === 'ev' && (
         <section className="border-t border-hair" aria-labelledby="signature-title">
           <div className="shell section">
             <div className="grid gap-10 md:grid-cols-12 md:items-end">

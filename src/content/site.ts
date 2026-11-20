@@ -63,11 +63,11 @@ export const DIVISIONS: Division[] = [
     name: 'AgriSera',
     accent: 'var(--color-agri)',
     discipline: 'Agriculture',
-    short: 'Agricultural engineering: smart irrigation, sensing and automation for farms.',
-    headline: 'Less water. Better crops.',
+    short: 'Agricultural engineering: smart irrigation, sensing and automation for farms. Home of AgriSera Horizon.',
+    headline: 'Less water. Stronger crops.',
     intro:
-      'AgriSera applies sensors, data and automation to farming problems, starting with water. Its first project is smart irrigation that delivers water where and when crops need it.',
-    focus: ['Smart irrigation', 'Water-saving technology', 'Agricultural automation', 'Crop monitoring', 'Agricultural robotics', 'Crop disease detection'],
+      'AgriSera applies sensors, data and automation to farming problems, starting with water. Its first product is AgriSera Horizon, the intelligence beneath your fields: it senses the soil, weather and water, decides what each field needs, and waters it.',
+    focus: ['AgriSera Horizon', 'Smart irrigation', 'Remote valve and pump control', 'Soil and crop monitoring', 'Water-saving technology', 'Agricultural automation', 'Crop disease detection'],
   },
   {
     slug: 'sera-energy',

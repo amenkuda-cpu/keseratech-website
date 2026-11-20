@@ -18,7 +18,7 @@ const check = (name, ok, detail = '') => {
 };
 
 const PAGES = [
-  '/', '/projects', '/projects/bikerdash', '/projects/smart-irrigation', '/projects/smart-ev-charging',
+  '/', '/projects', '/projects/bikerdash', '/projects/agrisera-horizon', '/projects/smart-ev-charging',
   '/sera-tech', '/agrisera', '/sera-energy', '/sera-home', '/sera-assistants', '/sera-front-desk',
   '/pricing', '/start', '/about', '/legal/privacy', '/legal/terms',
 ];

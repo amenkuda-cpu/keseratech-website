@@ -30,16 +30,16 @@ export const DIVISION_PAGES: Record<DivisionSlug, DivisionPage> = {
   },
   agrisera: {
     signature: 'irrigation',
-    signatureTitle: 'Smart irrigation',
-    signatureText: 'Water delivered where and when crops need it. Sensors measure the soil, a controller decides, valves deliver, and every litre is recorded.',
+    signatureTitle: 'AgriSera Horizon',
+    signatureText: 'Water delivered where and when crops need it. Probes measure the soil, Horizon decides, valves deliver, and every litre is recorded.',
     approach: [
-      { title: 'Sense', text: 'Soil-moisture and weather sensors report conditions zone by zone.' },
-      { title: 'Decide', text: 'The controller waters the zones that need it, based on the crop, not the clock.' },
-      { title: 'Deliver', text: 'Valves and pumps open for exactly as long as needed, and the farmer can always take over.' },
+      { title: 'Sense', text: 'Soil probes read moisture at three depths every few seconds; weather stations, pumps, valves and boreholes report in.' },
+      { title: 'Decide', text: 'Horizon compares each field with its crop’s target and gives a clear answer: water now, or wait.' },
+      { title: 'Deliver', text: 'Valves open from a phone or on your own rules, and close by themselves when the soil reaches its target.' },
       { title: 'Record', text: 'Every cycle and every litre is logged, so water use can be measured and improved.' },
     ],
     primary: { label: 'Partner with AgriSera', href: partner('AgriSera') },
-    secondary: { label: 'Smart Irrigation project', href: '/projects/smart-irrigation' },
+    secondary: { label: 'AgriSera Horizon project', href: '/projects/agrisera-horizon' },
   },
   'sera-energy': {
     signature: 'ev',

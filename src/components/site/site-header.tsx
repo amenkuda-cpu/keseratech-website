@@ -56,7 +56,7 @@ export function SiteHeader() {
                 isActive(item.href) && 'text-white',
               )}
             >
-              {item.href === '/#amey-ai' && (
+              {(item.href === '/#amey-ai' || item.href === '/ai-workforce') && (
                 <span aria-hidden className="mr-1.5 inline-block size-1.5 -translate-y-px rounded-full bg-[#38e1ff] shadow-[0_0_8px_2px_rgb(56_225_255/0.7)] status-live" />
               )}
               {item.label}

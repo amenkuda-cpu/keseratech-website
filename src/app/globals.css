@@ -306,6 +306,11 @@
   from { transform: translateY(105%); }
   to { transform: translateY(0); }
 }
+/* Hero note: a pencil line drawing itself */
+@keyframes pencil-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: none; }

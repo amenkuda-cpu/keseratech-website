@@ -38,7 +38,7 @@ export function HireForm({ employees }: { employees: readonly Emp[] }) {
       <div className="rounded-sm border border-hair-strong bg-white/[0.03] p-8">
         <p className="t-label text-signal">Request received · {state.ref}</p>
         <h3 className="t-title mt-4 text-[1.6rem]">Thank you. We’ll be in touch shortly.</h3>
-        <p className="mt-3 text-dim">A member of the Kesera team will contact you to set up your AI employee, connect your tools and get your first assignment going.</p>
+        <p className="mt-3 text-dim">A member of the Kesera team will contact you to start your free trial, connect your tools and get your first assignment going.</p>
       </div>
     );
   }
@@ -99,9 +99,9 @@ export function HireForm({ employees }: { employees: readonly Emp[] }) {
         disabled={state.status === 'sending'}
         className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-signal px-7 text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-signal-soft disabled:opacity-60"
       >
-        {state.status === 'sending' ? 'Sending…' : 'Request my AI employee'}
+        {state.status === 'sending' ? 'Sending…' : 'Request my free trial'}
       </button>
-      <p className="text-sm text-faint">No payment now. We’ll confirm the details with you first.</p>
+      <p className="text-sm text-faint">No payment and no card. We’ll set up your 30-day free trial with you.</p>
     </form>
   );
 }

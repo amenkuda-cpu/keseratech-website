@@ -3,6 +3,7 @@ import path from 'node:path';
 import type { Metadata } from 'next';
 import { Check, ShieldCheck, X } from 'lucide-react';
 import { HireForm } from '@/components/workforce/hire-form';
+import { WorkforceDemos } from '@/components/workforce/demos';
 import { Label } from '@/components/system/primitives';
 import { WORKFORCE, WORKFORCE_PRICE_USD } from '@/content/workforce';
 
@@ -51,10 +52,17 @@ export default function AiWorkforcePage() {
         </figure>
       </section>
 
+      <section id="demos" className="shell scroll-mt-24 pb-20 md:pb-32" aria-labelledby="demos-title">
+        <Label index="01">Watch it work</Label>
+        <h2 id="demos-title" className="t-display-m mt-5">Pick an employee. Watch a job get done.</h2>
+        <p className="mb-10 mt-4 max-w-2xl text-dim">One real kind of job for each employee: the request, every step, and the finished work.</p>
+        <WorkforceDemos />
+      </section>
+
       <section id="team" className="shell scroll-mt-24 pb-20 md:pb-32" aria-labelledby="team-title">
         <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <Label index="01">The team</Label>
+            <Label index="02">The team</Label>
             <h2 id="team-title" className="t-display-m mt-5">Six specialists</h2>
           </div>
           <p className="max-w-sm text-sm text-dim">Each has its own job description, working method and quality checks. They are AI, and they always say so.</p>
@@ -93,7 +101,7 @@ export default function AiWorkforcePage() {
       </section>
 
       <section className="shell pb-20 md:pb-32" aria-labelledby="how-title">
-        <Label index="02">How it works</Label>
+        <Label index="03">How it works</Label>
         <h2 id="how-title" className="t-display-m mt-5">Like hiring a remote employee</h2>
         <ol className="mt-10 grid gap-px overflow-hidden rounded-sm border border-hair bg-hair md:grid-cols-4">
           {STEPS.map((s, i) => (
@@ -117,7 +125,7 @@ export default function AiWorkforcePage() {
       <section id="hire" className="shell scroll-mt-24 pb-24 md:pb-36" aria-labelledby="hire-title">
         <div className="grid gap-12 lg:grid-cols-[380px_1fr]">
           <div>
-            <Label index="03">Hire</Label>
+            <Label index="04">Hire</Label>
             <h2 id="hire-title" className="t-display-m mt-5">One simple price</h2>
             <p className="mt-6 font-display text-[3.4rem] leading-none">
               ${WORKFORCE_PRICE_USD}

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ArrowRight, Check } from 'lucide-react';
 import { Label } from '@/components/system/primitives';
 import { MaskLines, Reveal } from '@/components/system/motion';
-import { WORKFORCE } from '@/content/workforce';
+import { WorkforceDemos } from '@/components/workforce/demos';
 
 /**
  * Kesera AI Workforce, placed straight after the hero: what it is, the six
@@ -55,32 +55,13 @@ export function AiWorkforce() {
           </Reveal>
         </div>
 
-        <ul className="mt-16 grid gap-px overflow-hidden rounded-sm border border-hair bg-hair sm:grid-cols-2 lg:grid-cols-3">
-          {WORKFORCE.map((e) => (
-            <li key={e.key} className="bg-void">
-              <Link href="/ai-workforce#team" className="group flex h-full items-start gap-4 p-6 transition hover:bg-white/[0.03]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`/workforce/${e.key}.webp`}
-                  alt={`${e.name}, ${e.title} (AI)`}
-                  width={56}
-                  height={56}
-                  loading="lazy"
-                  className="size-14 shrink-0 rounded-full object-cover"
-                  style={{ boxShadow: `0 0 0 2px ${e.accent}66` }}
-                />
-                <span className="min-w-0">
-                  <span className="flex items-center gap-2">
-                    <span className="t-title text-[1.2rem]">{e.name}</span>
-                    <ArrowRight size={15} className="text-faint transition group-hover:translate-x-0.5 group-hover:text-signal" aria-hidden />
-                  </span>
-                  <span className="block text-sm text-dim">{e.title}</span>
-                  <span className="mt-2 block text-[14px] leading-relaxed text-white/80">{e.tagline}</span>
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-20">
+          <p className="t-label text-faint">Watch it work</p>
+          <h3 className="t-display-m mt-4 max-w-[22ch]">Pick an employee. Watch a job get done.</h3>
+          <div className="mt-8">
+            <WorkforceDemos />
+          </div>
+        </div>
       </div>
     </section>
   );

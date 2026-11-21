@@ -27,7 +27,9 @@ export function Hero({ projectsInDevelopment }: { projectsInDevelopment: number 
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-b from-transparent to-void" />
 
       {/* Pencil note pointing to the AI Workforce, in the empty top-right of the video */}
-      <HireAiCallout className="absolute right-[6%] top-[calc(68px+14%)] z-10 hidden lg:block" />
+      <div className="absolute right-[5%] top-[calc(68px+4%)] z-10 hidden lg:block">
+        <HireAiCallout />
+      </div>
 
       <div className="shell grid min-h-[calc(100svh-68px)] grid-cols-1 content-end gap-y-10 pb-14 pt-24 lg:grid-cols-12 lg:gap-x-10 lg:pb-20">
         <div className="lg:col-span-8">
@@ -51,7 +53,9 @@ export function Hero({ projectsInDevelopment }: { projectsInDevelopment: number 
             <Cta href="/start" className="w-full sm:w-auto">Start a project</Cta>
             <Cta href="#who-we-are" variant="ghost" className="w-full sm:w-auto">Who we are</Cta>
           </div>
-          <HireAiCallout compact className="mt-9 lg:hidden" />
+          <div className="mt-9 lg:hidden">
+            <HireAiCallout compact />
+          </div>
         </div>
       </div>
 

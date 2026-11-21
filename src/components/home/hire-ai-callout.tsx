@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronsRight, ShieldCheck } from 'lucide-react';
+import { ChevronsRight } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -56,7 +56,7 @@ function Faces({ keys, size, more }: { keys: string[]; size: number; more?: stri
       ))}
       {more && (
         <span
-          className="grid place-items-center rounded-full border-2 border-white bg-[#2a2a33] font-semibold text-white shadow-[0_3px_8px_rgb(0_0_0/0.25)]"
+          className="grid place-items-center rounded-full border-2 border-white bg-[#0a1530] font-semibold text-white shadow-[0_3px_8px_rgb(0_0_0/0.25)]"
           style={{ width: size, height: size, marginLeft: -size * 0.3, fontSize: size * 0.34 }}
         >
           {more}
@@ -84,7 +84,7 @@ export function HireAiCallout({ className, compact = false }: { className?: stri
       <Link
         href="/ai-workforce"
         aria-label="Looking to hire an AI employee? Meet the Kesera AI Workforce"
-        className="group relative row-span-2 overflow-hidden rounded-[28px] bg-[linear-gradient(160deg,#efe3b8_0%,#f3edd9_55%,#ece6d4_100%)] text-[#1b1712] shadow-[0_24px_60px_-24px_rgb(0_0_0/0.7)]"
+        className="group relative row-span-2 overflow-hidden rounded-[28px] bg-[linear-gradient(160deg,#e4efff_0%,#f6f9ff_55%,#dce9fb_100%)] text-[#0b1220] shadow-[0_24px_60px_-24px_rgb(0_0_0/0.7)]"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -92,18 +92,19 @@ export function HireAiCallout({ className, compact = false }: { className?: stri
           alt="Sarah, AI Executive Assistant"
           className={cn('pointer-events-none absolute bottom-0 select-none object-contain object-bottom', compact ? '-right-[42%] h-[68%]' : '-right-[30%] h-[74%]')}
         />
-        <span className={cn('absolute grid place-items-center rounded-full bg-white text-[#1b1712] shadow-sm', compact ? 'left-4 top-4 size-10' : 'left-5 top-5 size-12')}>
-          <ShieldCheck size={compact ? 20 : 24} strokeWidth={1.8} />
+        <span className={cn('absolute grid place-items-center rounded-full bg-white shadow-[0_4px_14px_rgb(10_40_90/0.15)]', compact ? 'left-4 top-4 size-10' : 'left-5 top-5 size-12')}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/kesera-k-mark.png" alt="Kesera" width={28} height={23} className={compact ? 'w-[22px]' : 'w-[27px]'} />
         </span>
         <span className={cn('absolute z-10', compact ? 'left-4 top-[25%] w-[64%]' : 'left-5 top-[26%] w-[54%]')}>
           <span className={cn('block font-sans font-medium leading-[1.12] tracking-[-0.02em]', compact ? 'text-[1.15rem]' : 'text-[1.35rem]')}>Looking to hire an AI employee?</span>
-          <span className={cn('mt-2 block leading-snug text-[#1b1712]/70', compact ? 'text-[0.72rem]' : 'text-[0.8rem]')}>AI employees that get real work done.</span>
-          <span className={cn('mt-2.5 inline-flex items-center gap-1 whitespace-nowrap border-b border-[#1b1712]/40 pb-0.5 font-semibold transition group-hover:border-[#1a86fa] group-hover:text-[#1a86fa]', compact ? 'text-[0.68rem]' : 'text-[0.72rem]')}>
+          <span className={cn('mt-2 block leading-snug text-[#0b1220]/70', compact ? 'text-[0.72rem]' : 'text-[0.8rem]')}>AI employees that get real work done.</span>
+          <span className={cn('mt-2.5 inline-flex items-center gap-1 whitespace-nowrap border-b border-[#1a86fa]/60 pb-0.5 font-semibold transition group-hover:border-[#1a86fa] group-hover:text-[#1a86fa]', compact ? 'text-[0.68rem]' : 'text-[0.72rem]')}>
             Meet the AI Workforce <span aria-hidden>→</span>
           </span>
         </span>
         {/* Three-circle mark, bottom left */}
-        <svg viewBox="0 0 52 48" className={cn('absolute text-[#1b1712]/35', compact ? 'bottom-3 left-4 w-9' : 'bottom-4 left-5 w-12')} fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
+        <svg viewBox="0 0 52 48" className={cn('absolute text-[#1a86fa]/45', compact ? 'bottom-3 left-4 w-9' : 'bottom-4 left-5 w-12')} fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
           <circle cx="26" cy="13" r="11" />
           <circle cx="13" cy="34" r="11" />
           <circle cx="39" cy="34" r="11" />
@@ -111,7 +112,7 @@ export function HireAiCallout({ className, compact = false }: { className?: stri
       </Link>
 
       {/* Top stat card */}
-      <Link href="/ai-workforce#team" className="relative flex flex-col justify-end overflow-hidden rounded-[28px] bg-[#f4a062] p-4 text-white shadow-[0_24px_60px_-24px_rgb(0_0_0/0.7)] sm:p-5">
+      <Link href="/ai-workforce#team" className="relative flex flex-col justify-end overflow-hidden rounded-[28px] bg-[linear-gradient(150deg,#2f95ff_0%,#1a86fa_45%,#0a5fe0_100%)] p-4 text-white shadow-[0_24px_60px_-24px_rgb(0_0_0/0.7)] sm:p-5">
         <span className="absolute right-3 top-3">
           <Faces keys={['sarah', 'alex', 'maya']} size={compact ? 24 : 30} more="+3" />
         </span>
@@ -122,9 +123,9 @@ export function HireAiCallout({ className, compact = false }: { className?: stri
       </Link>
 
       {/* Bottom stat card */}
-      <Link href="/ai-workforce#team" className="relative flex flex-col justify-end overflow-hidden rounded-[28px] bg-[#a596a6] p-4 text-white shadow-[0_24px_60px_-24px_rgb(0_0_0/0.7)] sm:p-5">
+      <Link href="/ai-workforce#team" className="relative flex flex-col justify-end overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(160deg,#0f2142_0%,#0a1530_100%)] p-4 text-white shadow-[0_24px_60px_-24px_rgb(0_0_0/0.7)] sm:p-5">
         <span className="absolute inset-x-3 top-3 flex items-center justify-between">
-          <ChevronsRight size={compact ? 16 : 20} className="text-white/80" aria-hidden />
+          <ChevronsRight size={compact ? 16 : 20} className="text-[#38e1ff]" aria-hidden />
           <Faces keys={['james', 'daniel', 'grace']} size={compact ? 24 : 30} />
         </span>
         <span className={cn('font-display font-semibold leading-none', compact ? 'text-[2.1rem]' : 'text-[2.8rem]')}>

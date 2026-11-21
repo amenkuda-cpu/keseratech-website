@@ -1,5 +1,6 @@
 import { Hero } from '@/components/home/hero';
 import { Intro } from '@/components/home/intro';
+import { AiWorkforce } from '@/components/home/ai-workforce';
 import { DivisionsIndex } from '@/components/home/divisions-index';
 import { VenturesShowcase } from '@/components/home/ventures-showcase';
 import { Commercial } from '@/components/home/commercial';
@@ -37,6 +38,8 @@ export default async function HomePage() {
     <>
       <OrganizationJsonLd />
       <Hero projectsInDevelopment={ventures.filter((p) => p.status === 'IN_DEVELOPMENT').length} />
+      {/* Kesera AI Workforce comes first after the hero: it is the main revenue product. */}
+      <AiWorkforce />
       <Intro />
       {/* Scroll scenes: robotic arm -> divisions, crane -> Sera Tech, EV -> process.
           Always at least two sections apart; timing in src/animations/scroll-scenes.ts. */}

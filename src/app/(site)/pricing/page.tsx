@@ -8,7 +8,7 @@ import { Label } from '@/components/system/primitives';
 
 export const metadata: Metadata = {
   title: 'Website, App & Software Prices in Zimbabwe',
-  description: 'Clear prices in Zimbabwe: websites from $120, apps from $250, CRM dashboards from $100, AI chatbots from $40 and AI automation from $80, plus a live estimator for custom software.',
+  description: 'Clear prices in Zimbabwe: websites from $150, apps from $250, CRM dashboards from $100, AI chatbots from $40 and AI automation from $80, plus a live estimator for custom software.',
   alternates: { canonical: '/pricing' },
 };
 

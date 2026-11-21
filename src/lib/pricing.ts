@@ -48,7 +48,7 @@ export const planSchema = z.object({
 export type Plan = z.infer<typeof planSchema>;
 
 /** Bump when DEFAULT_PLANS must replace the stored plans once (db.ts applies it on start-up). */
-export const PLANS_VERSION = 3;
+export const PLANS_VERSION = 4;
 
 const optionSchema = z.object({ id: z.string(), label: z.string(), cents: z.number().int().min(0) });
 const multiplierSchema = z.object({ id: z.string(), label: z.string(), multiplier: z.number().min(0.5).max(3) });
@@ -160,19 +160,19 @@ const POPULAR = 'Most popular';
 
 export const DEFAULT_PLANS: Plan[] = [
   plan({
-    id: 'basic-website', group: 'website', name: 'Basic Website', priceCents: 12000, sort: 1,
+    id: 'basic-website', group: 'website', name: 'Basic Website', priceCents: 15000, sort: 1,
     blurb: 'A clear, professional presence for a new or small business.',
     features: ['Custom 3-page website', 'Responsive design', 'Basic SEO setup', 'Logo integration', 'Contact form'],
   }),
   plan({
-    id: 'ecommerce-website', group: 'website', name: 'Website + E-commerce Store', priceCents: 18000, sort: 2, highlight: 'Recommended',
-    blurb: 'A full website with an online shop your customers can order from.',
+    id: 'ecommerce-website', group: 'website', name: 'Pro Package', priceCents: 18000, sort: 2, highlight: 'Recommended',
+    blurb: 'Basic e-commerce store: a full website with an online shop your customers can order from.',
     features: ['Custom 6-page website', 'Online store with your product catalogue', 'Cart and checkout (EcoCash, cards or cash)', 'Order notifications by email and WhatsApp', 'Responsive design', 'Google Analytics + Maps'],
   }),
   plan({
-    id: 'corporate-website', group: 'website', name: 'Corporate Website', priceCents: 25000, sort: 3,
-    blurb: 'A fully functional website that runs your sales and operations.',
-    features: ['Fully functional custom website', 'CRM dashboard for leads and customers', 'Automated follow-ups and workflows', 'Admin panel and staff accounts', 'E-commerce ready', 'Ongoing support quoted separately'],
+    id: 'corporate-website', group: 'website', name: 'Full E-commerce', priceCents: 25000, sort: 3,
+    blurb: 'Dashboard-integrated website: your online store, orders, customers and sales run from one dashboard.',
+    features: ['Full e-commerce website', 'Dashboard for orders, stock, customers and sales', 'Cart and checkout (EcoCash, cards or cash)', 'Admin panel and staff accounts', 'Automated order follow-ups', 'Ongoing support quoted separately'],
   }),
 
   plan({

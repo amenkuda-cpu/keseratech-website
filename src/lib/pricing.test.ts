@@ -78,7 +78,7 @@ describe('estimate', () => {
 describe('package groups', () => {
   it('has three tiers in every group, with the middle one as the only recommended plan', () => {
     const tiers: Record<string, string[]> = {
-      website: ['Basic', 'Website + E-commerce Store', 'Corporate'],
+      website: ['Basic', 'Pro Package', 'Full E-commerce'],
       app: ['Starter', 'Standard', 'Premium'],
       crm: ['Basic', 'Pro', 'Corporate'],
       chatbot: ['Basic', 'Pro', 'Corporate'],
@@ -92,7 +92,7 @@ describe('package groups', () => {
   });
   it('matches the November 2026 website and app prices', () => {
     const price = (id: string) => DEFAULT_PLANS.find((p) => p.id === id)!.priceCents;
-    expect([price('basic-website'), price('ecommerce-website'), price('corporate-website')]).toEqual([12000, 18000, 25000]);
+    expect([price('basic-website'), price('ecommerce-website'), price('corporate-website')]).toEqual([15000, 18000, 25000]);
     expect([price('starter-app'), price('standard-app'), price('premium-app')]).toEqual([25000, 35000, 45000]);
     expect([price('basic-crm'), price('pro-crm'), price('corporate-crm')]).toEqual([10000, 18000, 30000]);
   });

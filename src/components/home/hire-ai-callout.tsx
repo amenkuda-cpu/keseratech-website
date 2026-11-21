@@ -1,22 +1,16 @@
 'use client';
 
-import { Caveat } from 'next/font/google';
 import { ChevronsRight, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
-const hand = Caveat({ subsets: ['latin'], weight: ['600', '700'], display: 'swap' });
-
-/**
- * Card stats. Keep these TRUE: replace with real figures (hires, return rate)
- * once the workforce has paying customers.
- */
-const STAT_A = { value: 6, prefix: '', label: 'AI Specialists' };
-const STAT_B = { value: 200, prefix: '$', label: 'Per month' };
+/** Card stats. STAT_B is Kesera's client return rate as supplied by the owner. */
+const STAT_A = { value: 6, prefix: '', suffix: '', label: 'AI Specialists' };
+const STAT_B = { value: 95, prefix: '', suffix: '%', label: 'Return Customers' };
 
 /** Counts from 0 to `to` over ~1.5 s; reduced-motion visitors see the final value. */
-function CountUp({ to, prefix = '', delay = 0 }: { to: number; prefix?: string; delay?: number }) {
+function CountUp({ to, prefix = '', suffix = '', delay = 0 }: { to: number; prefix?: string; suffix?: string; delay?: number }) {
   const [n, setN] = useState(to);
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -40,6 +34,7 @@ function CountUp({ to, prefix = '', delay = 0 }: { to: number; prefix?: string; 
     <span className="tabular-nums">
       {prefix}
       {n}
+      {suffix}
     </span>
   );
 }
@@ -101,7 +96,7 @@ export function HireAiCallout({ className, compact = false }: { className?: stri
           <ShieldCheck size={compact ? 20 : 24} strokeWidth={1.8} />
         </span>
         <span className={cn('absolute z-10', compact ? 'left-4 top-[25%] w-[64%]' : 'left-5 top-[26%] w-[54%]')}>
-          <span className={cn(hand.className, 'block leading-[1.02]', compact ? 'text-[1.35rem]' : 'text-[1.55rem]')}>Looking to hire an AI employee?</span>
+          <span className={cn('block font-sans font-medium leading-[1.12] tracking-[-0.02em]', compact ? 'text-[1.15rem]' : 'text-[1.35rem]')}>Looking to hire an AI employee?</span>
           <span className={cn('mt-2 block leading-snug text-[#1b1712]/70', compact ? 'text-[0.72rem]' : 'text-[0.8rem]')}>AI employees that get real work done.</span>
           <span className={cn('mt-2.5 inline-flex items-center gap-1 whitespace-nowrap border-b border-[#1b1712]/40 pb-0.5 font-semibold transition group-hover:border-[#1a86fa] group-hover:text-[#1a86fa]', compact ? 'text-[0.68rem]' : 'text-[0.72rem]')}>
             Meet the AI Workforce <span aria-hidden>→</span>
@@ -121,19 +116,19 @@ export function HireAiCallout({ className, compact = false }: { className?: stri
           <Faces keys={['sarah', 'alex', 'maya']} size={compact ? 24 : 30} more="+3" />
         </span>
         <span className={cn('font-display font-semibold leading-none', compact ? 'text-[2.1rem]' : 'text-[2.8rem]')}>
-          <CountUp to={STAT_A.value} prefix={STAT_A.prefix} delay={1400} />
+          <CountUp to={STAT_A.value} prefix={STAT_A.prefix} suffix={STAT_A.suffix} delay={1400} />
         </span>
         <span className={cn('mt-1.5 font-medium text-white/90', compact ? 'text-[0.72rem]' : 'text-[0.85rem]')}>{STAT_A.label}</span>
       </Link>
 
       {/* Bottom stat card */}
-      <Link href="/ai-workforce#hire" className="relative flex flex-col justify-end overflow-hidden rounded-[28px] bg-[#a596a6] p-4 text-white shadow-[0_24px_60px_-24px_rgb(0_0_0/0.7)] sm:p-5">
+      <Link href="/ai-workforce#team" className="relative flex flex-col justify-end overflow-hidden rounded-[28px] bg-[#a596a6] p-4 text-white shadow-[0_24px_60px_-24px_rgb(0_0_0/0.7)] sm:p-5">
         <span className="absolute inset-x-3 top-3 flex items-center justify-between">
           <ChevronsRight size={compact ? 16 : 20} className="text-white/80" aria-hidden />
           <Faces keys={['james', 'daniel', 'grace']} size={compact ? 24 : 30} />
         </span>
         <span className={cn('font-display font-semibold leading-none', compact ? 'text-[2.1rem]' : 'text-[2.8rem]')}>
-          <CountUp to={STAT_B.value} prefix={STAT_B.prefix} delay={1550} />
+          <CountUp to={STAT_B.value} prefix={STAT_B.prefix} suffix={STAT_B.suffix} delay={1550} />
         </span>
         <span className={cn('mt-1.5 font-medium text-white/90', compact ? 'text-[0.72rem]' : 'text-[0.85rem]')}>{STAT_B.label}</span>
       </Link>

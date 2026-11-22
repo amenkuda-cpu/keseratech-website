@@ -17,14 +17,14 @@ export function AiWorkforce() {
       <div className="shell relative">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
           <Reveal className="lg:col-span-5">
-            <Label>New · 30-day free trial</Label>
+            <Label>New · 7-day free trial</Label>
             <MaskLines id="aiw-home-title" as="h2" className="t-display-l mt-8 max-w-[14ch]" lines={['Hire AI employees', <em key="w">that get real work done.</em>]} />
             <p className="t-lead mt-8 max-w-[34rem] text-white/80">
               Specialised AI employees for admin, sales, marketing, customer support, research and finance. Tell them what you need in plain language; they plan the work, use your business
               tools and hand you finished, checked files.
             </p>
             <ul className="mt-8 space-y-3 text-[15px] text-white/80">
-              {['Your first employee free for 30 days, no card needed', 'Real tasks with progress you can follow', 'Finished, checked files: documents, spreadsheets, replies'].map((t) => (
+              {['Your first employee free for 7 days, no card needed', 'Real tasks with progress you can follow', 'Finished, checked files: documents, spreadsheets, replies'].map((t) => (
                 <li key={t} className="flex gap-3">
                   <Check size={18} className="mt-0.5 shrink-0 text-signal" aria-hidden /> {t}
                 </li>
@@ -47,7 +47,7 @@ export function AiWorkforce() {
               </a>
             </div>
             <p className="mt-4 text-sm text-faint">
-              30 days free on your first employee · No card needed ·{' '}
+              7 days free on your first employee · No card needed ·{' '}
               <Link href="/ai-workforce" className="underline decoration-white/30 underline-offset-4 hover:text-white">
                 See how it works
               </Link>

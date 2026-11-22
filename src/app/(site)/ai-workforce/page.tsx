@@ -38,7 +38,7 @@ export default function AiWorkforcePage() {
         </p>
         <div className="mt-10 flex flex-col gap-3 sm:flex-row">
           <a href="#hire" className="inline-flex min-h-12 items-center justify-center rounded-sm bg-signal px-7 text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-white hover:bg-signal-soft">
-            Start 30-day free trial
+            Start 7-day free trial
           </a>
           <a
             href={WORKFORCE_WHATSAPP}
@@ -50,7 +50,7 @@ export default function AiWorkforcePage() {
           </a>
         </div>
         <p className="mt-6 text-sm text-faint">
-          First employee free for 30 days, no card needed · then USD {WORKFORCE_PRICE_USD} per employee per month · EcoCash, InnBucks, Zimswitch, Visa and Mastercard
+          First employee free for 7 days, no card needed · then USD {WORKFORCE_PRICE_USD} per employee per month · EcoCash, InnBucks, Zimswitch, Visa and Mastercard
         </p>
         <figure className="mt-14 overflow-hidden rounded-sm border border-hair">
           <video className="aspect-video w-full bg-black" controls playsInline preload="metadata" poster="/workforce/explainer-poster.jpg">
@@ -134,7 +134,7 @@ export default function AiWorkforcePage() {
             <Label index="04">Hire</Label>
             <h2 id="hire-title" className="t-display-m mt-5">Start free. Then one simple price.</h2>
             <p className="mt-5 rounded-sm border border-signal/40 bg-signal/10 px-4 py-3 text-[15px] text-white">
-              <span className="font-semibold">30 days free</span> on your first employee. No card needed, nothing charged when it ends.
+              <span className="font-semibold">7 days free</span> on your first employee. No card needed, nothing charged when it ends.
             </p>
             <p className="mt-6 font-display text-[3.4rem] leading-none">
               ${WORKFORCE_PRICE_USD}
@@ -146,7 +146,7 @@ export default function AiWorkforcePage() {
               <li>Company knowledge, training and memory</li>
               <li>Independent quality checks on deliverables</li>
               <li>Cancel any time; your files stay yours</li>
-              <li>Free trial: up to 100 assignments in 30 days</li>
+              <li>Free trial: up to 100 assignments in 7 days</li>
             </ul>
             <a href={WORKFORCE_WHATSAPP} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-white underline decoration-white/30 underline-offset-4 hover:decoration-white">
               <WhatsAppIcon size={17} /> Questions first? Ask us on WhatsApp

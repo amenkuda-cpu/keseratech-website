@@ -101,7 +101,7 @@ export function HireForm({ employees }: { employees: readonly Emp[] }) {
       >
         {state.status === 'sending' ? 'Sending…' : 'Request my free trial'}
       </button>
-      <p className="text-sm text-faint">No payment and no card. We’ll set up your 30-day free trial with you.</p>
+      <p className="text-sm text-faint">No payment and no card. We’ll set up your 7-day free trial with you.</p>
     </form>
   );
 }

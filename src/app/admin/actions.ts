@@ -181,3 +181,14 @@ export async function firstPasswordAction(_prev: ActionResult | undefined, formD
   await setAdminPassword(me.id, hashPassword(next));
   redirect('/admin');
 }
+
+/** One-click publish / unpublish from the projects list. */
+export async function toggleProjectPublishedAction(formData: FormData) {
+  await requireAdmin();
+  const slug = String(formData.get('slug') ?? '');
+  const p = slug ? await getProject(slug, { includeUnpublished: true }) : null;
+  if (!p) return;
+  await saveProject({ ...p, published: !p.published }, p.slug);
+  refreshSite();
+  revalidatePath('/admin/projects');
+}

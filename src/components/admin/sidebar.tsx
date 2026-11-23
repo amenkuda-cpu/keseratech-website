@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BarChart3, ExternalLink, FolderKanban, Inbox, LayoutGrid, ShieldCheck, Tag, Target, Users } from 'lucide-react';
+import { BarChart3, Bot, Building2, ExternalLink, FolderKanban, Inbox, LayoutGrid, Landmark, ShieldCheck, Tag, UserPlus, Users } from 'lucide-react';
 
 type Item = { href: string; label: string; icon: React.ComponentType<{ className?: string }>; badge?: number };
 
-export function Sidebar({ newEnquiries }: { newEnquiries: number }) {
+export function Sidebar({ newEnquiries, newHireRequests }: { newEnquiries: number; newHireRequests: number }) {
   const path = usePathname();
   const sections: { title: string; items: Item[] }[] = [
     {
@@ -14,7 +14,15 @@ export function Sidebar({ newEnquiries }: { newEnquiries: number }) {
       items: [
         { href: '/admin', label: 'Overview', icon: LayoutGrid },
         { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
-        { href: '/admin/finance', label: 'Finance & target', icon: Target },
+        { href: '/admin/finance', label: 'Finance', icon: Landmark },
+      ],
+    },
+    {
+      title: 'AI Workforce',
+      items: [
+        { href: '/admin/workforce', label: 'AI employees', icon: Bot },
+        { href: '/admin/customers', label: 'Customers', icon: Building2 },
+        { href: '/admin/hire-requests', label: 'Hire requests', icon: UserPlus, badge: newHireRequests },
       ],
     },
     {
@@ -35,27 +43,31 @@ export function Sidebar({ newEnquiries }: { newEnquiries: number }) {
   ];
   const active = (href: string) => (href === '/admin' ? path === '/admin' : path.startsWith(href));
   return (
-    <nav aria-label="Admin" className="flex-1 overflow-y-auto px-3 pb-4">
+    <nav aria-label="Admin" className="flex-1 overflow-y-auto px-3 pb-4 [scrollbar-width:thin]">
       {sections.map((s) => (
         <div key={s.title}>
           <div className="nav-section">{s.title}</div>
-          <ul className="space-y-1">
+          <ul className="space-y-0.5">
             {s.items.map((i) => (
               <li key={i.href}>
                 <Link href={i.href} aria-current={active(i.href) ? 'page' : undefined} className="nav-link">
-                  <i.icon className="size-[18px] shrink-0" />
+                  <i.icon className="size-[17px] shrink-0 opacity-90" />
                   <span className="flex-1">{i.label}</span>
-                  {!!i.badge && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-[#22d3ee] px-1.5 text-[11px] font-bold text-[#0a2463]">{i.badge}</span>}
+                  {!!i.badge && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-white/15 px-1.5 text-[11px] font-bold text-white ring-1 ring-white/25">{i.badge}</span>}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
       ))}
-      <div className="nav-section">Site</div>
+      <div className="nav-section">Live sites</div>
       <a href="/" target="_blank" rel="noreferrer" className="nav-link">
-        <ExternalLink className="size-[18px] shrink-0" />
-        <span className="flex-1">View keseratech.com</span>
+        <ExternalLink className="size-[17px] shrink-0 opacity-90" />
+        <span className="flex-1">keseratech.com</span>
+      </a>
+      <a href="https://workforce.keseratech.com/admin" target="_blank" rel="noreferrer" className="nav-link">
+        <ExternalLink className="size-[17px] shrink-0 opacity-90" />
+        <span className="flex-1">Workforce app admin</span>
       </a>
     </nav>
   );
@@ -68,6 +80,9 @@ export function MobileNav({ newEnquiries }: { newEnquiries: number }) {
     ['/admin', 'Overview'],
     ['/admin/analytics', 'Analytics'],
     ['/admin/finance', 'Finance'],
+    ['/admin/workforce', 'AI employees'],
+    ['/admin/customers', 'Customers'],
+    ['/admin/hire-requests', 'Hire requests'],
     ['/admin/enquiries', `Enquiries${newEnquiries ? ` (${newEnquiries})` : ''}`],
     ['/admin/waitlist', 'Waitlist'],
     ['/admin/team', 'Team'],
@@ -79,7 +94,7 @@ export function MobileNav({ newEnquiries }: { newEnquiries: number }) {
       {items.map(([href, label]) => {
         const on = href === '/admin' ? path === '/admin' : path.startsWith(href);
         return (
-          <Link key={href} href={href} aria-current={on ? 'page' : undefined} className={on ? 'shrink-0 rounded-full bg-white px-3 py-1.5 text-[13px] font-semibold text-[#0a2463]' : 'shrink-0 rounded-full px-3 py-1.5 text-[13px] text-white/80'}>
+          <Link key={href} href={href} aria-current={on ? 'page' : undefined} className={on ? 'shrink-0 rounded-full bg-white px-3 py-1.5 text-[13px] font-semibold text-[#0a2558]' : 'shrink-0 rounded-full px-3 py-1.5 text-[13px] text-white/75'}>
             {label}
           </Link>
         );

@@ -1,5 +1,6 @@
 import { requireAdmin } from '@/lib/admin-auth';
 import { listWaitlist } from '@/lib/db';
+import { MessageButtons } from '@/components/admin/message-buttons';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,7 +43,7 @@ export default async function WaitlistPage() {
               {entries.map((e) => (
                 <tr key={e.id} className="border-b border-hair last:border-0">
                   <td className="p-3 text-white">{e.name}</td>
-                  <td className="p-3"><a className="text-signal-soft underline" href={`mailto:${e.email}`}>{e.email}</a></td>
+                  <td className="p-3"><span className="mr-2">{e.email}</span><MessageButtons email={e.email} name={e.name} subject="Amey AI from Kesera Technologies" /></td>
                   <td className="p-3 text-dim">{e.business ?? '—'}</td>
                   <td className="p-3 whitespace-nowrap text-faint">{when(e.createdAt)}</td>
                 </tr>

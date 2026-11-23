@@ -5,6 +5,7 @@ import { formatUsd } from '@/lib/pricing';
 import Link from 'next/link';
 import { EnquiryStatusSelect } from '@/components/admin/enquiry-status';
 import { sourceLabel } from '@/lib/admin-stats';
+import { MessageButtons } from '@/components/admin/message-buttons';
 
 export const dynamic = 'force-dynamic';
 
@@ -68,7 +69,11 @@ export default async function EnquiriesPage({ searchParams }: { searchParams: Pr
                   <span className="text-sm text-faint">{when(e.createdAt)}</span>
                   <EnquiryStatusSelect id={e.id} status={e.status} />
                 </summary>
-                <div className="grid gap-6 border-t border-hair p-4 text-sm md:grid-cols-3 md:p-5">
+                <div className="flex flex-wrap items-center gap-3 border-t border-hair px-4 pt-4 md:px-5">
+                  <span className="text-[12.5px] font-semibold text-dim">Message {e.data.name.split(' ')[0]}:</span>
+                  <MessageButtons email={e.data.email} phone={e.data.phone} name={e.data.name} subject={`Your enquiry with Kesera Technologies (${referenceFor(e.id)})`} />
+                </div>
+                <div className="grid gap-6 p-4 text-sm md:grid-cols-3 md:p-5">
                   <dl className="space-y-2">
                     <div><dt className="t-label text-faint">Email</dt><dd><a className="text-signal-soft underline" href={`mailto:${e.data.email}?subject=${encodeURIComponent(`Your project (${referenceFor(e.id)})`)}`}>{e.data.email}</a></dd></div>
                     <div><dt className="t-label text-faint">Phone</dt><dd>{e.data.phone ? <a className="underline" href={`tel:${e.data.phone.replace(/\s/g, '')}`}>{e.data.phone}</a> : '—'}</dd></div>

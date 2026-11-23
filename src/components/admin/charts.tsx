@@ -3,7 +3,9 @@
 // Palette: the dataviz reference categorical order (validated light-mode, adjacent pairs).
 
 export const PALETTE = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#6250d6', '#e34948'] as const;
-const GRID = '#e3e9f3';
+/** Premium default: one blue ramp, dark to light (ordinal steps from the reference sequential blue). */
+export const BLUES = ['#0d366b', '#1c5cab', '#2a78d6', '#5598e7', '#86b6ef'] as const;
+const GRID = '#edf1f7';
 const AXIS_TEXT = '#6b7a93';
 
 type Fmt = (n: number) => string;
@@ -71,11 +73,12 @@ export function TableView({ caption, head, rows }: { caption: string; head: stri
 export function StackedColumns({
   labels,
   series,
-  colors = PALETTE as unknown as string[],
+  colors = BLUES as unknown as string[],
   format = plain,
   height = 220,
   caption,
   highlightLast = true,
+  gid = 'c',
 }: {
   labels: string[];
   series: { name: string; values: number[] }[];
@@ -84,6 +87,8 @@ export function StackedColumns({
   height?: number;
   caption: string;
   highlightLast?: boolean;
+  /** Unique id for the gradient when several charts share a page. */
+  gid?: string;
 }) {
   const W = 640;
   const H = height;
@@ -104,6 +109,12 @@ export function StackedColumns({
   return (
     <figure>
       <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full" role="img" aria-label={caption}>
+        <defs>
+          <linearGradient id={`col-${gid}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={colors[0]} />
+            <stop offset="100%" stopColor="#0d366b" />
+          </linearGradient>
+        </defs>
         {ticks.map((t) => (
           <g key={t}>
             <line x1={padL} x2={W - 8} y1={y(t)} y2={y(t)} stroke={GRID} strokeWidth={1} />
@@ -131,7 +142,7 @@ export function StackedColumns({
                 const h = Math.max(0, y0 - y1 - (k > 0 ? 2 : 0));
                 const top = y1;
                 return isTop ? (
-                  <path key={x.s.name} d={topRounded(cx - bw / 2, top, bw, h)} fill={colors[x.si % colors.length]} opacity={highlightLast && series.length === 1 && i !== labels.length - 1 ? 0.78 : 1} />
+                  <path key={x.s.name} d={topRounded(cx - bw / 2, top, bw, h)} fill={series.length === 1 ? `url(#col-${gid})` : colors[x.si % colors.length]} opacity={highlightLast && series.length === 1 && i !== labels.length - 1 ? 0.55 : 1} />
                 ) : (
                   <rect key={x.s.name} x={cx - bw / 2} y={top} width={bw} height={h} fill={colors[x.si % colors.length]} />
                 );
@@ -164,7 +175,7 @@ export function StackedColumns({
 }
 
 /** Donut for parts of a whole, with 2px surface gaps between slices and the total in the middle. */
-export function Donut({ items, colors = PALETTE as unknown as string[], centerLabel, format = plain, caption }: { items: { name: string; value: number }[]; colors?: string[]; centerLabel: string; format?: Fmt; caption: string }) {
+export function Donut({ items, colors = BLUES as unknown as string[], centerLabel, format = plain, caption }: { items: { name: string; value: number }[]; colors?: string[]; centerLabel: string; format?: Fmt; caption: string }) {
   const total = items.reduce((s, i) => s + i.value, 0);
   const R = 64;
   const r = 44;
@@ -228,12 +239,12 @@ export function TargetRing({ pct, value, sub, size = 168, id = 'ring' }: { pct: 
     <svg viewBox="0 0 160 160" width={size} height={size} role="img" aria-label={`${value}, ${sub}`} className="shrink-0">
       <defs>
         <linearGradient id={`${id}-g`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#2a78d6" />
-          <stop offset="55%" stopColor="#22b8e6" />
-          <stop offset="100%" stopColor="#1baf7a" />
+          <stop offset="0%" stopColor="#0d366b" />
+          <stop offset="60%" stopColor="#1c5cab" />
+          <stop offset="100%" stopColor="#3fa3ff" />
         </linearGradient>
       </defs>
-      <circle cx={80} cy={80} r={R} fill="none" stroke="#dbe8fb" strokeWidth={14} />
+      <circle cx={80} cy={80} r={R} fill="none" stroke="#e9eff8" strokeWidth={12} />
       {p > 0 && (
         <circle
           cx={80}
@@ -241,7 +252,7 @@ export function TargetRing({ pct, value, sub, size = 168, id = 'ring' }: { pct: 
           r={R}
           fill="none"
           stroke={`url(#${id}-g)`}
-          strokeWidth={14}
+          strokeWidth={12}
           strokeLinecap="round"
           strokeDasharray={`${(p / 100) * circ} ${circ}`}
           transform="rotate(-90 80 80)"
@@ -259,7 +270,7 @@ export function TargetRing({ pct, value, sub, size = 168, id = 'ring' }: { pct: 
 }
 
 /** Horizontal bars, one colour each from the palette in fixed order, value at the tip. */
-export function HBars({ items, colors = PALETTE as unknown as string[], format = plain, caption }: { items: { name: string; value: number }[]; colors?: string[]; format?: Fmt; caption: string }) {
+export function HBars({ items, colors = BLUES as unknown as string[], format = plain, caption }: { items: { name: string; value: number }[]; colors?: string[]; format?: Fmt; caption: string }) {
   const max = Math.max(...items.map((i) => i.value), 1);
   return (
     <figure>
@@ -281,7 +292,7 @@ export function HBars({ items, colors = PALETTE as unknown as string[], format =
 }
 
 /** One whole split into parts (pipeline stages), 2px gaps, legend with counts. */
-export function SegmentBar({ items, colors = PALETTE as unknown as string[], caption }: { items: { name: string; value: number }[]; colors?: string[]; caption: string }) {
+export function SegmentBar({ items, colors = BLUES as unknown as string[], caption }: { items: { name: string; value: number }[]; colors?: string[]; caption: string }) {
   const total = items.reduce((s, i) => s + i.value, 0);
   return (
     <figure aria-label={caption}>
@@ -320,8 +331,8 @@ export function PaceChart({ points, targetCents, format, caption }: { points: { 
       <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full" role="img" aria-label={caption}>
         <defs>
           <linearGradient id="pace-area" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#1baf7a" stopOpacity={0.22} />
-            <stop offset="100%" stopColor="#1baf7a" stopOpacity={0.02} />
+            <stop offset="0%" stopColor="#2a78d6" stopOpacity={0.16} />
+            <stop offset="100%" stopColor="#2a78d6" stopOpacity={0.01} />
           </linearGradient>
         </defs>
         {ticks.map((t) => (
@@ -332,15 +343,15 @@ export function PaceChart({ points, targetCents, format, caption }: { points: { 
             </text>
           </g>
         ))}
-        <line x1={x(0)} y1={y(0)} x2={x(points.length - 1)} y2={y(targetCents)} stroke="#9aa8bf" strokeWidth={1.5} />
-        <line x1={padL} x2={W - 14} y1={y(targetCents)} y2={y(targetCents)} stroke="#eb6834" strokeWidth={1.5} />
+        <line x1={x(0)} y1={y(0)} x2={x(points.length - 1)} y2={y(targetCents)} stroke="#b9c4d6" strokeWidth={1.5} />
+        <line x1={padL} x2={W - 14} y1={y(targetCents)} y2={y(targetCents)} stroke="#0d366b" strokeWidth={1} />
         <text x={padL + 6} y={y(targetCents) - 6} textAnchor="start" fontSize={11} fontWeight={600} fill="#14213d">
           Target {format(targetCents)}
         </text>
         {area && <path d={area} fill="url(#pace-area)" />}
-        {line && <path d={line} fill="none" stroke="#1baf7a" strokeWidth={2.5} strokeLinejoin="round" strokeLinecap="round" />}
+        {line && <path d={line} fill="none" stroke="#1c5cab" strokeWidth={2.5} strokeLinejoin="round" strokeLinecap="round" />}
         {known.map((p) => (
-          <circle key={p.label} cx={x(p.i)} cy={y(p.cents)} r={4.5} fill="#1baf7a" stroke="#fff" strokeWidth={2}>
+          <circle key={p.label} cx={x(p.i)} cy={y(p.cents)} r={4.5} fill="#1c5cab" stroke="#fff" strokeWidth={2}>
             <title>{`${p.label}: ${format(p.cents)} so far`}</title>
           </circle>
         ))}
@@ -358,9 +369,9 @@ export function PaceChart({ points, targetCents, format, caption }: { points: { 
       <div className="mt-2">
         <Legend
           items={[
-            { name: 'Money in (running total)', color: '#1baf7a' },
-            { name: 'Target', color: '#eb6834' },
-            { name: 'On-pace line', color: '#9aa8bf' },
+            { name: 'Money in (running total)', color: '#1c5cab' },
+            { name: 'Target', color: '#0d366b' },
+            { name: 'On-pace line', color: '#b9c4d6' },
           ]}
         />
       </div>
@@ -370,7 +381,7 @@ export function PaceChart({ points, targetCents, format, caption }: { points: { 
 }
 
 /** Tiny trend line for stat tiles; the current period is the accent dot. */
-export function Sparkline({ values, color = '#2a78d6' }: { values: number[]; color?: string }) {
+export function Sparkline({ values, color = '#1c5cab' }: { values: number[]; color?: string }) {
   const W = 96;
   const H = 30;
   const max = Math.max(...values, 1);
@@ -379,7 +390,7 @@ export function Sparkline({ values, color = '#2a78d6' }: { values: number[]; col
   const [lx, ly] = pts[pts.length - 1];
   return (
     <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} aria-hidden className="shrink-0">
-      <path d={d} fill="none" stroke="#b9c6da" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
+      <path d={d} fill="none" stroke="#d3dceb" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
       <circle cx={lx} cy={ly} r={4} fill={color} stroke="#fff" strokeWidth={2} />
     </svg>
   );

@@ -3,7 +3,7 @@ import { requireAdmin } from '@/lib/admin-auth';
 import { PAYMENT_METHODS, REVENUE_CATEGORIES, getRevenueTarget } from '@/lib/db';
 import { allRevenue } from '@/lib/revenue';
 import { countBy, lastMonths, monthLabel, revenueByMonth, targetProgress, todayYmd, usd } from '@/lib/admin-stats';
-import { Donut, HBars, PaceChart, PALETTE, StackedColumns, TargetRing } from '@/components/admin/charts';
+import { BLUES, Donut, HBars, PaceChart, StackedColumns, TargetRing } from '@/components/admin/charts';
 import { AddPaymentForm, TargetForm } from '@/components/admin/finance-forms';
 import { deleteRevenueAction } from '../../actions';
 
@@ -31,11 +31,11 @@ export default async function FinancePage() {
 
       <div className="grid gap-4 sm:grid-cols-3">
         {[
-          { label: 'Revenue this month', value: usd(sum(entries.filter((e) => e.receivedOn.startsWith(thisMonth))), 2), color: PALETTE[2], icon: Wallet },
-          { label: `Made in ${tp.start.slice(0, 4)}`, value: usd(tp.earnedCents, 2), color: PALETTE[0], icon: Target },
-          { label: 'Through Pesepay', value: usd(pesepayTotal, 2), color: PALETTE[6], icon: Zap },
+          { label: 'Revenue this month', value: usd(sum(entries.filter((e) => e.receivedOn.startsWith(thisMonth))), 2), icon: Wallet },
+          { label: `Made in ${tp.start.slice(0, 4)}`, value: usd(tp.earnedCents, 2), icon: Target },
+          { label: 'Through Pesepay', value: usd(pesepayTotal, 2), icon: Zap },
         ].map((t) => (
-          <div key={t.label} className="a-card a-tile p-5" style={{ ['--tile' as string]: t.color }}>
+          <div key={t.label} className="a-card a-tile p-5">
             <span className="a-icon">
               <t.icon className="size-5" />
             </span>
@@ -100,7 +100,7 @@ export default async function FinancePage() {
         </section>
         <section className="a-card p-5 sm:p-6">
           <h2 className="mb-4 text-[15px] font-semibold text-[#41506b]">How clients paid</h2>
-          {byMethod.length ? <HBars items={byMethod} colors={[PALETTE[6], PALETTE[2], PALETTE[0], PALETTE[3], PALETTE[1], PALETTE[4], PALETTE[7]]} format={(c) => usd(c)} caption="Revenue by payment method" /> : <p className="text-sm text-[#6b7a93]">No payments yet.</p>}
+          {byMethod.length ? <HBars items={byMethod} format={(c) => usd(c)} caption="Revenue by payment method" /> : <p className="text-sm text-[#6b7a93]">No payments yet.</p>}
         </section>
       </div>
 
@@ -134,7 +134,7 @@ export default async function FinancePage() {
                     </td>
                     <td className="py-2.5 pr-3">
                       <span className="inline-flex items-center gap-1.5 text-[#41506b]">
-                        <span className="size-2.5 rounded-[3px]" style={{ background: PALETTE[Math.max(0, (REVENUE_CATEGORIES as readonly string[]).indexOf(e.category))] }} aria-hidden />
+                        <span className="size-2.5 rounded-[3px]" style={{ background: BLUES[Math.max(0, (REVENUE_CATEGORIES as readonly string[]).indexOf(e.category))] }} aria-hidden />
                         {e.category}
                       </span>
                     </td>

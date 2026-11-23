@@ -14,16 +14,16 @@
   color-scheme: light;
   min-height: 100dvh;
   background:
-    radial-gradient(900px 500px at 85% -10%, rgb(34 184 230 / 0.18), transparent 60%),
-    radial-gradient(700px 420px at 10% 110%, rgb(98 80 214 / 0.10), transparent 60%),
-    linear-gradient(180deg, #eaf3ff 0%, #f5f9ff 45%, #eef4ff 100%);
+    radial-gradient(1100px 520px at 100% -20%, rgb(42 120 214 / 0.10), transparent 60%),
+    linear-gradient(180deg, #f3f6fb 0%, #f7f9fc 50%, #f2f5fa 100%);
 }
 
 .amey-sidebar {
   background:
-    radial-gradient(420px 300px at 0% 0%, rgb(90 169 255 / 0.35), transparent 70%),
-    linear-gradient(180deg, #0a2463 0%, #0d3a8f 45%, #1660c9 100%);
-  box-shadow: 8px 0 40px -20px rgb(10 36 99 / 0.6);
+    radial-gradient(380px 260px at 0% 0%, rgb(63 163 255 / 0.22), transparent 70%),
+    radial-gradient(300px 300px at 100% 100%, rgb(63 163 255 / 0.12), transparent 70%),
+    linear-gradient(180deg, #06163a 0%, #0a2558 55%, #0e3577 100%);
+  box-shadow: 1px 0 0 rgb(255 255 255 / 0.04), 12px 0 40px -24px rgb(6 22 58 / 0.7);
 }
 .amey-sidebar .nav-link {
   position: relative;
@@ -33,33 +33,36 @@
   border-radius: 999px;
   padding: 0.5rem 0.85rem;
   font-size: 0.875rem;
-  color: rgb(255 255 255 / 0.78);
+  color: rgb(255 255 255 / 0.72);
   border: 1px solid transparent;
   transition: background 0.15s, color 0.15s, box-shadow 0.15s;
 }
 .amey-sidebar .nav-link:hover { background: rgb(255 255 255 / 0.08); color: #fff; }
 .amey-sidebar .nav-link[aria-current='page'] {
   color: #fff;
-  background: linear-gradient(90deg, rgb(255 255 255 / 0.18), rgb(255 255 255 / 0.06));
-  border-color: rgb(125 211 252 / 0.75);
-  box-shadow: 0 0 0 3px rgb(56 189 248 / 0.18), 0 0 18px rgb(56 189 248 / 0.45), inset 0 1px 0 rgb(255 255 255 / 0.25);
+  background: linear-gradient(90deg, rgb(255 255 255 / 0.14), rgb(255 255 255 / 0.04));
+  border-color: rgb(147 197 253 / 0.55);
+  box-shadow: 0 0 16px rgb(63 163 255 / 0.28), inset 0 1px 0 rgb(255 255 255 / 0.18);
 }
-.amey-sidebar .nav-section { padding: 1.1rem 0.85rem 0.35rem; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(255 255 255 / 0.5); }
+.amey-sidebar .nav-section { padding: 1.2rem 0.85rem 0.4rem; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(255 255 255 / 0.38); }
 
 .a-card {
   background: var(--a-card);
-  border: 1px solid rgb(255 255 255 / 0.9);
-  border-radius: 20px;
-  box-shadow: 0 1px 2px rgb(20 33 61 / 0.04), 0 12px 32px -16px rgb(26 94 200 / 0.22);
+  border: 1px solid #e7ecf4;
+  border-radius: 18px;
+  box-shadow: 0 1px 2px rgb(13 54 107 / 0.04), 0 18px 40px -28px rgb(13 54 107 / 0.28);
 }
 .a-tile { position: relative; overflow: hidden; }
-.a-tile::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--tile, #2a78d6); }
-.a-icon { display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 12px; color: #fff; background: var(--tile, #2a78d6); box-shadow: 0 8px 18px -8px var(--tile, #2a78d6); }
+.a-icon { display: grid; place-items: center; width: 2.35rem; height: 2.35rem; border-radius: 12px; color: #1c5cab; background: linear-gradient(180deg, #f1f6fe, #e4eefc); box-shadow: inset 0 0 0 1px #d9e6f8; }
+.a-hero { background: radial-gradient(600px 240px at 100% 0%, rgb(63 163 255 / 0.28), transparent 70%), linear-gradient(135deg, #06163a 0%, #0a2558 55%, #123f8a 100%); color: #fff; border: 0; }
+.a-kicker { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--a-muted); }
 .a-chip { display: inline-flex; align-items: center; gap: 0.25rem; border-radius: 999px; padding: 0.15rem 0.55rem; font-size: 0.72rem; font-weight: 700; }
-.a-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 999px; padding: 0.5rem 1rem; font-size: 0.85rem; font-weight: 600; color: #fff; background: linear-gradient(135deg, #1a86fa, #0d3a8f); box-shadow: 0 8px 18px -10px #1a86fa; }
+.a-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 999px; padding: 0.5rem 1rem; font-size: 0.85rem; font-weight: 600; color: #fff; background: linear-gradient(135deg, #1c5cab, #0a2558); box-shadow: 0 10px 20px -12px #0a2558; }
+.a-btn-ghost { display: inline-flex; align-items: center; gap: 0.35rem; border-radius: 999px; border: 1px solid #dbe4f1; background: #fff; padding: 0.35rem 0.75rem; font-size: 0.78rem; font-weight: 600; color: #1c3b6e; }
+.a-btn-ghost:hover { border-color: #b8cbe6; background: #f6f9fe; }
 .a-btn:hover { filter: brightness(1.08); }
 .a-tab { border-radius: 999px; padding: 0.35rem 0.85rem; font-size: 0.8rem; font-weight: 600; color: var(--a-ink-2); }
-.a-tab[aria-current='page'] { color: #fff; background: #0d3a8f; }
+.a-tab[aria-current='page'] { color: #fff; background: #0a2558; box-shadow: 0 6px 14px -8px #0a2558; }
 .a-input { height: 2.6rem; width: 100%; border-radius: 12px; border: 1px solid var(--a-line); background: #f7faff; padding: 0 0.9rem; color: var(--a-ink); outline: none; }
 .a-input:focus { border-color: #1a86fa; box-shadow: 0 0 0 3px rgb(26 134 250 / 0.15); }
 

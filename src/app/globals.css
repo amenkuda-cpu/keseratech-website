@@ -341,3 +341,13 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Admin sign-in (iOS style): keep autofilled fields white with dark text */
+.ios-field:-webkit-autofill,
+.ios-field:-webkit-autofill:hover,
+.ios-field:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  -webkit-text-fill-color: #1c1c1e;
+  caret-color: #1c1c1e;
+  transition: background-color 9999s ease-out 0s;
+}

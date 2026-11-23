@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { DUMMY_HASH, adminConfigured, endSession, hashPassword, passwordProblem, requireAdmin, startSession, verifyPassword } from '@/lib/admin-auth';
 import { rateLimited } from '@/lib/enquiries';
-import { ENQUIRY_STATUSES, createAdmin, deleteAdmin, findAdminByEmail, getAdmin, listAdmins, markAdminLogin, setAdminPassword, deleteProject, getProject, projectSchema, saveEstimator, savePlans, saveProject, setEnquiryStatus } from '@/lib/db';
+import { ENQUIRY_STATUSES, PAYMENT_METHODS, REVENUE_CATEGORIES, addRevenue, deleteRevenue, setRevenueTarget, createAdmin, deleteAdmin, findAdminByEmail, getAdmin, listAdmins, markAdminLogin, setAdminPassword, deleteProject, getProject, projectSchema, saveEstimator, savePlans, saveProject, setEnquiryStatus } from '@/lib/db';
 import { estimatorSchema, planSchema } from '@/lib/pricing';
 
 export type ActionResult = { ok: true; message?: string } | { ok: false; error: string };
@@ -82,7 +82,7 @@ export async function setEnquiryStatusAction(id: number, status: string): Promis
   const s = z.enum(ENQUIRY_STATUSES).safeParse(status);
   if (!s.success || !Number.isInteger(id)) return { ok: false, error: 'Invalid status.' };
   await setEnquiryStatus(id, s.data);
-  revalidatePath('/admin');
+  revalidatePath('/admin', 'layout');
   return { ok: true };
 }
 
@@ -125,4 +125,44 @@ export async function changeMyPasswordAction(_prev: ActionResult | undefined, fo
   if (problem) return { ok: false, error: problem };
   await setAdminPassword(me.id, hashPassword(next));
   return { ok: true, message: 'Password changed.' };
+}
+
+// ---------------------------------------------------------------------------
+// Finance
+
+const revenueSchema = z.object({
+  receivedOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Pick the date the money came in.'),
+  client: z.string().trim().min(1, 'Who paid?').max(120),
+  amount: z.coerce.number().positive('Enter an amount above 0.').max(1_000_000),
+  category: z.enum(REVENUE_CATEGORIES),
+  method: z.enum(PAYMENT_METHODS),
+  note: z.string().trim().max(300).optional(),
+});
+
+export async function addRevenueAction(_prev: ActionResult | undefined, formData: FormData): Promise<ActionResult> {
+  const me = await requireAdmin();
+  const parsed = revenueSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? 'Check the form.' };
+  const d = parsed.data;
+  await addRevenue({ receivedOn: d.receivedOn, client: d.client, amountCents: Math.round(d.amount * 100), category: d.category, method: d.method, note: d.note || null, createdBy: me.email });
+  revalidatePath('/admin', 'layout');
+  return { ok: true, message: `Recorded $${d.amount.toFixed(2)} from ${d.client}.` };
+}
+
+export async function deleteRevenueAction(formData: FormData) {
+  await requireAdmin();
+  const id = Number(formData.get('id'));
+  if (Number.isInteger(id) && id > 0) await deleteRevenue(id);
+  revalidatePath('/admin', 'layout');
+}
+
+export async function setTargetAction(_prev: ActionResult | undefined, formData: FormData): Promise<ActionResult> {
+  await requireAdmin();
+  const parsed = z
+    .object({ amount: z.coerce.number().positive('Enter a target above 0.').max(100_000_000), deadline: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Pick a deadline.') })
+    .safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? 'Check the form.' };
+  await setRevenueTarget({ amountCents: Math.round(parsed.data.amount * 100), deadline: parsed.data.deadline });
+  revalidatePath('/admin', 'layout');
+  return { ok: true, message: 'Target saved.' };
 }

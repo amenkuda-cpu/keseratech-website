@@ -54,6 +54,18 @@ const SCHEMA: Stmt[] = [
     business TEXT,
     UNIQUE (product, email)
   )`,
+  // Money received, recorded by admins (the Finance page and the revenue target read this).
+  `CREATE TABLE IF NOT EXISTS revenue (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at TEXT NOT NULL DEFAULT (${NOW}),
+    received_on TEXT NOT NULL,
+    client TEXT NOT NULL,
+    amount_cents INTEGER NOT NULL,
+    category TEXT NOT NULL,
+    method TEXT NOT NULL,
+    note TEXT,
+    created_by TEXT
+  )`,
   // Named website administrators. Passwords are scrypt hashes (see lib/admin-auth.ts).
   `CREATE TABLE IF NOT EXISTS admin_users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -377,4 +389,50 @@ export async function setAdminPassword(id: number, passwordHash: string) {
 
 export async function markAdminLogin(id: number) {
   await run(`UPDATE admin_users SET last_login_at = ${NOW} WHERE id = ?`, [id]);
+}
+
+// ---------------------------------------------------------------------------
+// Revenue and target
+
+export const REVENUE_CATEGORIES = ['Websites', 'AI Workforce', 'Amey AI', 'Apps & systems', 'Other'] as const;
+export const PAYMENT_METHODS = ['EcoCash', 'InnBucks', 'Bank transfer', 'Cash', 'Card', 'Pesepay', 'Other'] as const;
+export type RevenueEntry = { id: number; receivedOn: string; client: string; amountCents: number; category: string; method: string; note: string | null; createdBy: string | null };
+
+export async function listRevenue(): Promise<RevenueEntry[]> {
+  const rows = await all<{ id: number; received_on: string; client: string; amount_cents: number; category: string; method: string; note: string | null; created_by: string | null }>(
+    `SELECT id, received_on, client, amount_cents, category, method, note, created_by FROM revenue ORDER BY received_on DESC, id DESC LIMIT 5000`,
+  );
+  return rows.map((r) => ({ id: Number(r.id), receivedOn: r.received_on, client: r.client, amountCents: Number(r.amount_cents), category: r.category, method: r.method, note: r.note, createdBy: r.created_by }));
+}
+
+export async function addRevenue(e: Omit<RevenueEntry, 'id'>) {
+  await run(`INSERT INTO revenue (received_on, client, amount_cents, category, method, note, created_by) VALUES (?, ?, ?, ?, ?, ?, ?)`, [
+    e.receivedOn,
+    e.client,
+    e.amountCents,
+    e.category,
+    e.method,
+    e.note,
+    e.createdBy,
+  ]);
+}
+
+export async function deleteRevenue(id: number) {
+  await run(`DELETE FROM revenue WHERE id = ?`, [id]);
+}
+
+export type RevenueTarget = { amountCents: number; deadline: string };
+export const DEFAULT_TARGET: RevenueTarget = { amountCents: 100_000, deadline: '2026-12-31' };
+
+export async function getRevenueTarget(): Promise<RevenueTarget> {
+  const r = await one<{ value: string }>(`SELECT value FROM kv WHERE key = 'revenue_target'`);
+  try {
+    return r ? { ...DEFAULT_TARGET, ...(JSON.parse(r.value) as Partial<RevenueTarget>) } : DEFAULT_TARGET;
+  } catch {
+    return DEFAULT_TARGET;
+  }
+}
+
+export async function setRevenueTarget(t: RevenueTarget) {
+  await run(`INSERT INTO kv (key, value) VALUES ('revenue_target', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = ${NOW}`, [JSON.stringify(t)]);
 }

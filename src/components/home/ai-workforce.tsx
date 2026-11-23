@@ -47,6 +47,12 @@ export function AiWorkforce() {
                 <WhatsAppIcon size={17} /> Ask on WhatsApp
               </a>
             </div>
+            <p className="mt-4 text-sm text-dim">
+              Already hired one?{' '}
+              <a href="https://workforce.keseratech.com/login" className="font-semibold text-white underline decoration-white/30 underline-offset-4 hover:decoration-white">
+                Customer sign in
+              </a>
+            </p>
             <p className="mt-4 text-sm text-faint">
               7 days free on your first employee · No card needed ·{' '}
               <Link href="/ai-workforce" className="underline decoration-white/30 underline-offset-4 hover:text-white">

@@ -438,3 +438,31 @@ export async function getRevenueTarget(): Promise<RevenueTarget> {
 export async function setRevenueTarget(t: RevenueTarget) {
   await run(`INSERT INTO kv (key, value) VALUES ('revenue_target', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = ${NOW}`, [JSON.stringify(t)]);
 }
+
+// ---------------------------------------------------------------------------
+// Admin sign-in lockout (stored in the database, so it holds across every server instance)
+
+const LOCK_AFTER = 8;
+const LOCK_MINUTES = 15;
+
+export async function adminLoginLockedUntil(email: string): Promise<number> {
+  const r = await one<{ value: string }>(`SELECT value FROM kv WHERE key = ?`, [`login-fail:${email}`]);
+  if (!r) return 0;
+  const v = JSON.parse(r.value) as { count: number; first: number; until?: number };
+  return v.until && v.until > Date.now() ? v.until : 0;
+}
+
+export async function recordAdminLoginFailure(email: string) {
+  const key = `login-fail:${email}`;
+  const r = await one<{ value: string }>(`SELECT value FROM kv WHERE key = ?`, [key]);
+  const now = Date.now();
+  let v = r ? (JSON.parse(r.value) as { count: number; first: number; until?: number }) : { count: 0, first: now };
+  if (now - v.first > LOCK_MINUTES * 60_000) v = { count: 0, first: now };
+  v.count += 1;
+  if (v.count >= LOCK_AFTER) v.until = now + LOCK_MINUTES * 60_000;
+  await run(`INSERT INTO kv (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = ${NOW}`, [key, JSON.stringify(v)]);
+}
+
+export async function clearAdminLoginFailures(email: string) {
+  await run(`DELETE FROM kv WHERE key = ?`, [`login-fail:${email}`]);
+}

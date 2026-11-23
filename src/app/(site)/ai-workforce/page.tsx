@@ -49,7 +49,13 @@ export default function AiWorkforcePage() {
             <WhatsAppIcon size={17} /> Ask on WhatsApp
           </a>
         </div>
-        <p className="mt-6 text-sm text-faint">
+        <p className="mt-5 text-sm text-dim">
+          Already a customer?{' '}
+          <a href="https://workforce.keseratech.com/login" className="font-semibold text-white underline decoration-white/30 underline-offset-4 hover:decoration-white">
+            Sign in to your AI employees
+          </a>
+        </p>
+        <p className="mt-3 text-sm text-faint">
           First employee free for 7 days, no card needed · then USD {WORKFORCE_PRICE_USD} per employee per month · EcoCash, InnBucks, Zimswitch, Visa and Mastercard
         </p>
         <figure className="mt-14 overflow-hidden rounded-sm border border-hair">

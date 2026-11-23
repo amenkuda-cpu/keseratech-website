@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { DUMMY_HASH, adminConfigured, currentAdmin, endSession, hashPassword, passwordProblem, requireAdmin, startSession, verifyPassword } from '@/lib/admin-auth';
 import { rateLimited } from '@/lib/enquiries';
-import { ENQUIRY_STATUSES, PAYMENT_METHODS, REVENUE_CATEGORIES, addRevenue, deleteRevenue, setRevenueTarget, createAdmin, deleteAdmin, findAdminByEmail, getAdmin, listAdmins, markAdminLogin, setAdminPassword, deleteProject, getProject, projectSchema, saveEstimator, savePlans, saveProject, setEnquiryStatus } from '@/lib/db';
+import { adminLoginLockedUntil, clearAdminLoginFailures, recordAdminLoginFailure, ENQUIRY_STATUSES, PAYMENT_METHODS, REVENUE_CATEGORIES, addRevenue, deleteRevenue, setRevenueTarget, createAdmin, deleteAdmin, findAdminByEmail, getAdmin, listAdmins, markAdminLogin, setAdminPassword, deleteProject, getProject, projectSchema, saveEstimator, savePlans, saveProject, setEnquiryStatus } from '@/lib/db';
 import { estimatorSchema, planSchema } from '@/lib/pricing';
 
 export type ActionResult = { ok: true; message?: string } | { ok: false; error: string };
@@ -22,9 +22,14 @@ export async function login(_prev: { error?: string } | undefined, formData: For
   const ip = h.get('x-forwarded-for')?.split(',')[0]?.trim() || 'local';
   const email = String(formData.get('email') ?? '').trim().toLowerCase();
   if (rateLimited(`admin-login:${ip}`, 8) || rateLimited(`admin-login:${email}`, 8)) return { error: 'Too many attempts. Wait a few minutes.' };
+  if (email && (await adminLoginLockedUntil(email))) return { error: 'Too many wrong passwords. This account is locked for 15 minutes.' };
   const admin = email ? await findAdminByEmail(email) : null;
   const ok = verifyPassword(String(formData.get('password') ?? ''), admin?.passwordHash ?? DUMMY_HASH);
-  if (!admin || !ok) return { error: 'That email and password do not match an admin account.' };
+  if (!admin || !ok) {
+    if (email) await recordAdminLoginFailure(email);
+    return { error: 'That email and password do not match an admin account.' };
+  }
+  await clearAdminLoginFailures(email);
   await markAdminLogin(admin.id);
   await startSession(admin.id);
   redirect(admin.mustChangePassword ? '/admin/new-password' : '/admin');

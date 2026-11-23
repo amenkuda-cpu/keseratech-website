@@ -9,6 +9,7 @@ import { Menu, X } from 'lucide-react';
 import { Dialog } from '@base-ui/react/dialog';
 import { cn } from '@/lib/utils';
 import { COMPANY, DIVISIONS, NAV } from '@/content/site';
+import { hireUrl } from '@/content/workforce';
 import { Cta, Dot } from '@/components/system/primitives';
 import { Logo } from './logo';
 
@@ -72,8 +73,8 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Cta href="/start" className="hidden min-h-10 px-4 text-[0.72rem] sm:inline-flex">
-            Start a project
+          <Cta href={pathname.startsWith('/ai-workforce') ? hireUrl() : '/start'} className="hidden min-h-10 px-4 text-[0.72rem] sm:inline-flex">
+            {pathname.startsWith('/ai-workforce') ? 'Hire an AI employee' : 'Start a project'}
           </Cta>
           <Dialog.Root open={open} onOpenChange={setOpen}>
             <Dialog.Trigger
@@ -157,8 +158,8 @@ export function MobileStartBar() {
       )}
       aria-hidden={!visible}
     >
-      <Cta href="/start" className="w-full shadow-[0_12px_40px_-8px_rgb(26_134_250/0.55)]" tabIndex={visible ? 0 : -1}>
-        Start a project
+      <Cta href={pathname.startsWith('/ai-workforce') ? hireUrl() : '/start'} className="w-full shadow-[0_12px_40px_-8px_rgb(26_134_250/0.55)]" tabIndex={visible ? 0 : -1}>
+        {pathname.startsWith('/ai-workforce') ? 'Hire an AI employee' : 'Start a project'}
       </Cta>
     </div>
   );

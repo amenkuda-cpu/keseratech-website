@@ -14,7 +14,7 @@ Node 22.13 or later.
 
 ```bash
 npm install
-cp .env.example .env.local     # then set ADMIN_PASSWORD and ADMIN_SESSION_SECRET
+cp .env.example .env.local     # then set ADMIN_SESSION_SECRET and INITIAL_ADMIN_* (first admin)
 npm run dev                    # http://localhost:3000
 ```
 
@@ -30,7 +30,7 @@ The database (`data/sera.db`) is created and seeded on first use with the websit
 
 ## Admin
 
-`/admin` (password from `ADMIN_PASSWORD`):
+`/admin` (named admins, email + password; add more under Team):
 
 - **Enquiries**: everything sent from the project builder, with the server-computed estimate and a status (new, contacted, quoted, won, closed).
 - **Pricing**: website and app packages (price, "From", "+", highlight label, what's included) and every estimator rate. Plans flagged "proposal" are prices still to be confirmed.

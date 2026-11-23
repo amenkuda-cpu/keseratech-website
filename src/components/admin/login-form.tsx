@@ -9,6 +9,20 @@ export function LoginForm() {
   return (
     <form action={action} className="mt-8 space-y-4">
       <div>
+        <label htmlFor="email" className="text-sm font-medium">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          autoComplete="username"
+          autoFocus
+          autoCapitalize="none"
+          spellCheck={false}
+          className="mt-2 block h-12 w-full rounded-[6px] border border-input bg-deep px-4 text-white outline-none focus:border-signal"
+        />
+      </div>
+      <div>
         <label htmlFor="password" className="text-sm font-medium">Password</label>
         <input
           id="password"
@@ -16,7 +30,6 @@ export function LoginForm() {
           type="password"
           required
           autoComplete="current-password"
-          autoFocus
           aria-invalid={!!state?.error}
           aria-describedby={state?.error ? 'login-error' : undefined}
           className="mt-2 block h-12 w-full rounded-[6px] border border-input bg-deep px-4 text-white outline-none focus:border-signal"

@@ -13,12 +13,12 @@ export default async function AdminLogin() {
       <div className="w-full max-w-sm">
         <Logo className="w-[150px]" />
         <h1 className="t-title mt-10">Website admin</h1>
-        <p className="mt-2 text-sm text-dim">Prices, projects and enquiries.</p>
+        <p className="mt-2 text-sm text-dim">Prices, projects and enquiries. Sign in with your own admin email.</p>
         {adminConfigured() ? (
           <LoginForm />
         ) : (
           <p className="mt-8 rounded-[6px] border border-hair p-4 text-sm leading-relaxed text-dim">
-            Admin is switched off. Set <code className="text-white">ADMIN_PASSWORD</code> and <code className="text-white">ADMIN_SESSION_SECRET</code> in the environment and restart the site.
+            Admin is switched off. Set <code className="text-white">ADMIN_SESSION_SECRET</code> in the environment and restart the site.
           </p>
         )}
       </div>

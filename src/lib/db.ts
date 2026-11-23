@@ -54,6 +54,15 @@ const SCHEMA: Stmt[] = [
     business TEXT,
     UNIQUE (product, email)
   )`,
+  // Named website administrators. Passwords are scrypt hashes (see lib/admin-auth.ts).
+  `CREATE TABLE IF NOT EXISTS admin_users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at TEXT NOT NULL DEFAULT (${NOW}),
+    email TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    password_hash TEXT NOT NULL,
+    last_login_at TEXT
+  )`,
 ].map((sql) => ({ sql }));
 
 function turso(url: string): Store {
@@ -122,6 +131,15 @@ async function prepare(): Promise<Store> {
             args: [String(PLANS_VERSION)],
           },
         ]),
+    // First administrator, created once while the table is empty (INITIAL_ADMIN_* hold an email, a name and a password hash, never a password).
+    ...(!PREVIEW && process.env.INITIAL_ADMIN_EMAIL && process.env.INITIAL_ADMIN_PASSWORD_HASH
+      ? [
+          {
+            sql: `INSERT INTO admin_users (email, name, password_hash) SELECT ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM admin_users)`,
+            args: [process.env.INITIAL_ADMIN_EMAIL.trim().toLowerCase(), (process.env.INITIAL_ADMIN_NAME ?? 'Admin').trim(), process.env.INITIAL_ADMIN_PASSWORD_HASH.trim()],
+          },
+        ]
+      : []),
     { sql: `INSERT OR IGNORE INTO kv (key, value) VALUES ('estimator', ?)`, args: [JSON.stringify(DEFAULT_ESTIMATOR)] },
     ...SEED_PROJECTS.map((p) => ({ sql: `INSERT OR IGNORE INTO projects (slug, data, sort) VALUES (?, ?, ?)`, args: [p.slug, JSON.stringify(p), p.sort] })),
     // AgriSera Horizon replaces the older Smart Irrigation page (/projects/smart-irrigation redirects
@@ -322,4 +340,41 @@ export async function listWaitlist(product?: string): Promise<WaitlistEntry[]> {
     product ? [product] : [],
   );
   return rows.map((r) => ({ id: Number(r.id), createdAt: r.created_at, product: r.product, name: r.name, email: r.email, business: r.business }));
+}
+
+// ---------------------------------------------------------------------------
+// Website administrators
+
+export type AdminUser = { id: number; email: string; name: string; createdAt: string; lastLoginAt: string | null };
+type AdminRow = { id: number; email: string; name: string; password_hash: string; created_at: string; last_login_at: string | null };
+const toAdmin = (r: AdminRow): AdminUser => ({ id: Number(r.id), email: r.email, name: r.name, createdAt: r.created_at, lastLoginAt: r.last_login_at });
+
+export async function findAdminByEmail(email: string): Promise<(AdminUser & { passwordHash: string }) | null> {
+  const r = await one<AdminRow>(`SELECT * FROM admin_users WHERE email = ?`, [email.trim().toLowerCase()]);
+  return r ? { ...toAdmin(r), passwordHash: r.password_hash } : null;
+}
+
+export async function getAdmin(id: number): Promise<(AdminUser & { passwordHash: string }) | null> {
+  const r = await one<AdminRow>(`SELECT * FROM admin_users WHERE id = ?`, [id]);
+  return r ? { ...toAdmin(r), passwordHash: r.password_hash } : null;
+}
+
+export async function listAdmins(): Promise<AdminUser[]> {
+  return (await all<AdminRow>(`SELECT * FROM admin_users ORDER BY id`)).map(toAdmin);
+}
+
+export async function createAdmin(a: { email: string; name: string; passwordHash: string }) {
+  await run(`INSERT INTO admin_users (email, name, password_hash) VALUES (?, ?, ?)`, [a.email.trim().toLowerCase(), a.name.trim(), a.passwordHash]);
+}
+
+export async function deleteAdmin(id: number) {
+  await run(`DELETE FROM admin_users WHERE id = ?`, [id]);
+}
+
+export async function setAdminPassword(id: number, passwordHash: string) {
+  await run(`UPDATE admin_users SET password_hash = ? WHERE id = ?`, [passwordHash, id]);
+}
+
+export async function markAdminLogin(id: number) {
+  await run(`UPDATE admin_users SET last_login_at = ${NOW} WHERE id = ?`, [id]);
 }

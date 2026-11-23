@@ -4,9 +4,9 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { adminConfigured, endSession, passwordMatches, requireAdmin, startSession } from '@/lib/admin-auth';
+import { DUMMY_HASH, adminConfigured, endSession, hashPassword, passwordProblem, requireAdmin, startSession, verifyPassword } from '@/lib/admin-auth';
 import { rateLimited } from '@/lib/enquiries';
-import { ENQUIRY_STATUSES, deleteProject, getProject, projectSchema, saveEstimator, savePlans, saveProject, setEnquiryStatus } from '@/lib/db';
+import { ENQUIRY_STATUSES, createAdmin, deleteAdmin, findAdminByEmail, getAdmin, listAdmins, markAdminLogin, setAdminPassword, deleteProject, getProject, projectSchema, saveEstimator, savePlans, saveProject, setEnquiryStatus } from '@/lib/db';
 import { estimatorSchema, planSchema } from '@/lib/pricing';
 
 export type ActionResult = { ok: true; message?: string } | { ok: false; error: string };
@@ -17,12 +17,16 @@ const issues = (e: z.ZodError) => e.issues.slice(0, 4).map((i) => `${i.path.join
 const refreshSite = () => revalidatePath('/', 'layout');
 
 export async function login(_prev: { error?: string } | undefined, formData: FormData): Promise<{ error?: string }> {
-  if (!adminConfigured()) return { error: 'Admin is not configured. Set ADMIN_PASSWORD and ADMIN_SESSION_SECRET.' };
+  if (!adminConfigured()) return { error: 'Admin is not configured. Set ADMIN_SESSION_SECRET.' };
   const h = await headers();
   const ip = h.get('x-forwarded-for')?.split(',')[0]?.trim() || 'local';
-  if (rateLimited(`admin-login:${ip}`, 8)) return { error: 'Too many attempts. Wait a few minutes.' };
-  if (!passwordMatches(String(formData.get('password') ?? ''))) return { error: 'That password is not right.' };
-  await startSession();
+  const email = String(formData.get('email') ?? '').trim().toLowerCase();
+  if (rateLimited(`admin-login:${ip}`, 8) || rateLimited(`admin-login:${email}`, 8)) return { error: 'Too many attempts. Wait a few minutes.' };
+  const admin = email ? await findAdminByEmail(email) : null;
+  const ok = verifyPassword(String(formData.get('password') ?? ''), admin?.passwordHash ?? DUMMY_HASH);
+  if (!admin || !ok) return { error: 'That email and password do not match an admin account.' };
+  await markAdminLogin(admin.id);
+  await startSession(admin.id);
   redirect('/admin');
 }
 
@@ -80,4 +84,45 @@ export async function setEnquiryStatusAction(id: number, status: string): Promis
   await setEnquiryStatus(id, s.data);
   revalidatePath('/admin');
   return { ok: true };
+}
+
+// ---------------------------------------------------------------------------
+// Admin team
+
+const newAdminSchema = z.object({
+  name: z.string().trim().min(1, 'Enter a name.').max(80),
+  email: z.string().trim().toLowerCase().email('Enter a valid email.'),
+  password: z.string().max(200),
+});
+
+export async function addAdminAction(_prev: ActionResult | undefined, formData: FormData): Promise<ActionResult> {
+  await requireAdmin();
+  const parsed = newAdminSchema.safeParse({ name: formData.get('name'), email: formData.get('email'), password: formData.get('password') });
+  if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? 'Check the form.' };
+  const problem = passwordProblem(parsed.data.password);
+  if (problem) return { ok: false, error: problem };
+  if (await findAdminByEmail(parsed.data.email)) return { ok: false, error: 'That email is already an admin.' };
+  await createAdmin({ email: parsed.data.email, name: parsed.data.name, passwordHash: hashPassword(parsed.data.password) });
+  revalidatePath('/admin/team');
+  return { ok: true, message: `${parsed.data.name} can now sign in with ${parsed.data.email}.` };
+}
+
+export async function removeAdminAction(formData: FormData) {
+  const me = await requireAdmin();
+  const id = Number(formData.get('id'));
+  if (!Number.isInteger(id) || id === me.id) return;
+  if ((await listAdmins()).length <= 1) return;
+  await deleteAdmin(id);
+  revalidatePath('/admin/team');
+}
+
+export async function changeMyPasswordAction(_prev: ActionResult | undefined, formData: FormData): Promise<ActionResult> {
+  const me = await requireAdmin();
+  const full = await getAdmin(me.id);
+  if (!full || !verifyPassword(String(formData.get('current') ?? ''), full.passwordHash)) return { ok: false, error: 'Your current password is not right.' };
+  const next = String(formData.get('next') ?? '');
+  const problem = passwordProblem(next);
+  if (problem) return { ok: false, error: problem };
+  await setAdminPassword(me.id, hashPassword(next));
+  return { ok: true, message: 'Password changed.' };
 }

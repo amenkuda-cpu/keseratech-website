@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ArrowRight, Check } from 'lucide-react';
 import { Label } from '@/components/system/primitives';
 import { MaskLines, Reveal } from '@/components/system/motion';
-import { WorkforceDemos } from '@/components/workforce/demos';
+import { RealDemos } from '@/components/workforce/real-demos';
 import { WhatsAppIcon, WORKFORCE_WHATSAPP, YourOkFirst } from '@/components/workforce/trust';
 import { hireUrl } from '@/content/workforce';
 
@@ -75,7 +75,7 @@ export function AiWorkforce() {
           <p className="t-label text-faint">Watch it work</p>
           <h3 className="t-display-m mt-4 max-w-[22ch]">Pick an employee. Watch a job get done.</h3>
           <div className="mt-8">
-            <WorkforceDemos />
+            <RealDemos />
           </div>
           <div className="mt-10">
             <p className="t-label mb-4 text-faint">You stay in charge</p>

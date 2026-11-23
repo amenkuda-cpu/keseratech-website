@@ -3,7 +3,7 @@ import path from 'node:path';
 import type { Metadata } from 'next';
 import { Check, ShieldCheck } from 'lucide-react';
 import { HireForm } from '@/components/workforce/hire-form';
-import { WorkforceDemos } from '@/components/workforce/demos';
+import { RealDemos } from '@/components/workforce/real-demos';
 import { WhatsAppIcon, WORKFORCE_WHATSAPP, YourOkFirst } from '@/components/workforce/trust';
 import { Label } from '@/components/system/primitives';
 import { WORKFORCE, WORKFORCE_PRICE_USD, hireUrl } from '@/content/workforce';
@@ -69,8 +69,8 @@ export default function AiWorkforcePage() {
       <section id="demos" className="shell scroll-mt-24 pb-20 md:pb-32" aria-labelledby="demos-title">
         <Label index="01">Watch it work</Label>
         <h2 id="demos-title" className="t-display-m mt-5">Pick an employee. Watch a job get done.</h2>
-        <p className="mb-10 mt-4 max-w-2xl text-dim">One real kind of job for each employee: the request, every step, and the finished work.</p>
-        <WorkforceDemos />
+        <p className="mb-10 mt-4 max-w-2xl text-dim">Real screen recordings of our AI employees doing real jobs on the live app: reading spreadsheets, researching online, analysing Instagram data and writing the finished files.</p>
+        <RealDemos />
       </section>
 
       <section id="team" className="shell scroll-mt-24 pb-20 md:pb-32" aria-labelledby="team-title">

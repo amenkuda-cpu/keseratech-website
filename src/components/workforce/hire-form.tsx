@@ -38,6 +38,13 @@ export function HireForm({ employees }: { employees: readonly Emp[] }) {
       <div className="rounded-sm border border-hair-strong bg-white/[0.03] p-8">
         <p className="t-label text-signal">Request received · {state.ref}</p>
         <h3 className="t-title mt-4 text-[1.6rem]">Thank you. We’ll be in touch shortly.</h3>
+        <p className="mt-3 text-[15px] text-white/80">
+          You do not have to wait for us:{' '}
+          <a href="https://workforce.keseratech.com/register?next=%2Fapp%2Femployees" className="font-semibold text-white underline underline-offset-4">
+            start your free trial now
+          </a>
+          .
+        </p>
         <p className="mt-3 text-dim">A member of the Kesera team will contact you to start your free trial, connect your tools and get your first assignment going.</p>
       </div>
     );

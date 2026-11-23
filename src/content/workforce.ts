@@ -51,3 +51,8 @@ export const WORKFORCE = [
 ] as const;
 
 export const WORKFORCE_PRICE_USD = 200;
+
+/** The self-serve app: sign up, hire, start the free trial, pay with Pesepay. No Kesera approval needed. */
+export const WORKFORCE_APP = 'https://workforce.keseratech.com';
+/** Sign-up link that lands the new customer on hiring the chosen employee (or the employee list). */
+export const hireUrl = (key?: string) => `${WORKFORCE_APP}/register?next=${encodeURIComponent(key ? `/app/hire/${key}` : '/app/employees')}`;

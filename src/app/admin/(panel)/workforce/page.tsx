@@ -117,7 +117,13 @@ export default async function WorkforcePage() {
                     {e.data.description.slice(0, 90)} · {referenceFor(e.id)} · {e.status.charAt(0) + e.status.slice(1).toLowerCase()}
                   </span>
                 </span>
-                <MessageButtons email={e.data.email} phone={e.data.phone} name={e.data.name} subject="Your AI employee from Kesera Technologies" />
+                <MessageButtons
+                  email={e.data.email}
+                  phone={e.data.phone}
+                  name={e.data.name}
+                  subject="Your AI employee from Kesera Technologies"
+                  body={`Hi ${e.data.name.split(' ')[0]},\n\nThank you for your interest in a Kesera AI employee. You can start right away: create your account here, pick your employee and start the 7-day free trial (no card needed):\n\nhttps://workforce.keseratech.com/register?next=%2Fapp%2Femployees\n\nYour employee starts working as soon as you finish the short setup. Reply here if you have any questions.\n\nKesera Technologies`}
+                />
               </li>
             ))}
           </ul>

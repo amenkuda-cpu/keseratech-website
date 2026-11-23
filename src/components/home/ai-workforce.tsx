@@ -4,6 +4,7 @@ import { Label } from '@/components/system/primitives';
 import { MaskLines, Reveal } from '@/components/system/motion';
 import { WorkforceDemos } from '@/components/workforce/demos';
 import { WhatsAppIcon, WORKFORCE_WHATSAPP, YourOkFirst } from '@/components/workforce/trust';
+import { hireUrl } from '@/content/workforce';
 
 /**
  * Kesera AI Workforce, placed straight after the hero: what it is, the six
@@ -32,7 +33,7 @@ export function AiWorkforce() {
             </ul>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Link
-                href="/ai-workforce#hire"
+                href={hireUrl()}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-signal px-7 text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-signal-soft"
               >
                 Start your free trial <ArrowRight size={16} aria-hidden />

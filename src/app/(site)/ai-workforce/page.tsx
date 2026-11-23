@@ -6,7 +6,7 @@ import { HireForm } from '@/components/workforce/hire-form';
 import { WorkforceDemos } from '@/components/workforce/demos';
 import { WhatsAppIcon, WORKFORCE_WHATSAPP, YourOkFirst } from '@/components/workforce/trust';
 import { Label } from '@/components/system/primitives';
-import { WORKFORCE, WORKFORCE_PRICE_USD } from '@/content/workforce';
+import { WORKFORCE, WORKFORCE_PRICE_USD, hireUrl } from '@/content/workforce';
 
 export const metadata: Metadata = {
   title: 'AI Workforce — Hire AI Employees in Zimbabwe',
@@ -37,7 +37,7 @@ export default function AiWorkforcePage() {
           results and hand you finished files.
         </p>
         <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-          <a href="#hire" className="inline-flex min-h-12 items-center justify-center rounded-sm bg-signal px-7 text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-white hover:bg-signal-soft">
+          <a href={hireUrl()} className="inline-flex min-h-12 items-center justify-center rounded-sm bg-signal px-7 text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-white hover:bg-signal-soft">
             Start 7-day free trial
           </a>
           <a
@@ -102,6 +102,11 @@ export default function AiWorkforcePage() {
                     </li>
                   ))}
                 </ul>
+                <div className="mt-auto pt-6">
+                  <a href={hireUrl(e.key)} className="inline-flex min-h-11 w-full items-center justify-center rounded-sm bg-signal px-5 text-[0.75rem] font-semibold uppercase tracking-[0.12em] text-white hover:bg-signal-soft">
+                    Hire {e.name} free for 7 days
+                  </a>
+                </div>
               </article>
             );
           })}
@@ -152,8 +157,20 @@ export default function AiWorkforcePage() {
               <WhatsAppIcon size={17} /> Questions first? Ask us on WhatsApp
             </a>
           </div>
-          <div className="rounded-sm border border-hair bg-white/[0.02] p-6 sm:p-8">
-            <HireForm employees={WORKFORCE} />
+          <div className="space-y-6">
+            <div className="rounded-sm border border-signal/40 bg-signal/10 p-6 sm:p-8">
+              <h3 className="t-title text-[1.6rem]">Start right now, on your own</h3>
+              <p className="mt-2 text-[15px] text-white/80">
+                Create your account, pick your employee, answer a few quick questions by voice, and your employee starts working straight away. No card, no waiting for us.
+              </p>
+              <a href={hireUrl()} className="mt-6 inline-flex min-h-12 items-center justify-center rounded-sm bg-signal px-7 text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-white hover:bg-signal-soft">
+                Start my free trial
+              </a>
+            </div>
+            <div className="rounded-sm border border-hair bg-white/[0.02] p-6 sm:p-8">
+              <p className="t-label mb-4 text-dim">Prefer to talk to someone first? Leave your details and we will call you.</p>
+              <HireForm employees={WORKFORCE} />
+            </div>
           </div>
         </div>
       </section>

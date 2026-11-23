@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { LogOut, Search } from 'lucide-react';
 import { requireAdmin } from '@/lib/admin-auth';
 import { listEnquiries } from '@/lib/db';
@@ -11,6 +12,7 @@ export const metadata: Metadata = { title: 'Kesera Admin', robots: { index: fals
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {
   const admin = await requireAdmin();
+  if (admin.mustChangePassword) redirect('/admin/new-password');
   const newEnquiries = (await listEnquiries()).filter((e) => e.status === 'NEW').length;
   const initial = admin.name.trim().charAt(0).toUpperCase() || 'A';
   return (

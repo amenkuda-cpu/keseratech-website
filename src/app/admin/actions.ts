@@ -4,7 +4,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { DUMMY_HASH, adminConfigured, endSession, hashPassword, passwordProblem, requireAdmin, startSession, verifyPassword } from '@/lib/admin-auth';
+import { DUMMY_HASH, adminConfigured, currentAdmin, endSession, hashPassword, passwordProblem, requireAdmin, startSession, verifyPassword } from '@/lib/admin-auth';
 import { rateLimited } from '@/lib/enquiries';
 import { ENQUIRY_STATUSES, PAYMENT_METHODS, REVENUE_CATEGORIES, addRevenue, deleteRevenue, setRevenueTarget, createAdmin, deleteAdmin, findAdminByEmail, getAdmin, listAdmins, markAdminLogin, setAdminPassword, deleteProject, getProject, projectSchema, saveEstimator, savePlans, saveProject, setEnquiryStatus } from '@/lib/db';
 import { estimatorSchema, planSchema } from '@/lib/pricing';
@@ -27,7 +27,7 @@ export async function login(_prev: { error?: string } | undefined, formData: For
   if (!admin || !ok) return { error: 'That email and password do not match an admin account.' };
   await markAdminLogin(admin.id);
   await startSession(admin.id);
-  redirect('/admin');
+  redirect(admin.mustChangePassword ? '/admin/new-password' : '/admin');
 }
 
 export async function logout() {
@@ -165,4 +165,19 @@ export async function setTargetAction(_prev: ActionResult | undefined, formData:
   await setRevenueTarget({ amountCents: Math.round(parsed.data.amount * 100), deadline: parsed.data.deadline });
   revalidatePath('/admin', 'layout');
   return { ok: true, message: 'Target saved.' };
+}
+
+/** First sign-in: replace the temporary password, then go to the dashboard. */
+export async function firstPasswordAction(_prev: ActionResult | undefined, formData: FormData): Promise<ActionResult> {
+  const me = await currentAdmin();
+  if (!me) redirect('/admin/login');
+  const full = await getAdmin(me.id);
+  if (!full || !verifyPassword(String(formData.get('current') ?? ''), full.passwordHash)) return { ok: false, error: 'The temporary password is not right.' };
+  const next = String(formData.get('next') ?? '');
+  if (next !== String(formData.get('confirm') ?? '')) return { ok: false, error: 'The two new passwords do not match.' };
+  if (verifyPassword(next, full.passwordHash)) return { ok: false, error: 'Choose a new password, not the temporary one.' };
+  const problem = passwordProblem(next);
+  if (problem) return { ok: false, error: problem };
+  await setAdminPassword(me.id, hashPassword(next));
+  redirect('/admin');
 }

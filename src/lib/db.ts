@@ -73,7 +73,8 @@ const SCHEMA: Stmt[] = [
     email TEXT NOT NULL UNIQUE,
     name TEXT NOT NULL,
     password_hash TEXT NOT NULL,
-    last_login_at TEXT
+    last_login_at TEXT,
+    must_change_password INTEGER NOT NULL DEFAULT 1
   )`,
 ].map((sql) => ({ sql }));
 
@@ -147,7 +148,7 @@ async function prepare(): Promise<Store> {
     ...(!PREVIEW && process.env.INITIAL_ADMIN_EMAIL && process.env.INITIAL_ADMIN_PASSWORD_HASH
       ? [
           {
-            sql: `INSERT INTO admin_users (email, name, password_hash) SELECT ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM admin_users)`,
+            sql: `INSERT INTO admin_users (email, name, password_hash, must_change_password) SELECT ?, ?, ?, 1 WHERE NOT EXISTS (SELECT 1 FROM admin_users)`,
             args: [process.env.INITIAL_ADMIN_EMAIL.trim().toLowerCase(), (process.env.INITIAL_ADMIN_NAME ?? 'Admin').trim(), process.env.INITIAL_ADMIN_PASSWORD_HASH.trim()],
           },
         ]
@@ -357,9 +358,9 @@ export async function listWaitlist(product?: string): Promise<WaitlistEntry[]> {
 // ---------------------------------------------------------------------------
 // Website administrators
 
-export type AdminUser = { id: number; email: string; name: string; createdAt: string; lastLoginAt: string | null };
-type AdminRow = { id: number; email: string; name: string; password_hash: string; created_at: string; last_login_at: string | null };
-const toAdmin = (r: AdminRow): AdminUser => ({ id: Number(r.id), email: r.email, name: r.name, createdAt: r.created_at, lastLoginAt: r.last_login_at });
+export type AdminUser = { id: number; email: string; name: string; createdAt: string; lastLoginAt: string | null; mustChangePassword: boolean };
+type AdminRow = { id: number; email: string; name: string; password_hash: string; created_at: string; last_login_at: string | null; must_change_password: number };
+const toAdmin = (r: AdminRow): AdminUser => ({ id: Number(r.id), email: r.email, name: r.name, createdAt: r.created_at, lastLoginAt: r.last_login_at, mustChangePassword: Number(r.must_change_password) === 1 });
 
 export async function findAdminByEmail(email: string): Promise<(AdminUser & { passwordHash: string }) | null> {
   const r = await one<AdminRow>(`SELECT * FROM admin_users WHERE email = ?`, [email.trim().toLowerCase()]);
@@ -376,7 +377,8 @@ export async function listAdmins(): Promise<AdminUser[]> {
 }
 
 export async function createAdmin(a: { email: string; name: string; passwordHash: string }) {
-  await run(`INSERT INTO admin_users (email, name, password_hash) VALUES (?, ?, ?)`, [a.email.trim().toLowerCase(), a.name.trim(), a.passwordHash]);
+  // New admins get a starting password from a colleague, so they must choose their own on first sign-in.
+  await run(`INSERT INTO admin_users (email, name, password_hash, must_change_password) VALUES (?, ?, ?, 1)`, [a.email.trim().toLowerCase(), a.name.trim(), a.passwordHash]);
 }
 
 export async function deleteAdmin(id: number) {
@@ -384,7 +386,7 @@ export async function deleteAdmin(id: number) {
 }
 
 export async function setAdminPassword(id: number, passwordHash: string) {
-  await run(`UPDATE admin_users SET password_hash = ? WHERE id = ?`, [passwordHash, id]);
+  await run(`UPDATE admin_users SET password_hash = ?, must_change_password = 0 WHERE id = ?`, [passwordHash, id]);
 }
 
 export async function markAdminLogin(id: number) {

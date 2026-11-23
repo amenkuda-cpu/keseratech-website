@@ -100,9 +100,10 @@ export async function isAdmin() {
   return (await currentAdmin()) !== null;
 }
 
-/** Use at the top of every admin page and server action. Returns who is signed in. */
+/** Use at the top of every admin page and server action. Returns who is signed in. An admin still on a temporary password is sent to choose a new one first. */
 export async function requireAdmin(): Promise<AdminUser> {
   const admin = await currentAdmin();
   if (!admin) redirect('/admin/login');
+  if (admin.mustChangePassword) redirect('/admin/new-password');
   return admin;
 }

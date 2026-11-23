@@ -53,7 +53,7 @@ export default async function TeamPage() {
       <div className="grid gap-10 md:grid-cols-2">
         <section>
           <h2 className="text-lg font-semibold text-white">Add an admin</h2>
-          <p className="mt-1 text-sm text-dim">Give them the password yourself; they can change it here after signing in.</p>
+          <p className="mt-1 text-sm text-dim">Give them a starting password yourself. They will be asked to choose their own the first time they sign in.</p>
           <AddAdminForm />
         </section>
         <section>

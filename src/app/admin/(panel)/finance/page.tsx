@@ -1,4 +1,4 @@
-import { Target, Wallet, Zap } from 'lucide-react';
+import { BadgeDollarSign, TrendingUp, Wallet, Zap } from 'lucide-react';
 import { requireAdmin } from '@/lib/admin-auth';
 import { PAYMENT_METHODS, REVENUE_CATEGORIES, getRevenueTarget } from '@/lib/db';
 import { allRevenue } from '@/lib/revenue';
@@ -32,7 +32,7 @@ export default async function FinancePage() {
       <div className="grid gap-4 sm:grid-cols-3">
         {[
           { label: 'Revenue this month', value: usd(sum(entries.filter((e) => e.receivedOn.startsWith(thisMonth))), 2), icon: Wallet },
-          { label: `Made in ${tp.start.slice(0, 4)}`, value: usd(tp.earnedCents, 2), icon: Target },
+          { label: `Made in ${tp.start.slice(0, 4)}`, value: usd(tp.earnedCents, 2), icon: TrendingUp },
           { label: 'Through Pesepay', value: usd(pesepayTotal, 2), icon: Zap },
         ].map((t) => (
           <div key={t.label} className="a-card a-tile p-5">
@@ -55,7 +55,7 @@ export default async function FinancePage() {
           </div>
           <div className="min-w-0">
             <h2 className="flex items-center gap-2 text-[15px] font-semibold text-[#41506b]">
-              <Target className="size-4 text-[#eb6834]" /> {usd(tp.targetCents)} by {day(tp.deadline)}
+              <BadgeDollarSign className="size-4 text-[#1c5cab]" /> {usd(tp.targetCents)} by {day(tp.deadline)}
             </h2>
             <div className="mt-3 h-4 overflow-hidden rounded-full bg-[#dbe8fb]">
               <div className="bar-grow h-full rounded-full bg-gradient-to-r from-[#2a78d6] via-[#22b8e6] to-[#1baf7a]" style={{ width: `${Math.max(tp.pct > 0 ? 2 : 0, tp.pct)}%` }} />

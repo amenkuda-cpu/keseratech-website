@@ -197,3 +197,15 @@ export async function toggleProjectPublishedAction(formData: FormData) {
   refreshSite();
   revalidatePath('/admin/projects');
 }
+
+/** Control centre: free months, pause or resume an AI employee in the Workforce app. */
+export async function workforceEmployeeActionForm(formData: FormData) {
+  const me = await requireAdmin();
+  const employeeId = String(formData.get('employeeId') ?? '');
+  const action = String(formData.get('action') ?? '');
+  if (!employeeId || !['comp', 'suspend', 'resume'].includes(action)) return;
+  const { workforceEmployeeAction } = await import('@/lib/workforce-feed');
+  const r = await workforceEmployeeAction(employeeId, action as 'comp' | 'suspend' | 'resume', me.email, Number(formData.get('months') ?? 1));
+  revalidatePath('/admin', 'layout');
+  redirect(`/admin/customers?${new URLSearchParams({ [r.ok ? 'done' : 'error']: r.message })}`);
+}

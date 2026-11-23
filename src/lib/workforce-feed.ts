@@ -40,6 +40,27 @@ export type WfResult = { ok: true; data: WfOverview } | { ok: false; configured:
 
 let cache: { at: number; data: WfOverview } | null = null;
 
+/** Asks the Workforce app to change an employee (free months, pause, resume). */
+export async function workforceEmployeeAction(employeeId: string, action: 'comp' | 'suspend' | 'resume', by: string, months = 1): Promise<{ ok: boolean; message: string }> {
+  const feed = process.env.PESEPAY_FEED_URL?.trim();
+  const secret = process.env.FINANCE_FEED_SECRET?.trim();
+  if (!feed || !secret) return { ok: false, message: 'The AI Workforce connection is not set up.' };
+  try {
+    const res = await fetch(new URL('/api/finance/employee-action', feed).toString(), {
+      method: 'POST',
+      headers: { authorization: `Bearer ${secret}`, 'content-type': 'application/json' },
+      body: JSON.stringify({ employeeId, action, months, by }),
+      cache: 'no-store',
+      signal: AbortSignal.timeout(20_000),
+    });
+    const body = (await res.json().catch(() => ({}))) as { message?: string; error?: string };
+    cache = null; // show the change straight away
+    return res.ok ? { ok: true, message: body.message ?? 'Done.' } : { ok: false, message: body.error ?? `The Workforce app answered ${res.status}.` };
+  } catch (e) {
+    return { ok: false, message: e instanceof Error ? e.message : 'Could not reach the Workforce app.' };
+  }
+}
+
 export async function workforceOverview(): Promise<WfResult> {
   const feed = process.env.PESEPAY_FEED_URL?.trim();
   const secret = process.env.FINANCE_FEED_SECRET?.trim();

@@ -3,15 +3,16 @@ import { requireAdmin } from '@/lib/admin-auth';
 import { usd } from '@/lib/admin-stats';
 import { employeeState, workforceOverview } from '@/lib/workforce-feed';
 import { MessageButtons } from '@/components/admin/message-buttons';
+import { workforceEmployeeActionForm } from '../../actions';
 
 export const dynamic = 'force-dynamic';
 
 const TONE: Record<string, string> = { good: 'bg-[#ecf8f2] text-[#0b7a55]', trial: 'bg-[#eef4fd] text-[#1c5cab]', wait: 'bg-[#fff6e8] text-[#8a5a00]', off: 'bg-[#f1f4f8] text-[#6b7a93]' };
 const day = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Harare' }) : '–');
 
-export default async function CustomersPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+export default async function CustomersPage({ searchParams }: { searchParams: Promise<{ q?: string; done?: string; error?: string }> }) {
   await requireAdmin();
-  const { q = '' } = await searchParams;
+  const { q = '', done, error } = await searchParams;
   const wf = await workforceOverview();
   const needle = q.trim().toLowerCase();
   const customers = wf.ok ? wf.data.customers.filter((c) => !needle || [c.name, c.owner?.name, c.owner?.email, c.industry].some((v) => v?.toLowerCase().includes(needle))) : [];
@@ -29,6 +30,8 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
         </form>
       </header>
 
+      {done && <p role="status" className="rounded-2xl border border-[#cdeedd] bg-[#ecf8f2] px-4 py-3 text-sm font-medium text-[#0b7a55]">{done}</p>}
+      {error && <p role="alert" className="rounded-2xl border border-[#f5cccc] bg-[#fdf0f0] px-4 py-3 text-sm font-medium text-[#b42323]">{error}</p>}
       {!wf.ok ? (
         <p className="a-card p-6 text-sm text-[#b42323]">{wf.error}</p>
       ) : customers.length === 0 ? (
@@ -64,6 +67,7 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
                               <span className={`a-chip ${TONE[st.tone]}`}>{st.label}</span>
                               {e.subscription?.periodEnd && <span className="text-[11.5px] text-[#8a97ad]">until {day(e.subscription.periodEnd)}</span>}
                               <span className="text-[11.5px] text-[#8a97ad]">{e.tasks} tasks</span>
+                              <EmployeeControls id={e.id} status={e.status} tone={st.tone} />
                             </li>
                           );
                         })}
@@ -92,5 +96,37 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
         </div>
       )}
     </div>
+  );
+}
+
+/** Free month for anyone not yet paid/active; pause or resume for working employees. */
+function EmployeeControls({ id, status, tone }: { id: string; status: string; tone: string }) {
+  const btn = 'rounded-full border border-[#dbe4f1] bg-white px-2.5 py-0.5 text-[11.5px] font-semibold text-[#1c3b6e] hover:border-[#b8cbe6] hover:bg-[#f6f9fe]';
+  return (
+    <span className="inline-flex gap-1">
+      {status !== 'suspended' && tone !== 'good' && (
+        <form action={workforceEmployeeActionForm}>
+          <input type="hidden" name="employeeId" value={id} />
+          <input type="hidden" name="action" value="comp" />
+          <input type="hidden" name="months" value="1" />
+          <button className={btn} title="Switch this employee on for a free month">Activate free (1 month)</button>
+        </form>
+      )}
+      {status === 'suspended' ? (
+        <form action={workforceEmployeeActionForm}>
+          <input type="hidden" name="employeeId" value={id} />
+          <input type="hidden" name="action" value="resume" />
+          <button className={btn}>Resume</button>
+        </form>
+      ) : (
+        status === 'active' && (
+          <form action={workforceEmployeeActionForm}>
+            <input type="hidden" name="employeeId" value={id} />
+            <input type="hidden" name="action" value="suspend" />
+            <button className={btn}>Pause</button>
+          </form>
+        )
+      )}
+    </span>
   );
 }

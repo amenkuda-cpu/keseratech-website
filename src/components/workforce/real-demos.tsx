@@ -45,6 +45,14 @@ const DEMOS: RealDemo[] = [
     label: 'Sample meeting notes',
   },
   {
+    key: 'james',
+    name: 'James',
+    role: 'Customer Support',
+    asked: 'Draft polite replies to these 3 customer messages (WhatsApp, email, Facebook), using our policies, and tell me which ones need my attention.',
+    gave: ['Replies drafted for all 3, in your shop’s tone and policies', 'Urgent case flagged first: paid, cement not delivered', 'Nothing sent: every reply waits for your approval'],
+    label: 'Sample customer messages',
+  },
+  {
     key: 'alex',
     name: 'Alex',
     role: 'Sales Executive',

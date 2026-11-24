@@ -126,7 +126,13 @@ export const DIVISIONS: Division[] = [
 
 export const divisionBySlug = (slug: string) => DIVISIONS.find((d) => d.slug === slug);
 
-export const NAV = [
+/**
+ * Temporarily archived products: hidden from the public site (home section and nav), data kept.
+ * Set to false to bring one back. The admin waitlist keeps working either way.
+ */
+export const ARCHIVED = { ameyAi: true } as const;
+
+const ALL_NAV = [
   { href: '/#divisions', label: 'Divisions' },
   { href: '/ai-workforce', label: 'AI Workforce' },
   { href: '/work', label: 'Our Work' },
@@ -136,6 +142,8 @@ export const NAV = [
   { href: '/about', label: 'About' },
   { href: '/#amey-ai', label: 'Amey AI' },
 ] as const;
+
+export const NAV = ALL_NAV.filter((item) => !(ARCHIVED.ameyAi && item.href === '/#amey-ai'));
 
 export const SERVICES = [
   {

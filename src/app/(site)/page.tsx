@@ -17,7 +17,7 @@ import { EvChargeScene } from '@/components/home/ev-charge-scene';
 import { PullTransition } from '@/components/scenes/pull-transition';
 import { getPlans, listProjects } from '@/lib/db';
 import type { Metadata } from 'next';
-import { STATUS_STAGE } from '@/content/site';
+import { ARCHIVED, STATUS_STAGE } from '@/content/site';
 import { OrganizationJsonLd } from '@/components/site/structured-data';
 
 export const metadata: Metadata = { alternates: { canonical: '/' } };
@@ -57,7 +57,7 @@ export default async function HomePage() {
       <EvChargeScene />
       <ProcessPipeline markers={markers} index="07" more />
       <AgriseraHorizon index="08" />
-      <AmeyAi />
+      {!ARCHIVED.ameyAi && <AmeyAi />}
       {/* Pricing sits near the end: people see the work and products first. */}
       <Commercial index="09" plans={plans} />
       <Closing />

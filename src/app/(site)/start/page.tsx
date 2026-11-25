@@ -1,13 +1,13 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { ProjectBuilder, type BuilderPrefill } from '@/components/commercial/project-builder';
 import { getEstimator, getPlans } from '@/lib/db';
 import { COMPANY } from '@/content/site';
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Get a Website, App or Software Quote in Zimbabwe',
-  description: 'Tell Kesera Technologies what you need built: a website, mobile app, software or AI automation. See an estimated price in minutes and send your project to us.',
-  alternates: { canonical: '/start' },
-};
+  description: 'Tell us what you need built: a website, app, software or AI automation. See an estimated price in minutes and send your project to Kesera.',
+  path: '/start',
+});
 
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 

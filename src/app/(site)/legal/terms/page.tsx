@@ -1,8 +1,12 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { LegalPage } from '@/components/site/legal-page';
 import { COMPANY } from '@/content/site';
 
-export const metadata: Metadata = { title: 'Terms of use', alternates: { canonical: '/legal/terms' } };
+export const metadata = pageMetadata({
+  title: 'Terms of Use | Kesera Technologies',
+  description: 'The terms that apply when you use keseratech.com and the services of Kesera Technologies Holdings Private Limited in Zimbabwe.',
+  path: '/legal/terms',
+});
 
 // Plain-language starting point. Have it reviewed by a lawyer before launch.
 export default function TermsPage() {

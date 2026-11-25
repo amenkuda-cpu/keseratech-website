@@ -16,11 +16,15 @@ import { AgriseraHorizon } from '@/components/home/agrisera-horizon';
 import { EvChargeScene } from '@/components/home/ev-charge-scene';
 import { PullTransition } from '@/components/scenes/pull-transition';
 import { getPlans, listProjects } from '@/lib/db';
-import type { Metadata } from 'next';
 import { ARCHIVED, STATUS_STAGE } from '@/content/site';
 import { OrganizationJsonLd } from '@/components/site/structured-data';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = { alternates: { canonical: '/' } };
+export const metadata = pageMetadata({
+  title: 'Web Design, Apps & AI in Zimbabwe | Kesera Technologies',
+  description: 'Websites, online stores, apps, AI chatbots and AI receptionists for businesses in Harare, Marondera and across Zimbabwe. Clear prices, real support.',
+  path: '/',
+});
 
 export default async function HomePage() {
   const ventures = (await listProjects()).filter((p) => p.kind === 'venture');

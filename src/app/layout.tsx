@@ -13,12 +13,17 @@ const SITE_URL = process.env.SITE_URL ?? `https://${COMPANY.website}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: 'Kesera Technologies | Software, Websites, Apps & AI in Zimbabwe', template: '%s | Kesera' },
-  description:
-    'Kesera Technologies develops software, AI, agricultural and energy technology in Zimbabwe, builds sustainable homes and furniture from recycled and upcycled materials, and builds websites, apps and software for businesses.',
+  title: { default: 'Web Design, Apps & AI in Zimbabwe | Kesera Technologies', template: '%s | Kesera' },
+  description: 'Websites, online stores, apps, AI chatbots and AI receptionists for businesses in Harare, Marondera and across Zimbabwe. Clear prices, real support.',
   applicationName: 'Kesera',
-  openGraph: { type: 'website', siteName: 'Kesera Technologies', locale: 'en_ZW' },
-  twitter: { card: 'summary_large_image' },
+  openGraph: {
+    type: 'website',
+    siteName: 'Kesera Technologies',
+    locale: 'en_ZW',
+    images: [{ url: '/opengraph-image.png', width: 1200, height: 630, alt: 'Kesera Technologies: websites, apps and AI in Zimbabwe' }],
+  },
+  twitter: { card: 'summary_large_image', images: ['/opengraph-image.png'] },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {

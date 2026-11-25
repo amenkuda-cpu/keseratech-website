@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { COMPANY, DIVISIONS, STATUS_STAGE } from '@/content/site';
 import { listProjects } from '@/lib/db';
@@ -9,11 +9,11 @@ import { SHOW_PLACEHOLDERS, visibleTeam } from '@/content/people';
 import { PersonFrame, PlaceholderTag } from '@/components/site/people';
 import { cn } from '@/lib/utils';
 
-export const metadata: Metadata = {
-  title: { absolute: 'About Kesera Technologies | Zimbabwe Tech Company' },
-  alternates: { canonical: '/about' },
-  description: 'Kesera Technologies Holdings is developing practical technology across software, AI, agriculture, energy and smart living.',
-};
+export const metadata = pageMetadata({
+  title: 'About Kesera Technologies | Zimbabwe Tech Company',
+  description: 'Kesera Technologies is a Marondera-based tech company building websites, apps and AI, plus smart irrigation, EV charging and sustainable homes.',
+  path: '/about',
+});
 
 const VERBS = [
   { word: 'Developing', text: 'Products of our own, in the open: BikerDash, smart irrigation and smart EV charging.' },

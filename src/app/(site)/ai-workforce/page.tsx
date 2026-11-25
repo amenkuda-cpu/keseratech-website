@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { Check, ShieldCheck } from 'lucide-react';
 import { HireForm } from '@/components/workforce/hire-form';
 import { RealDemos } from '@/components/workforce/real-demos';
@@ -8,12 +8,11 @@ import { WhatsAppIcon, WORKFORCE_WHATSAPP, YourOkFirst } from '@/components/work
 import { Label } from '@/components/system/primitives';
 import { WORKFORCE, WORKFORCE_PRICE_USD, hireUrl } from '@/content/workforce';
 
-export const metadata: Metadata = {
-  title: 'AI Workforce — Hire AI Employees in Zimbabwe',
-  description:
-    'Hire an AI executive assistant, sales executive, marketing manager, customer support representative, research analyst or finance administrator from Kesera Technologies. USD 200 per employee per month.',
-  alternates: { canonical: '/ai-workforce' },
-};
+export const metadata = pageMetadata({
+  title: 'AI Workforce: Hire AI Employees in Zimbabwe | Kesera',
+  description: 'Hire AI employees for admin, sales, marketing, support, research and finance. Your first one is free for 30 days, then $200 a month.',
+  path: '/ai-workforce',
+});
 
 const photo = (key: string) => (existsSync(path.join(process.cwd(), 'public', 'workforce', `${key}.webp`)) ? `/workforce/${key}.webp` : null);
 
@@ -59,7 +58,7 @@ export default function AiWorkforcePage() {
           First employee free for 7 days, no card needed · then USD {WORKFORCE_PRICE_USD} per employee per month · EcoCash, InnBucks, Zimswitch, Visa and Mastercard
         </p>
         <figure className="mt-14 overflow-hidden rounded-sm border border-hair">
-          <video className="aspect-video w-full bg-black" controls playsInline preload="metadata" poster="/workforce/explainer-poster.jpg">
+          <video className="aspect-video w-full bg-black" controls playsInline preload="metadata" poster="/workforce/explainer-poster.webp">
             <source src="/workforce/kesera-ai-workforce-explainer.mp4" type="video/mp4" />
           </video>
           <figcaption className="t-label px-5 py-3 text-faint">How it works · under a minute</figcaption>

@@ -1,16 +1,17 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { PricingTabs } from '@/components/commercial/pricing-tabs';
 import { SoftwareEstimator } from '@/components/commercial/software-estimator';
 import { getEstimator, getPlans } from '@/lib/db';
 import { Label } from '@/components/system/primitives';
+import { SERVICE_PAGES } from '@/content/seo/services';
 
-export const metadata: Metadata = {
-  title: 'Website, App & Software Prices in Zimbabwe',
-  description: 'Clear prices in Zimbabwe: websites from $150, apps from $250, CRM dashboards from $100, AI chatbots from $40 and AI automation from $80, plus a live estimator for custom software.',
-  alternates: { canonical: '/pricing' },
-};
+export const metadata = pageMetadata({
+  title: 'Website, App & Software Prices in Zimbabwe | Kesera',
+  description: 'Clear prices in Zimbabwe: websites from $150, apps from $250, CRM from $100 and AI chatbots from $40, plus an estimator for custom software.',
+  path: '/pricing',
+});
 
 // The trust points from the brief. Keep them to commitments the business has made.
 const PROMISES = [
@@ -46,6 +47,17 @@ export default async function PricingPage() {
           <p className="max-w-sm text-sm text-ink/65">Every package is designed for your business, works on every screen and is launched by us. Prices are in US dollars.</p>
         </div>
         <PricingTabs plans={plans} />
+        <nav aria-label="Service guides" className="mt-10 text-sm text-ink/70">
+          <span className="t-label mr-4 text-ink/55">What each service includes:</span>
+          {SERVICE_PAGES.map((s, i) => (
+            <span key={s.slug}>
+              {i > 0 && <span aria-hidden className="mx-2 text-ink/30">·</span>}
+              <Link href={`/services/${s.slug}`} className="underline underline-offset-4 hover:text-ink">
+                {s.name}
+              </Link>
+            </span>
+          ))}
+        </nav>
       </section>
 
       <section id="software" className="shell scroll-mt-24 pb-24 md:pb-36" aria-labelledby="software-title">

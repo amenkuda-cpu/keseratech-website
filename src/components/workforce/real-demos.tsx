@@ -67,7 +67,17 @@ export function RealDemos() {
   const [playing, setPlaying] = useState(true);
   const video = useRef<HTMLVideoElement>(null);
   const box = useRef<HTMLDivElement>(null);
+  // The recordings are several MB each: load nothing until the player is about to scroll into view.
+  const [near, setNear] = useState(false);
   const d = DEMOS[active];
+
+  useEffect(() => {
+    const el = box.current;
+    if (!el || near) return;
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && setNear(true), { rootMargin: '300px 0px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [near]);
 
   // Play only while the player is on screen (saves data on phones).
   useEffect(() => {
@@ -81,7 +91,7 @@ export function RealDemos() {
     });
     io.observe(el);
     return () => io.disconnect();
-  }, [playing, active]);
+  }, [playing, active, near]);
 
   const toggle = () => {
     const v = video.current;
@@ -125,8 +135,8 @@ export function RealDemos() {
             key={d.key}
             ref={video}
             className="aspect-[16/10] w-full bg-white"
-            src={`/workforce/demos/${d.key}.mp4`}
-            poster={`/workforce/demos/${d.key}.jpg`}
+            src={near ? `/workforce/demos/${d.key}.mp4` : undefined}
+            poster={near ? `/workforce/demos/${d.key}.webp` : undefined}
             muted
             playsInline
             loop

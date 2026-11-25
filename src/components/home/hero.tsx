@@ -33,10 +33,11 @@ export function Hero({ projectsInDevelopment }: { projectsInDevelopment: number 
 
       <div className="shell grid min-h-[calc(100svh-68px)] grid-cols-1 content-end gap-y-10 pb-14 pt-24 lg:grid-cols-12 lg:gap-x-10 lg:pb-20">
         <div className="lg:col-span-8">
-          <p style={fade(0.05).style} className={`t-label text-white/75 ${fade(0).className}`}>Kesera Technologies · Zimbabwe</p>
+          {/* The H1 carries what people search for; the big statement below keeps the same look as a styled paragraph. */}
+          <h1 style={fade(0.05).style} className={`t-label text-white/75 ${fade(0).className}`}>Kesera Technologies · Web design, apps &amp; AI in Zimbabwe</h1>
 
           <MaskLines
-            as="h1"
+            as="p"
             immediate
             delay={0.1}
             className="t-display-xl mt-6 text-[clamp(2.8rem,12vw,5rem)] lg:text-[clamp(4.4rem,6.6vw,7.2rem)]"

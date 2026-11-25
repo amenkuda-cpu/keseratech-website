@@ -94,7 +94,7 @@ export function HireAiCallout({ className, compact = false }: { className?: stri
         />
         <span className={cn('absolute grid place-items-center rounded-full bg-white shadow-[0_4px_14px_rgb(10_40_90/0.15)]', compact ? 'left-4 top-4 size-10' : 'left-5 top-5 size-12')}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/kesera-k-mark.png" alt="Kesera" width={28} height={23} className={compact ? 'w-[22px]' : 'w-[27px]'} />
+          <img src="/brand/kesera-k-mark.webp" alt="Kesera" width={28} height={23} className={compact ? 'w-[22px]' : 'w-[27px]'} />
         </span>
         <span className={cn('absolute z-10', compact ? 'left-4 top-[25%] w-[64%]' : 'left-5 top-[26%] w-[54%]')}>
           <span className={cn('block font-sans font-medium leading-[1.12] tracking-[-0.02em]', compact ? 'text-[1.15rem]' : 'text-[1.35rem]')}>Looking to hire an AI employee?</span>

@@ -10,6 +10,7 @@ import { Reveal } from '@/components/system/motion';
 import { ProjectVisual } from '@/components/visuals/project-visual';
 import { StageTracker } from '@/components/projects/stage-tracker';
 import { StoreButtons } from '@/components/projects/store-buttons';
+import { pageMetadata } from '@/lib/seo';
 
 export async function generateStaticParams() {
   return (await listProjects()).map((p) => ({ slug: p.slug }));
@@ -19,7 +20,9 @@ export async function generateMetadata({ params }: PageProps<'/projects/[slug]'>
   const { slug } = await params;
   const p = await getProject(slug);
   if (!p) return {};
-  return { title: { absolute: `${p.name} | Kesera Technologies` }, description: p.summary.slice(0, 160), alternates: { canonical: `/projects/${p.slug}` } };
+  // Trim at a word boundary so the description never ends mid-word.
+  const description = p.summary.length <= 155 ? p.summary : `${p.summary.slice(0, 152).replace(/\s+\S*$/, '')}...`;
+  return pageMetadata({ title: `${p.name} | Kesera Technologies`, description, path: `/projects/${p.slug}` });
 }
 
 export default async function ProjectPage({ params }: PageProps<'/projects/[slug]'>) {

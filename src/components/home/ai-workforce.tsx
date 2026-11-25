@@ -63,7 +63,7 @@ export function AiWorkforce() {
 
           <Reveal delay={0.1} className="lg:col-span-7">
             <figure className="overflow-hidden rounded-sm border border-hair bg-black shadow-[0_40px_80px_-40px_rgb(26_134_250/0.45)]">
-              <video className="aspect-video w-full" controls playsInline preload="none" poster="/workforce/explainer-poster.jpg">
+              <video className="aspect-video w-full" controls playsInline preload="none" poster="/workforce/explainer-poster.webp">
                 <source src="/workforce/kesera-ai-workforce-explainer.mp4" type="video/mp4" />
               </video>
               <figcaption className="t-label px-5 py-3 text-faint">How it works · under a minute</figcaption>

@@ -11,9 +11,10 @@ export function Logo({ className, priority, tagline }: { className?: string; pri
     <Image
       src={tagline ? lockupTagline : lockup}
       alt="Kesera Technologies"
-      priority={priority}
+      preload={priority}
+      fetchPriority={priority ? 'high' : undefined}
       className={cn('h-auto select-none', className)}
-      sizes="(min-width: 768px) 320px, 200px"
+      sizes={tagline ? '(min-width: 768px) 320px, 260px' : '(min-width: 768px) 150px, 120px'}
     />
   );
 }

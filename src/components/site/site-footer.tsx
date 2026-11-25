@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { COMPANY, DIVISIONS, VENTURE_NAMES } from '@/content/site';
 import { Cta, Dot, HorizonLine } from '@/components/system/primitives';
+import { INSTAGRAM_URL } from '@/lib/schema';
 import { Logo } from './logo';
 
 const COLUMNS = [
@@ -11,10 +12,12 @@ const COLUMNS = [
   {
     title: 'Services',
     links: [
-      { href: '/start?service=website', label: 'Website development' },
-      { href: '/start?service=app', label: 'App development' },
-      { href: '/start?service=software', label: 'Software development' },
-      { href: '/start?service=automation', label: 'AI & automation' },
+      { href: '/services/website-design-zimbabwe', label: 'Website design' },
+      { href: '/services/ecommerce-website-zimbabwe', label: 'Online stores' },
+      { href: '/services/app-development-zimbabwe', label: 'App development' },
+      { href: '/services/ai-chatbot-zimbabwe', label: 'AI chatbots' },
+      { href: '/services/ai-receptionist-zimbabwe', label: 'AI receptionist' },
+      { href: '/services/crm-business-dashboards-zimbabwe', label: 'CRM & dashboards' },
       { href: '/pricing', label: 'Pricing' },
     ],
   },
@@ -68,6 +71,8 @@ export function SiteFooter() {
                 <li><a className="break-all transition-colors hover:text-white" href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></li>
                 <li><a className="transition-colors hover:text-white" href={COMPANY.phoneHref}>{COMPANY.phone}</a></li>
                 <li><a className="transition-colors hover:text-white" href={COMPANY.whatsappHref} target="_blank" rel="noreferrer">WhatsApp</a></li>
+                <li><a className="transition-colors hover:text-white" href={INSTAGRAM_URL} target="_blank" rel="noreferrer">Instagram @kesera_tech</a></li>
+                <li>Marondera, Zimbabwe</li>
               </ul>
             </div>
           </div>
@@ -92,6 +97,10 @@ export function SiteFooter() {
           <li><Link className="hover:text-white" href="/legal/privacy">Privacy</Link></li>
           <li><Link className="hover:text-white" href="/legal/terms">Terms</Link></li>
           <li><Link className="hover:text-white" href="/about">About</Link></li>
+          <li><Link className="hover:text-white" href="/services">Services</Link></li>
+          <li><Link className="hover:text-white" href="/locations">Locations</Link></li>
+          <li><Link className="hover:text-white" href="/work">Portfolio</Link></li>
+          <li><Link className="hover:text-white" href="/blog">Blog</Link></li>
         </ul>
       </div>
     </footer>

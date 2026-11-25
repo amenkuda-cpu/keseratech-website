@@ -17,6 +17,7 @@ import { UpcycleFlow } from '@/components/visuals/upcycle-flow';
 import { ReuseGallery } from '@/components/visuals/reuse-gallery';
 import { Photo } from '@/components/visuals/photo';
 import { photo } from '@/content/photos';
+import { pageMetadata } from '@/lib/seo';
 
 
 /** Hero size from the longest line, so long names ("Assistants") never overflow the column. */
@@ -30,20 +31,39 @@ export async function generateStaticParams() {
   return DIVISION_SLUGS.map((division) => ({ division }));
 }
 
-// What people search for, per division.
-const DIVISION_SEO_TITLES: Record<string, string> = {
-  'sera-tech': 'Website, App & Software Development in Zimbabwe',
-  agrisera: 'Smart Irrigation & Agricultural Technology in Zimbabwe',
-  'sera-energy': 'EV Charging & Energy Technology in Zimbabwe',
-  'sera-home': 'Container Homes & Upcycled Furniture in Zimbabwe',
-  'sera-assistants': 'AI Assistants & Business Automation in Zimbabwe',
-  'sera-front-desk': 'AI Receptionist for Calls & Bookings',
+// What people search for, per division: title under 60 characters, description under 155.
+const DIVISION_SEO: Record<string, { title: string; description: string }> = {
+  'sera-tech': {
+    title: 'Sera Tech: Website & App Developers in Zimbabwe',
+    description: 'Sera Tech, Kesera’s software studio, builds websites, mobile apps, web applications and business systems for companies across Zimbabwe.',
+  },
+  agrisera: {
+    title: 'AgriSera: Smart Irrigation Technology in Zimbabwe',
+    description: 'AgriSera builds smart irrigation, soil sensing and farm automation for Zimbabwe, starting with AgriSera Horizon: less water, stronger crops.',
+  },
+  'sera-energy': {
+    title: 'Sera Energy: EV Charging & Energy Tech in Zimbabwe',
+    description: 'Sera Energy is building smart EV charging infrastructure for Zimbabwe: connected chargers, energy management and the software behind them.',
+  },
+  'sera-home': {
+    title: 'Sera Home: Container Homes & Upcycled Furniture',
+    description: 'Sera Home turns shipping containers into homes, gyms and offices, and oil drums into furniture: sustainable building from reused materials.',
+  },
+  'sera-assistants': {
+    title: 'Sera Assistants: AI Assistants for Zimbabwe Business',
+    description: 'Sera Assistants builds AI assistants and automated workflows that answer customers, qualify enquiries and take routine work off your desk.',
+  },
+  'sera-front-desk': {
+    title: 'Sera Front Desk: AI Receptionist for Calls & Bookings',
+    description: 'Sera Front Desk answers your business calls 24/7, books, reschedules and cancels appointments, captures caller details and logs every call.',
+  },
 };
 
 export async function generateMetadata({ params }: PageProps<'/[division]'>): Promise<Metadata> {
   const d = divisionBySlug((await params).division);
   if (!d) return {};
-  return { title: { absolute: `${DIVISION_SEO_TITLES[d.slug]} | ${d.name}` }, description: `${d.short} ${d.intro}`.slice(0, 160), alternates: { canonical: `/${d.slug}` } };
+  const seo = DIVISION_SEO[d.slug]!;
+  return pageMetadata({ title: seo.title, description: seo.description, path: `/${d.slug}` });
 }
 
 export default async function DivisionPage({ params }: PageProps<'/[division]'>) {

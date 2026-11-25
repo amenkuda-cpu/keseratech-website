@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { ArrowUpRight, Mail } from 'lucide-react';
 import { COMPANY } from '@/content/site';
 import { WORK } from '@/content/work';
@@ -11,11 +11,11 @@ import { cn } from '@/lib/utils';
 
 // "Our Work": websites built by Amen at Kesera. Linked from the main menu. Projects come from src/content/work.ts.
 
-export const metadata: Metadata = {
-  title: { absolute: 'Our Work: Websites Built by Kesera | Kesera Technologies' },
-  description: 'Websites and apps Kesera has designed and built: online shops, company and brand sites, a law firm, a church and the PocketJobs app.',
-  alternates: { canonical: '/work' },
-};
+export const metadata = pageMetadata({
+  title: 'Portfolio: Websites & Apps Built in Zimbabwe | Kesera',
+  description: 'Websites and apps built by Kesera Technologies: online stores, company sites, a law firm, a church and the PocketJobs app. See them live.',
+  path: '/work',
+});
 
 export default function WorkPage() {
   const projects = WORK.filter((p) => SHOW_PLACEHOLDERS || !p.placeholder);

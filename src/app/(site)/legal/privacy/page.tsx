@@ -1,8 +1,12 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { LegalPage } from '@/components/site/legal-page';
 import { COMPANY } from '@/content/site';
 
-export const metadata: Metadata = { title: 'Privacy notice', alternates: { canonical: '/legal/privacy' } };
+export const metadata = pageMetadata({
+  title: 'Privacy Notice | Kesera Technologies',
+  description: 'How Kesera Technologies collects, uses and protects personal information from enquiries, projects and visits to keseratech.com.',
+  path: '/legal/privacy',
+});
 
 // Plain-language starting point. Have it reviewed against Zimbabwe's Cyber and Data Protection Act before launch.
 export default function PrivacyPage() {
